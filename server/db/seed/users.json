@@ -1,0 +1,52 @@
+[
+    {
+      "firstName": "Pavelaaa",
+      "lastName": "Antiperovitch",
+      "email": "apavel@gmail.com",
+      "password": "$2a$08$yCqkXeWNUjul5MNNUtASw.fLxWMF/ofGytwKND/KWtDUnSFYsmx9m",
+      "loginAttempts": 2,
+      "active": true,
+      "lastLogin": "2019-03-18T03:55:05.374Z",
+      "loginCount": 3
+    },
+    {
+      "firstName": "Sally",
+      "lastName": "Yates",
+      "email": "syates@gmail.com",
+      "password": "$2a$08$BccxCmH3lHW.Tfj2E0rL6.92tNStNuhWVVV/YQqTIpoklWFsaqVfm",
+      "loginAttempts": 0,
+      "active": false,
+      "lastLogin": null,
+      "loginCount": 0
+    },
+    {
+      "firstName": "Minime",
+      "lastName": "James",
+      "email": "apavelr@gmail.com",
+      "password": "$2a$08$BccxCmH3lHW.Tfj2E0rL6.92tNStNuhWVVV/YQqTIpoklWFsaqVfm",
+      "loginAttempts": 0,
+      "active": true,
+      "lastLogin": null,
+      "loginCount": 0
+    },
+    {
+      "firstName": "Junior",
+      "lastName": "Don",
+      "email": "don@gmail.com",
+      "password": "$2a$08$BccxCmH3lHW.Tfj2E0rL6.92tNStNuhWVVV/YQqTIpoklWFsaqVfm",
+      "loginAttempts": 0,
+      "active": true,
+      "lastLogin": null,
+      "loginCount": 0
+    },
+    {
+      "firstName": "German",
+      "lastName": "Shepherd",
+      "email": "dog@doghouse.net",
+      "password": "$2a$08$BccxCmH3lHW.Tfj2E0rL6.92tNStNuhWVVV/YQqTIpoklWFsaqVfm",
+      "loginAttempts": 0,
+      "active": true,
+      "lastLogin": null,
+      "loginCount": 0
+    }
+  ]
