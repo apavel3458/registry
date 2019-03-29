@@ -23,6 +23,16 @@ class User extends Model {
     delete this.password
   }
 
+  $parseDatabaseJson(json) {
+    json = super.$parseDatabaseJson(json);
+    _.each(this.constructor.jsonSchema.properties, (schema, prop) => {
+      if (schema.format === 'datetime') {
+        json[prop] = new Date(json[prop]);
+      }
+    })
+    return json;
+  }
+
 
 
   // Optional JSON schema. This is not the database schema! Nothing is generated
@@ -40,15 +50,16 @@ class User extends Model {
         password: {type: 'string', minLength: 1, maxLength: 255 },
         loginAttempts: { type: 'integer' },
         loginCount: { type: 'integer' },
-        lastLogin: {type: 'date'},
-        active: {type: ['integer','boolean']}
+        lastLogin: {type: 'datetime'},
+        active: {type: ['integer','boolean']},
+        usergroups: {type: 'array'}
       }
     };
   }
 
   static get relationMappings() {
     return {
-      actors: {
+      usergroups: {
         relation: Model.ManyToManyRelation,
         // The related model. This can be either a Model subclass constructor or an
         // absolute file path to a module that exports one. We use the file path version
@@ -71,7 +82,7 @@ class User extends Model {
 }
 
 User.prototype.cleanForJWT = function() {
-  const user = _.pick(this, ['id', 'firstName','lastName','email','active','lastLogin'])
+  const user = _.pick(this, ['id', 'firstName','lastName','email','active','lastLogin', 'usergroups'])
   return user
 }
 

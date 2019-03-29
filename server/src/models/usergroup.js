@@ -25,7 +25,8 @@ class Usergroup extends Model {
       required: ['groupName'],
       properties: {
         id: { type: 'integer' },
-        groupName: { type: 'string', minLength: 1, maxLength: 255 }
+        groupName: { type: 'string', minLength: 1, maxLength: 255 },
+        users: { type: 'array'}
       }
     };
   }
@@ -38,6 +39,7 @@ class Usergroup extends Model {
         // absolute file path to a module that exports one. We use the file path version
         // here to prevent require loops.
         modelClass: __dirname + '/user',
+        //filter: query => query.select('users.id', 'users.firstName', 'users.lastName'),
         join: {
           from: 'usergroups.id',
           // ManyToMany relation needs the `through` object to describe the join table.
@@ -45,7 +47,7 @@ class Usergroup extends Model {
             from: 'usergrouplink.usergroupId',
             to: 'usergrouplink.userId'
           },
-          to: 'user.id'
+          to: 'users.id'
         }
       }
     };

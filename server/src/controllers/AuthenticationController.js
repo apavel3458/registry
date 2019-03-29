@@ -3,6 +3,7 @@ const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 const config = require('../config/config')
 const request = require('request')
+const knex = require('knex')
 //const _ = require('lodash')
 
 function jwtSignUser(user) {
@@ -44,13 +45,11 @@ module.exports = {
 
             req.body.email = req.body.email.toLowerCase()
             const duplicateEmail = await User.query().where("email", req.body.email)
-            console.log("test email")
+
             if (duplicateEmail.length > 0) {
-                console.log("test email positive")
-                res.status(200).send({
+                return res.status(200).send({
                     error: 'This email account is already in use.'
                 })
-                return
             }
             const pwhashed = await User.hashPassword(req.body.password)
             if (config.operations.disableNewUsers) {
@@ -63,7 +62,6 @@ module.exports = {
                     .update({ password: pwhashed })
             }
             user = user.cleanForJWT()
-            console.log(user)
             if (!user.active) {
                 return res.send({
                     user: user,
@@ -86,7 +84,11 @@ module.exports = {
         try {
             var {email, password} = req.body
             email = email.toLowerCase()
-            var user = (await User.query().where('email', email).limit(1).first())
+            var user = (await User.query()
+                .where('email', email)
+                .limit(1)
+                .first()
+                .eager('[usergroups]'))
             
             if (!user) {
                 return res.status(401).send({
@@ -108,7 +110,7 @@ module.exports = {
             
             if (!isPasswordValid) {
                 user.loginAttempts = user.loginAttempts+1
-                if (user.loginAttempts >=2) {
+                if (user.loginAttempts >=3) {
                     user.active = false
                 }
                 await User.query().patchAndFetchById(user.id, user)
@@ -120,7 +122,7 @@ module.exports = {
             // USER IS AUTHENTIC------
             user.loginCount = user.loginCount+1
             user.loginAttempts = 0
-            user.lastLogin = new Date().toLocaleString()
+            user.lastLogin = knex.raw('now()')
             user = await User.query().patchAndFetchById(user.id, user);
 
             //shorten the JWT payload to essentials

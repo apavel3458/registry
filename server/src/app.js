@@ -20,6 +20,15 @@ app.use(bodyParser.json())
 app.use(cors())
 app.use(helmet())
 
+// app.use((err, req, res, next) => {
+//     console.log("GOT ERROR")
+//   if (err) {
+//     res.status(err.statusCode || err.status || 500).send({error: err.data || err.message || {}});
+//   } else {
+//     next();
+//   }
+// });
+
 require('./passport')
 
 require('./routes')(app)

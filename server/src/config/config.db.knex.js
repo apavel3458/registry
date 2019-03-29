@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = {
-    development: {
+    sqlite: {
       client: 'sqlite3',
       useNullAsDefault: true,
       connection: {
@@ -19,6 +19,25 @@ module.exports = {
         }
       }
     },
+
+    development: {
+      client: 'mysql2',
+      connection: {
+        host : '127.0.0.1',
+        user : 'root',
+        password : 'liyi',
+        database : 'registry',
+        timezone: 'UTC',
+        dateStrings: true
+      },
+      migrations: {
+        directory: path.resolve(__dirname, '../../db/migrations')
+      },
+      seeds: {
+        directory: path.resolve(__dirname, '../../db/seeders')
+      },
+      
+    },
   
     production: {
       client: 'postgresql',
@@ -30,4 +49,4 @@ module.exports = {
         max: 10
       }
     }
-  };
+  }

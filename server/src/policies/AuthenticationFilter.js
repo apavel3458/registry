@@ -15,7 +15,20 @@ module.exports = {
         })(req, res, next)
     },
     AuthAdminFilter: function(req, res, next) {
-        //TODO
-        next()
+        passport.authenticate('jwt', function (err, user) {
+            //console.log(user.usergroups.filter(group => group.groupName.toLowerCase() === 'admin'))
+            if (err || 
+                    !user || 
+                    !user.usergroups || 
+                    !(user.usergroups.filter(group => group.groupName.toLowerCase() === 'admin').length>0)
+                ) {
+                return res.status(403).send({
+                    error: 'You do not have permissions'
+                })
+            } else {
+                req.user = user
+                next()
+            }
+        })(req, res, next)
     }
 }

@@ -50,9 +50,21 @@ module.exports = (app) => {
         AuthFilter,
         UserController.delete)
 
-    app.post('/admin/groups',
+    app.get('/admin/groups',
         AuthFilter,
         UserController.groups)
+
+    app.post('/admin/groups',
+        AuthFilter,
+        UserController.addGroup)
+
+    app.delete('/admin/groups/:id',
+        AuthFilter,
+        UserController.deleteGroup)
+
+    app.put('/admin/groups/:id',
+        AuthFilter,
+        UserController.updateGroup)
 
     app.put('/user/changepw',
         AuthFilter,

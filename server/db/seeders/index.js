@@ -2,14 +2,19 @@
 const knexConfig = require ('../../src/config/config.db.knex.js')
 
 const Knex = require('knex');
-//const knexConfig = require('.knexfile');
-const knex = Knex(knexConfig.development);
-const seeder = require('./users')
-const UserGroups = require('./usergroups')
-const Referrals = require('./referrals')
 
-seeder.seed(knex)
-UserGroups.seed(knex)
-Referrals.seed(knex)
+exports.seed = async function(knex, Promise) {
+    await knex('users').del()
+    await knex('users').insert(require('./users.json'))
+    await knex('usergroups').del()
+    await knex('usergroups').insert(require('./usergroups.json'))
 
-console.log("finished...")
+    //make admin association
+    const groupid = await knex.select('id as usergroupid')
+        .from('usergroups')
+        .where('groupName', 'Admin').first();
+    const userid = await knex.select('id as userid')
+        .from('users')
+        .where('email', 'apavel@gmail.com').first();
+    await knex('usergrouplink').insert({...groupid, ...userid})
+  }

@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
+const { transaction } = require('objection');
 const User = require('../models/user')
 const UserGroup = require('../models/usergroup')
 const _ = require('lodash')
@@ -10,14 +11,17 @@ module.exports = {
         try {
             let user = null
             const search = req.query.search
-            if (search) {
+            /*if (search) {
                 user = await User.query().where('firstName', 'like', `%${search}%`)
                                         .orWhere('lastName', 'like', `%${search}%`)
                                         .orWhere('email', 'like', `%${search}%`)
-            } else {
+            } else {*/
                 user = await User.query()
-            }
-
+                    .skipUndefined()
+                    .allowEager('[usergroups]')
+                    .eager(req.query.eager)
+            //}
+                console.log(user)
             res.send(user)
             
         } catch (err) {
@@ -31,17 +35,24 @@ module.exports = {
     async put(req, res) {
         try {
             
-            const userIn = req.body
+            var userIn = req.body
+            userIn.id = parseInt(req.body.id, 10)
             
-            console.log(userIn)
             const pwhashed = await User.hashPassword(userIn.password)
-            const user = await User.query().patchAndFetchById(userIn.id, userIn) //password is removed automatically
+
+            userIn.usergroups = userIn.usergroups.map(v=>_.pick(v, ['id', 'groupName']))
+
+            const user = await User.query()
+                .allowUpsert('[usergroups]')
+                .upsertGraph(userIn, {relate: true, unrelate: true}) //password is removed automatically
+                
+
             if (pwhashed) {//manually update password
                 await User.knex().from('users')
                     .where({id: user.id})
                     .update({ password: pwhashed })
             }
-            console.log(user)
+            //console.log(user)
             res.send(user)
         } catch (err) {
             console.log(err)
@@ -64,23 +75,81 @@ module.exports = {
     },
 
     async groups(req, res) {
+        console.log(req.query.eager)
+        var userGroups = null
+        if (req.query.eager) {
+            userGroups = await (UserGroup.query()
+                .allowEager('[users]')
+                .eager(req.query.eager)
+                .modifyEager('users', usersBuilder => usersBuilder.select('users.id', 'users.firstName', 'users.lastName')))
+                console.log(JSON.stringify(userGroups))
+        } else {
+            userGroups = await UserGroup.query()
+        }
+        return res.send(userGroups)
+    },
+
+    async addGroup(req, res) {
         try {
-            const userGroups = await UserGroup.query()
-            res.send(userGroups)
+            const group = await UserGroup.query().insert(req.body)
+            return res.send(group)
         } catch (err) {
-            console.log("Error: ", err)
+            console.log(err)
             res.status(500).send({
-                error: 'An error has occured trying to fetch users.'
+                error: 'An error has occured while trying to add group.'
             })
         }
     },
+    async deleteGroup(req, res) {
+        
+        try {
+            await UserGroup.query().deleteById(req.params.id)
+            return res.send(true)
+        } catch (err) {
+            console.log(err)
+            res.status(500).send({
+                error: 'An error has occured while trying to delete group.'
+            })
+        }
+    },
+
+    async updateGroup(req, res) {
+        try {
+            const group = await UserGroup.query()
+            .allowUpsert('[users]')
+            .upsertGraph(req.body, {relate: true, unrelate: true}) //password is removed automatically
+            return res.send(true)
+        } catch (err) {
+            console.log(err)
+            res.status(500).send({
+                error: 'An error has occured while trying to update group.'
+            })
+        }
+    },
+
+    async getGroupUsers(req, res) {
+        const user = await User.query().findById(req.params.id);
+        if (!user) {
+            throw createStatusCodeError(404)
+        }
+        const groups = await user.$relatedQuery('usergroups');
+        res.send(groups)
+    },
+
+    // async addGroupToUser(req, res) {
+    //     const user = await User.query().findById(req.params.id);
+    //     if (!user) {
+    //         throw createStatusCodeError(404)
+    //     }
+    //     const group = await user.$relatedQuery('usergroups').insert(req.body)
+    //     res.send(group)
+    // },
 
     async changepw(req, res) {
         try {
             
             const input = req.body
-            console.log(input)
-            console.log(req.user)
+
             //first confirm password
             const userPassword = (await User.knex().from('users')
                 .select('id', 'password')
@@ -112,3 +181,9 @@ module.exports = {
     },
     
 }
+
+function createStatusCodeError(statusCode, err) {
+    return Object.assign(new Error(), {
+      statusCode
+    });
+  }

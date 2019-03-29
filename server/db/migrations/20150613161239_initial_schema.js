@@ -8,7 +8,7 @@ exports.up = knex => {
         table.string('password');
         table.integer('loginCount').defaultTo(0)
         table.integer('loginAttempts').defaultTo(0)
-        table.timestamp('lastLogin')
+        table.datetime('lastLogin').defaultTo(null)
         table.boolean('active').defaultTo(true)
         table.timestamp('createdAt').defaultTo(knex.fn.now())
         table.unique('email')
@@ -57,8 +57,8 @@ exports.up = knex => {
   
   exports.down = knex => {
     return knex.schema
-      .dropTableIfExists('users')
-      .dropTableIfExists('usergroups')
       .dropTableIfExists('usergrouplink')
+      .dropTableIfExists('users') 
+      .dropTableIfExists('usergroups')
       .dropTableIfExists('referrals')
   };
