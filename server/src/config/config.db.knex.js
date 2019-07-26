@@ -40,13 +40,20 @@ module.exports = {
     },
   
     production: {
-      client: 'postgresql',
+      client: 'mysql2',
       connection: {
-        database: 'example'
+        host : '127.0.0.1',
+        user : 'root',
+        password : 'liyi',
+        database : 'registry',
+        timezone: 'UTC',
+        dateStrings: true
       },
-      pool: {
-        min: 2,
-        max: 10
-      }
+      migrations: {
+        directory: path.resolve(__dirname, '../../db/migrations')
+      },
+      seeds: {
+        directory: path.resolve(__dirname, '../../db/seeders')
+      },
     }
   }
