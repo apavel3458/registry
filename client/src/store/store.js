@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import createPersistedState from 'vuex-persistedstate'
+//import createPersistedState from 'vuex-persistedstate'
 import RegistryService from '@/services/RegistryService'
 import router from '@/router'
 
@@ -9,7 +9,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   strict: true,
-  plugins: [createPersistedState()],
+  //plugins: [createPersistedState()],
   state: {
     token: null,
     user: null,
@@ -52,6 +52,9 @@ export default new Vuex.Store({
     },
     setUser ({commit}, user) {
         commit('setUser', user)
+    },
+    init({dispatch}) {
+      dispatch('fetchRegistryList')
     },
 
     setActivePatient ({commit}, patient) {
