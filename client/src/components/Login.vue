@@ -52,6 +52,7 @@ export default {
         password: this.password
       })
         .then((response) => {
+          this.$store.dispatch('init')
           this.$store.commit('login', {token: response.token, user: response.user})
           this.$router.push({
             name: 'home'
