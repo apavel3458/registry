@@ -1,0 +1,82 @@
+[
+   {
+      "imagingName": "CMR",
+      "details": [
+         {
+            "name": "LVEDVolumeIndex",
+            "text": "LVED Volume Index",
+            "type": "number"
+         }, 
+         {
+            "name": "RVEF",
+            "text": "RV EF %",
+            "type": "number"
+         }, 
+         {
+            "name": "LGE",
+            "text": "LGE",
+            "type": "boolean"
+         }
+      ]
+   },
+   {
+      "imagingName": "Echo",
+      "details": [
+         {
+            "name": "LVEDD",
+            "text": "LV End Diastolic Index",
+            "type": "number"
+         },
+         {
+            "name": "LAVolumeIndex",
+            "text": "LA Volume Index",
+            "type": "number"
+         },
+         {
+            "name": "RVEDD",
+            "text": "RV EDD",
+            "type": "number"
+         },
+         {
+            "name": "RMWA",
+            "text": "Regional WMA",
+            "type": "boolean"
+         },
+         {
+            "name": "RVDysfunction",
+            "text": "RV Dysfunction",
+            "type": "boolean"
+         },
+         {
+            "name": "TR",
+            "text": "TR",
+            "type": "boolean"
+         },
+         {
+            "name": "firstDiagnosisEcho",
+            "text": "First Diagnosis Echo",
+            "type": "boolean"
+         }
+      ]
+   },
+   {
+      "imagingName": "PET",
+      "details": [
+         {
+            "name": "FDGUptakeDiffuse",
+            "text": "FDG Uptake Diffuse",
+            "type": "boolean"
+         },
+         {
+            "name": "FDGUptakeFocal",
+            "text": "FDG Uptake Focal",
+            "type": "boolean"
+         },
+         {
+            "name": "perfusionDefect",
+            "text": "Perfusion Defect",
+            "type": "boolean"
+         }
+      ]
+   }
+]

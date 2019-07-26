@@ -1,0 +1,112 @@
+/* eslint-disable vue/valid-template-root */
+<template>
+  <item :patientP="patientP" 
+    itemType="imaging" 
+    itemTitle="Imaging"
+    :tableHeaders="tableHeaders"
+    :defaultItem="defaultItem"
+    :typesJson="imagingTypes">
+    <template v-slot:dataEdit="{editedItem, types}">
+      
+                <v-flex xs12 sm6>
+                  <v-select
+                    v-model="editedItem.imagingName"
+                    box
+                    label="Imaging Type"
+                    :items="imagingTypes"
+                    item-text="imagingName"
+                    item-value="imagingName"
+                    @change="editedItem.details={}"
+                    required :rules="[() => !!editedItem.imagingName || 'This field is required']"
+                  ></v-select>
+
+                </v-flex>
+                <v-flex xs12 sm6>
+                  
+                  <v-text-field
+                    v-model="editedItem.studyDate"
+                    box
+                    label="Study Date (YYYY-MM-DD)"
+                    prepend-icon="event"
+                    required
+                    return-masked-value
+                    mask="####-##-##"
+                    :rules="[() => !!editedItem.studyDate || 'This field is required']"
+                  ></v-text-field>
+
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-text-field 
+                    v-model="editedItem.EFtext" 
+                    box 
+                    return-masked-value 
+                    mask="##-##" 
+                    hide-details 
+                    required :rules="[() => !!editedItem.EFtext || 'This field is required']"
+                    label="EF % (Range or Exact)"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-text-field 
+                    type="number" 
+                    v-model.number="editedItem.EF" 
+                    box hide-details disabled 
+                    label="EF Absolute (Calculated)"></v-text-field>
+                </v-flex>
+    </template>
+    <template v-slot:dataTable="props">
+          <td class="eventName" style="white-space: nowrap; font-weight: bold;">{{ props.item.studyDate }}</td>
+          <td class="eventName nowrap">{{ props.item.imagingName }}</td>
+          <td class="text-xs-center nowrap">{{ props.item.EFtext }}</td>
+          <td class="text-xs-center nowrap">{{ props.item.EF }}</td>
+          <td class="text-xs-center hideOverflow">{{ props.item.comments }}</td>
+    </template>
+  </item>
+</template>
+
+<script>
+
+import Item from "../Item"
+import ImagingTypes from "./ImagingTypes"
+
+export default {
+  props: ['patientP'],
+  components: {Item},
+  data () {
+    return {
+      imagingTypes: ImagingTypes,
+      tableHeaders: [
+        { text: "Study Date", value: "studyDate", align: "center", width: "1%"},
+        { text: "Study Type", value: "imagingName", align: "center", width: "1%"},
+        { text: "EF", value: "EFtext", align: "center", width: "1%"},
+        { text: "EF (absolute)", value: "EF", align: "center", width: "1%" },
+        { text: "Comments", align: "center", value: "comments"},
+        { text: "Actions", align: "center", value: "name", sortable: false, width: "1%" }
+      ],
+      defaultItem: {
+        studyDate: "",
+        imagingName: null,
+        EF: null,
+        EFtext: "",
+        comments: "",
+        details: {}
+      },
+    }
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.nowrap {
+  white-space: nowrap;
+}
+.hideOverflow {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  /* max-width: 200px;
+  white-space: nowrap;  --> makes it one line*/
+}
+.eventName {
+  font-weight: bold;
+}
+</style>

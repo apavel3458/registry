@@ -1,0 +1,77 @@
+[
+   {
+      "diagnosisName": "Sarcoidosis",
+      "details": [
+         {
+            "name": "BMD",
+            "text": "BMD",
+            "type": "string"
+         },
+         {
+            "name": "VitDdate",
+            "text": "Vitamin D Date",
+            "type": "string"
+         },
+         {
+            "name": "VitDlevel",
+            "text": "Vitamin D Level",
+            "type": "number"
+         },
+         {
+            "name": "NYHAatDx",
+            "text": "NYHA at Diagnosis",
+            "type": "number"
+         },
+         {
+            "name": "cardiacSarcoid",
+            "text": "Cardiac Sarcoid?",
+            "type": "boolean"
+         }, 
+         {
+            "name": "renalSarcoid",
+            "text": "Renal Sarcoid?",
+            "type": "boolean"
+         }, 
+         {
+            "name": "pulmonarySarcoid",
+            "text": "Pulmonary Sarcoid?",
+            "type": "boolean"
+         },
+         {
+            "name": "otherSystemsInvolved",
+            "text": "Other Systems Involved?",
+            "type": "boolean"
+         },
+         {
+            "name": "HTN",
+            "text": "Hypertension?",
+            "type": "boolean"
+         },
+         {
+            "name": "AF",
+            "text": "Atrial Fibrillation?",
+            "type": "boolean"
+         },
+         {
+            "name": "DMPreCS",
+            "text": "Diabetes Pre-Sarcoid?",
+            "type": "boolean"
+         },
+         {
+            "name": "DMPostCS",
+            "text": "Diabetes Post-Sarcoid?",
+            "type": "boolean"
+         },
+         {
+            "name": "HBA1C",
+            "text": "HBA1c?",
+            "type": "boolean"
+         },
+         {
+            "name": "DMControlGood",
+            "text": "Good DM Control?",
+            "type": "boolean"
+         }
+      ]
+   }
+]

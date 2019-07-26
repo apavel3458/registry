@@ -1,0 +1,33 @@
+[
+   {
+      "medicationName": "Steroid",
+      "details": [
+      ]
+   },
+   {
+      "medicationName": "Immunosuppressants",
+      "details": [
+      ]
+   },
+   {
+      "medicationName": "Beta Blocker",
+      "details": [
+      ]
+   },
+   {
+      "medicationName": "ACE Inhibitor or ARB",
+      "visibleDetail": "name",
+      "details": [
+      ]
+   },
+   {
+      "medicationName": "MRA",
+      "details": [
+      ]
+   },
+   {
+      "medicationName": "ARNI",
+      "details": [
+      ]
+   }
+]
