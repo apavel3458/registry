@@ -3,6 +3,12 @@
     <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12 sm6>
+                <v-text-field label="Username" v-model="user.username" autocomplete="off"></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6>
+                <v-text-field label="Password*" type="password" v-model="user.password"></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6>
                 <v-text-field label="First Name" required v-model="user.firstName"></v-text-field>
               </v-flex>
               <v-flex xs12 sm6>
@@ -15,9 +21,7 @@
               <v-flex xs12>
                 <v-text-field label="Email*" required v-model="user.email"></v-text-field>
               </v-flex>
-              <v-flex xs12>
-                <v-text-field label="Password*" type="password" v-model="user.password"></v-text-field>
-              </v-flex>
+              
               <v-flex xs4>
                 <v-text-field label="Login Count" type="text" disabled v-model="user.loginCount"></v-text-field>
               </v-flex>

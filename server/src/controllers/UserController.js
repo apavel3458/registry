@@ -42,6 +42,16 @@ module.exports = {
 
             userIn.usergroups = userIn.usergroups.map(v=>_.pick(v, ['id', 'groupName']))
 
+
+            //check duplicate username
+            const duplicateUser = await User.query().where("username", req.body.username).whereNot("id", userIn.id)
+
+            if (duplicateUser.length > 0) {
+                return res.status(400).send({
+                    error: 'This username is already in use.'
+                })
+            }
+
             const user = await User.query()
                 .allowUpsert('[usergroups]')
                 .upsertGraph(userIn, {relate: true, unrelate: true}) //password is removed automatically
@@ -57,7 +67,7 @@ module.exports = {
         } catch (err) {
             console.log(err)
             res.status(500).send({
-                error: 'An error has occured trying to fetch user.'
+                error: 'An error has occured trying to update user.'
             })
         }
     },

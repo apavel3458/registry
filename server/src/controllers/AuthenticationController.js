@@ -38,17 +38,18 @@ async function assessCaptcha(req, res) {
 
 module.exports = {
     async register(req, res) {
+        
         try {
             const captchaPassed = await assessCaptcha(req, res)
             //console.log('CAPATCH APASSED: ' + captchaPassed)
             if (!captchaPassed) return
 
-            req.body.email = req.body.email.toLowerCase()
-            const duplicateEmail = await User.query().where("email", req.body.email)
+            req.body.username = req.body.username.toLowerCase()
+            const duplicateUser = await User.query().where("username", req.body.username)
 
-            if (duplicateEmail.length > 0) {
+            if (duplicateUser.length > 0) {
                 return res.status(400).send({
-                    error: 'This email account is already in use.'
+                    error: 'This username is already in use.'
                 })
             }
             const pwhashed = await User.hashPassword(req.body.password)
@@ -65,7 +66,7 @@ module.exports = {
             if (!user.active) {
                 return res.send({
                     user: user,
-                    successMessage: `Registration for user ${req.body.email} completed, but the user is disabled.  Contact your administrator to activate.`
+                    successMessage: `Registration for user ${req.body.username} completed, but the user is disabled.  Contact your administrator to activate.`
                 })
             }
             return res.send({
@@ -82,10 +83,10 @@ module.exports = {
 
     async login(req, res) {
         try {
-            var {email, password} = req.body
-            email = email.toLowerCase()
+            var {username, password} = req.body
+            username = username.toLowerCase()
             var user = (await User.query()
-                .where('email', email)
+                .where('username', username)
                 .limit(1)
                 .first()
                 .eager('[usergroups]'))

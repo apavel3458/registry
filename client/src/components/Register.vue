@@ -13,10 +13,17 @@
                       v-model="user.firstName">
                     </v-text-field>
                     <v-text-field
-                      label="First Name"
+                      label="Last Name"
                       type="text"
                       name="lastName"
                       v-model="user.lastName">
+                    </v-text-field>
+                    <v-text-field
+                      label="Username"
+                      type="text"
+                      name="username"
+                      :rules="[() => !!user.username || 'This field is required']"
+                      v-model="user.username">
                     </v-text-field>
                     <v-text-field
                       label="E-Mail"
@@ -94,26 +101,26 @@ export default {
   components: {VueRecaptcha},
   methods: {
     async register () {
-      try{
         if (!this.$refs.registrationForm.validate()) return
-        const response = await AuthenticationService.register(this.user)
-        alert(JSON.stringify(response))
-        if (response.error) {
-          this.errorMessage = response.error
-          this.successMessage = null
-        } else if (response.successMessage) {
-          this.successMessage = response.successMessage
-          this.errorMessage = null
-        } else { //if no message returned, then just log them in
-          this.$store.dispatch('setToken', response.token)
-          this.$store.dispatch('setUser', response.user)
-          this.$router.push({
-            name: 'dashboard'
-          })
-        }
-      } catch (err) {
-        alert(err)
-      }
+        await AuthenticationService.register(this.user)
+        .then(async response => {
+            if (response.successMessage) {
+              this.successMessage = response.successMessage //if there is a message, don't log in, but give message
+            } else {
+              this.$store.commit('login', {token: response.token, user: response.user})
+              await this.$store.dispatch('init')
+              this.$router.push({
+                name: 'home'
+              })
+            }
+        }).catch(err => {
+            //console.log(err)
+            if (err.response.status == 400) {
+              this.errorMessage = err.response.data.error
+            } else {
+              this.errorMessage = "There was an error contacting the server: " + this.response.status
+            }
+        })
     },
     onVerify (token) {
       this.user.recaptchaToken = token

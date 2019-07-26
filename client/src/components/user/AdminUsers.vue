@@ -32,9 +32,9 @@
             </template>
             
             <template v-slot:items="props">
+                <td class="text-xs-center pa-0" :class="{inactive:!props.item.active}">{{ props.item.username }}</td>
                 <td class="text-xs-center pa-0" :class="{inactive:!props.item.active}">{{ props.item.firstName }}</td>
                 <td class="text-xs-center pa-0" :class="{inactive:!props.item.active}">{{ props.item.lastName }}</td>
-                <td class="text-xs-center pa-0" :class="{inactive:!props.item.active}">{{ props.item.email }}</td>
                 <td class="text-xs-center pa-0" :class="{inactive:!props.item.active}" 
                     v-if="!$vuetify.breakpoint.smAndDown">
                     {{ formatDate(props.item.lastLogin) }}
@@ -132,6 +132,7 @@ export default {
             users: [],
             groups: [],
             headers: [
+                { text: 'Username', value: 'username', align: 'center'},
                 { text: 'Last Name', value: 'lastName' },
                 {
                     text: 'First Name',
@@ -139,7 +140,6 @@ export default {
                     sortable: true,
                     value: 'firstName'
                 },
-                { text: 'E-Mail', value: 'email', align: 'center'},
                 { text: 'Last Login', value: 'lastLogin', align: 'center', hide: 'smAndDown'},
                 { text: 'Active?', value: 'active', align: 'center', width: 20},
                 { text: 'Actions', value: 'actions', align: 'center'}
@@ -198,6 +198,17 @@ export default {
                 await this.loadData()
             }
             this.dialog = false
+                //             await AdminUserService.put(user)
+                // .then(async reply => {
+                //     alert("success")
+                //     this.users.splice(this.users.indexOf(user), 1, reply)
+                //     this.groups = await AdminUserService.groups({params: {eager: '[users]'}})
+                //     this.dialog = false
+                // }).catch(async err => {
+                //     alert("err:" + err)
+                //     this.dialog = false
+                //     await this.loadData()
+                // })
         },
         async deleteUser(user) {
             if (confirm(`Are you sure you want to delete ${user.firstName} ${user.lastName} (${user.email})?`)) {

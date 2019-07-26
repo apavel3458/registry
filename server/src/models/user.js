@@ -46,6 +46,7 @@ class User extends Model {
         id: { type: 'integer' },
         firstName: { type: 'string', minLength: 1, maxLength: 255 },
         lastName: { type: 'string', minLength: 1, maxLength: 255 },
+        username: { type: 'string', minLength: 1, maxLength: 255},
         email: { type: 'string', minLength: 1, maxLength: 255 },
         password: {type: 'string', minLength: 1, maxLength: 255 },
         loginAttempts: { type: 'integer' },
@@ -82,7 +83,7 @@ class User extends Model {
 }
 
 User.prototype.cleanForJWT = function() {
-  const user = _.pick(this, ['id', 'firstName','lastName','email','active','lastLogin', 'usergroups'])
+  const user = _.pick(this, ['id', 'firstName','lastName','username','email','active','lastLogin', 'usergroups'])
   return user
 }
 

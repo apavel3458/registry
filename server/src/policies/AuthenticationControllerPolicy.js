@@ -5,8 +5,9 @@ const Joi = require('joi')
 module.exports = {
     register (req, res, next) {
         const schema = {
-            lastName: Joi.string().alphanum().min(1).max(30),
-            firstName: Joi.string().alphanum().min(1).max(30),
+            lastName: Joi.string().alphanum().min(1).max(30).allow('').optional(),
+            firstName: Joi.string().alphanum().min(1).max(30).allow('').optional(),
+            username: Joi.string().alphanum().min(1).max(30),
             email: Joi.string().email(),
             password: Joi.string().regex(
                 new RegExp('^.{8,32}$')
@@ -17,17 +18,8 @@ module.exports = {
         const {error, value} = Joi.validate(req.body, schema)
         console.log("VALIDATION: " + JSON.stringify(req.body))
         if (error) {
+            console.log(error)
             switch(error.details[0].context.key) {
-                case 'firstName':
-                    res.status(400).send({
-                        error: 'You must provide a valid first name'
-                    })
-                    break
-                case 'lastName':
-                    res.status(400).send({
-                        error: 'You must provide a valid last name'
-                    })
-                    break
                 case 'email':
                     res.status(400).send({
                         error: 'You must provide a valid email address'

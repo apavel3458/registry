@@ -11,7 +11,6 @@ exports.up = knex => {
         table.datetime('lastLogin').defaultTo(null)
         table.boolean('active').defaultTo(true)
         table.timestamp('createdAt').defaultTo(knex.fn.now())
-        table.unique('email')
       })
       .createTable('usergroups', table => {
         table.increments('id').primary()

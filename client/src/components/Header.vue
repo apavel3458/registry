@@ -49,7 +49,7 @@
       
       <v-btn flat dark v-if="$store.getters.isAuthenticated">
         <v-icon>account_box</v-icon>
-        {{$store.state.user.email}}
+        {{$store.state.user.firstName}} {{$store.state.user.lastName}} ({{$store.state.user.username}})
       </v-btn>
       </v-toolbar-items>
 
@@ -76,6 +76,12 @@
             @click="$router.push({name: 'login'})"
           >
             <v-list-tile-title>Login</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile
+            v-if="!isAuthenticated"
+            @click="$router.push({name: 'register'})"
+          >
+            <v-list-tile-title>Register</v-list-tile-title>
           </v-list-tile>
           <v-list-tile
             v-if="isAdmin"

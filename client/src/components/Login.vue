@@ -6,11 +6,11 @@
           <v-form @submit.prevent="login()" ref="submitLoginForm" id="submitLoginForm">
           <v-flex xs12 sm12 md8 offset-md2>
                   <v-text-field
-                    label="E-Mail"
-                    type="email"
-                    name="email"
-                    ref="email"
-                    v-model="email"
+                    label="Username"
+                    type="username"
+                    name="username"
+                    ref="username"
+                    v-model="username"
                     v-on:keyup.enter="login" 
                     placeholder="E-mail">
                   </v-text-field>
@@ -39,7 +39,7 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      email: '',
+      username: '',
       password: '',
       error: ''
     }
@@ -48,7 +48,7 @@ export default {
   methods: {
     async login () {
       await AuthenticationService.login({
-        email: this.email,
+        username: this.username,
         password: this.password
       })
         .then(async (response) =>  {
@@ -69,7 +69,7 @@ export default {
   mounted() {
     this.error = this.$route.params.error || ''
     this.$store.commit('logout')
-    this.$refs.email.focus();
+    this.$refs.username.focus();
   }
 }
 </script>
