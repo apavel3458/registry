@@ -42,6 +42,15 @@
                       <template v-else-if="detail.type == 'string'">
                           <v-text-field box
                           :rules="detail.required?[rules.required]:[]"
+                          v-model.trim="editedItem.details[detail.name]"
+                          :label="detail.text" hide-details
+                          ></v-text-field>
+                      </template>
+                      <template v-else-if="detail.type == 'date'">
+                          <v-text-field box
+                          mask="####-##-##"
+                          prepend-icon="event"
+                          :rules="detail.required?[rules.required]:[]"
                           v-model="editedItem.details[detail.name]"
                           :label="detail.text" hide-details
                           ></v-text-field>
@@ -57,7 +66,7 @@
                           <v-combobox box clearable
                               @input.native="editedItem.details[detail.name]=$event.srcElement.value"
                               :rules="detail.required?[rules.required]:[]"
-                              v-model="editedItem.details[detail.name]" :items="detail.options"
+                              v-model.trim="editedItem.details[detail.name]" :items="detail.options"
                               :label="detail.text">
                           </v-combobox>
                       </template>
@@ -291,8 +300,10 @@ export default {
       this.editedItem.patientId = this.$route.params.id
 
       //add visibleDetail so it shows up in main table 
-    
       this.editedItem.visibleDetail = this.getVisibleDetail(this.editedItem)
+      
+      //any pre-processing by children:
+      this.$emit('preSave', this.editedItem)
 
       if (this.editedIndex > -1) { //edited item
         //console.log(this.editedItem.visibleDetail)

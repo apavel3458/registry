@@ -154,11 +154,11 @@ export default {
     },
     methods: {
         formatDate (d) {
-            const ndate = new Moment(d, 'MM-DD-YYYY, hh:mm:ss A')
+            const ndate = new Moment(d)
             if (!ndate.isValid()) {
                 return '---'
             } else {
-                return ndate.format('YYYY-MM-DD')
+                return ndate.format('YYYY-MM-DD HH:mm:ss')
             }
         },
         async toggleDisableUser (user) {

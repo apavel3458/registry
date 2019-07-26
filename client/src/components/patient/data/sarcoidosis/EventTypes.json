@@ -18,7 +18,7 @@
       "details": [
          {
             "name": "lengthOfStay",
-            "text": "Length of Stay",
+            "text": "Length of Stay (days)",
             "type": "number"
          },
          {

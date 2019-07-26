@@ -5,12 +5,13 @@
     itemTitle="Imaging"
     :tableHeaders="tableHeaders"
     :defaultItem="defaultItem"
+    v-on:preSave="preSave($event)"
     :typesJson="imagingTypes">
     <template v-slot:dataEdit="{editedItem, types}">
       
                 <v-flex xs12 sm6>
                   <v-select
-                    v-model="editedItem.imagingName"
+                    v-model.trim="editedItem.imagingName"
                     box
                     label="Imaging Type"
                     :items="imagingTypes"
@@ -37,7 +38,7 @@
                 </v-flex>
                 <v-flex xs12 sm6>
                   <v-text-field 
-                    v-model="editedItem.EFtext" 
+                    v-model.trim="editedItem.EFtext" 
                     box 
                     return-masked-value 
                     mask="##-##" 
@@ -58,6 +59,7 @@
           <td class="eventName nowrap">{{ props.item.imagingName }}</td>
           <td class="text-xs-center nowrap">{{ props.item.EFtext }}</td>
           <td class="text-xs-center nowrap">{{ props.item.EF }}</td>
+          <td class="text-xs-center nowrap">{{ props.item.visibleDetail }}</td>
           <td class="text-xs-center hideOverflow">{{ props.item.comments }}</td>
     </template>
   </item>
@@ -79,6 +81,7 @@ export default {
         { text: "Study Type", value: "imagingName", align: "center", width: "1%"},
         { text: "EF", value: "EFtext", align: "center", width: "1%"},
         { text: "EF (absolute)", value: "EF", align: "center", width: "1%" },
+        { text: "Details", value: "visibleDetail", align: "center", width: "1%" },
         { text: "Comments", align: "center", value: "comments"},
         { text: "Actions", align: "center", value: "name", sortable: false, width: "1%" }
       ],
@@ -90,6 +93,13 @@ export default {
         comments: "",
         details: {}
       },
+    }
+  },
+  methods: {
+    preSave(item) {
+      if (item.EFtext.endsWith('-')) {
+        item.EFtext = item.EFtext.substring(0, item.EFtext.length-1)
+      }
     }
   }
 }

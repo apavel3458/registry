@@ -1,6 +1,7 @@
 [
    {
       "imagingName": "CMR",
+      "visibleDetail": "LGE",
       "details": [
          {
             "name": "LVEDVolumeIndex",
@@ -21,6 +22,7 @@
    },
    {
       "imagingName": "Echo",
+      "visibleDetail": "firstDiagnosisEcho",
       "details": [
          {
             "name": "LVEDD",
@@ -61,6 +63,7 @@
    },
    {
       "imagingName": "PET",
+      "visibleDetail": "FDGUptakeFocal",
       "details": [
          {
             "name": "FDGUptakeDiffuse",
