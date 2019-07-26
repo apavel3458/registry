@@ -12,7 +12,7 @@
                     ref="username"
                     v-model="username"
                     v-on:keyup.enter="login" 
-                    placeholder="E-mail">
+                    placeholder="Username">
                   </v-text-field>
                   <v-text-field
                     label="Password"
