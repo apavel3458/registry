@@ -53,8 +53,8 @@ export default new Vuex.Store({
     setUser ({commit}, user) {
         commit('setUser', user)
     },
-    init({dispatch}) {
-      dispatch('fetchRegistryList')
+    async init({dispatch}) {
+      await dispatch('fetchRegistryList')
     },
 
     setActivePatient ({commit}, patient) {

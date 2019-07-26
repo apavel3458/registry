@@ -51,9 +51,9 @@ export default {
         email: this.email,
         password: this.password
       })
-        .then((response) => {
-          this.$store.dispatch('init')
+        .then(async (response) =>  {
           this.$store.commit('login', {token: response.token, user: response.user})
+          await this.$store.dispatch('init')
           this.$router.push({
             name: 'home'
           })
