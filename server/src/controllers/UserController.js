@@ -21,7 +21,7 @@ module.exports = {
                     .allowEager('[usergroups]')
                     .eager(req.query.eager)
             //}
-                console.log(user)
+                //console.log(user)
             res.send(user)
             
         } catch (err) {
@@ -75,14 +75,14 @@ module.exports = {
     },
 
     async groups(req, res) {
-        console.log(req.query.eager)
+        //console.log(req.query.eager)
         var userGroups = null
         if (req.query.eager) {
             userGroups = await (UserGroup.query()
                 .allowEager('[users]')
                 .eager(req.query.eager)
                 .modifyEager('users', usersBuilder => usersBuilder.select('users.id', 'users.firstName', 'users.lastName')))
-                console.log(JSON.stringify(userGroups))
+                //console.log(JSON.stringify(userGroups))
         } else {
             userGroups = await UserGroup.query()
         }

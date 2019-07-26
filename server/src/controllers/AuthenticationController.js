@@ -18,7 +18,7 @@ function jwtSignUser(user) {
 async function assessCaptcha(req, res) {
     const token = req.body.recaptchaToken
     if (token === undefined || token === '' || token === null) {
-        await res.status(401).send({
+        await res.status(400).send({
             error: 'Please select captcha'
         })
         return false
@@ -27,7 +27,7 @@ async function assessCaptcha(req, res) {
     await request(verifyUrl, async (err, response, body) => {
         body = JSON.parse(body)
         if (body.success !== undefined && !body.success) {
-            await res.status(412).send({
+            await res.status(400).send({
                 error: 'Please select captcha'
             })
             return false
@@ -47,7 +47,7 @@ module.exports = {
             const duplicateEmail = await User.query().where("email", req.body.email)
 
             if (duplicateEmail.length > 0) {
-                return res.status(200).send({
+                return res.status(400).send({
                     error: 'This email account is already in use.'
                 })
             }
@@ -74,7 +74,7 @@ module.exports = {
             })
         } catch (err) {
             console.log(err)
-            res.status(412).send({
+            res.status(500).send({
                 error: 'Error on server: ' + err
             })
         }
@@ -91,13 +91,13 @@ module.exports = {
                 .eager('[usergroups]'))
             
             if (!user) {
-                return res.status(401).send({
+                return res.status(400).send({
                     error: 'The login information is incorrect'
                 })
             }
 
             if (!user.active) {
-                return res.status(401).send({
+                return res.status(400).send({
                     error: 'User disabled, please contact your administrator'
                 })
             }
@@ -114,7 +114,7 @@ module.exports = {
                     user.active = false
                 }
                 await User.query().patchAndFetchById(user.id, user)
-                return res.status(401).send({
+                return res.status(400).send({
                     error: 'The login information is incorrect'
                 })
             }

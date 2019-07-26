@@ -5,8 +5,8 @@ module.exports = {
     AuthFilter: function (req, res, next) {
         passport.authenticate('jwt', function (err, user) {
             if (err || !user) {
-                res.status(403).send({
-                    error: 'You do not have permissions'
+                res.status(401).send({
+                    error: 'Please log in to access this page'
                 })
             } else {
                 req.user = user

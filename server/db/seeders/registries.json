@@ -1,0 +1,20 @@
+[
+   {
+      "registryName": "Sarcoidosis",
+      "prefix": "sa",
+      "shortName": "sarcoidosis",
+      "color": "green"
+   },
+   {
+      "registryName": "Medical Oncology",
+      "prefix": "onc",
+      "shortName": "medical_oncology",
+      "color": "red"
+   },
+   {
+      "registryName": "Heart Failure",
+      "prefix": "hf",
+      "shortName": "heart_failure",
+      "color": "blue"
+   }
+]

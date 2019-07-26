@@ -1,8 +1,9 @@
 const AuthenticationController = require('./controllers/AuthenticationController')
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy')
-const ReferralsController = require('./controllers/ReferralsController')
 const UserController = require('./controllers/UserController')
 const {AuthFilter, AuthAdminFilter} = require('./policies/AuthenticationFilter')
+const RegistryController = require('./controllers/RegistryController')
+const RegistryPatientDataController = require('./controllers/RegistryPatientDataController')
 
 
 
@@ -19,24 +20,69 @@ module.exports = (app) => {
     app.post('/login', 
         AuthenticationController.login)
 
-    app.get('/referrals/index',
-        AuthFilter,
-        ReferralsController.index)
+    app.post('/registry/patient',
+            AuthFilter,
+            RegistryController.patientAdd)
 
-    app.post('/referrals/add',
-        ReferralsController.add)
+    app.get('/registry/patient/search',
+            AuthFilter,
+            RegistryController.patientSearch)
 
-    app.post('/referrals/delete',
-        AuthFilter,
-        ReferralsController.delete)
+    app.get('/registry/patient/getpage',
+            AuthFilter,
+            RegistryController.patientGetPage)
 
-    app.get('/referrals/:referralId',
-        AuthFilter,
-        ReferralsController.show)
+    app.get('/registry/patient/:id',
+            AuthFilter,
+            RegistryController.patientGet)
 
-    app.put('/referrals/:referralId',
+    app.post('/registry/list',
+            AuthFilter,
+            RegistryController.registryList)
+
+    app.put('/registry/patient/:id/update',
+            AuthFilter,
+            RegistryController.patientUpdate)
+
+    app.delete('/registry/patient/:id/delete',
+            AuthFilter,
+            RegistryController.patientDelete)
+
+
+    // -------------  IMAGING ENDPOINTS ---------------
+    // app.get('/registry/patient/:id/imaging',
+    //         AuthFilter,
+    //         RegistryPatientDataController.imagingGet)
+
+    // app.post('/registry/patient/:id/imaging',
+    //         AuthFilter,
+    //         RegistryPatientDataController.imagingPost)
+    
+    // app.put('/registry/patient/:id/imaging',
+    //         AuthFilter,
+    //         RegistryPatientDataController.imagingPut)
+
+    // app.delete('/registry/patient/:id/imaging/:imagingid',
+    //         AuthFilter,
+    //         RegistryPatientDataController.imagingDelete)
+
+    //------------  PATIENT DATA ENDPOINTS ---------------
+    app.get('/registry/patient/:patientId/data/:component',
         AuthFilter,
-        ReferralsController.put)
+        RegistryPatientDataController.itemGet)
+
+    app.post('/registry/patient/:patientId/data/:component',
+        AuthFilter,
+        RegistryPatientDataController.itemPost)
+    
+    app.put('/registry/patient/:patientId/data/:component/:itemId',
+         AuthFilter,
+         RegistryPatientDataController.itemPut)
+
+    app.delete('/registry/patient/:patientId/data/:component/:itemId',
+        AuthFilter,
+        RegistryPatientDataController.itemDelete)
+
 
     app.get('/admin/users',
         AuthFilter,
