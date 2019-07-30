@@ -341,13 +341,15 @@ export default {
     },
 
     getVisibleDetail(item) {
+      const blank = "--"
       let itemSchema = this.getItemSchema(item)
       let visibleDetailName = itemSchema.visibleDetail
       if (visibleDetailName) {
         let visibleDetail = itemSchema.details.find(d => d.name == visibleDetailName)
         if (visibleDetail && visibleDetail.type == "boolean")
-          return visibleDetail.text //if boolean
-        return item.details[visibleDetailName]
+          return (item.details[visibleDetailName])?visibleDetail.text:blank //if boolean
+        else
+          return item.details[visibleDetailName]
       } else {
         return "--"
       }

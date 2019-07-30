@@ -42,9 +42,10 @@ module.exports = {
 
             userIn.usergroups = userIn.usergroups.map(v=>_.pick(v, ['id', 'groupName']))
 
-
+            
             //check duplicate username
             const duplicateUser = await User.query().where("username", req.body.username).whereNot("id", userIn.id)
+            
 
             if (duplicateUser.length > 0) {
                 return res.status(400).send({
@@ -67,7 +68,7 @@ module.exports = {
         } catch (err) {
             console.log(err)
             res.status(500).send({
-                error: 'An error has occured trying to update user.'
+                error: 'A server error has occured trying to update user.'
             })
         }
     },
@@ -75,11 +76,11 @@ module.exports = {
     async delete(req, res) {
         try {
             //const user = await User.findOne(req.params.userId)
-            await User.query().deleteById(req.body.id)
+            await User.query().deleteById(req.params.id)
             res.send(true)
         } catch (err) {
             res.status(500).send({
-                error: 'An error has occured trying to fetch referrals.'
+                error: 'A server error has occured trying to delete user.'
             })
         }
     },

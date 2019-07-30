@@ -36,7 +36,7 @@ module.exports = (app) => {
             AuthFilter,
             RegistryController.patientGet)
 
-    app.post('/registry/list',
+    app.get('/registry',
             AuthFilter,
             RegistryController.registryList)
 
@@ -92,7 +92,7 @@ module.exports = (app) => {
         AuthFilter,
         UserController.put)
 
-    app.post('/admin/users/:userId/delete',
+    app.delete('/admin/users/:id/delete',
         AuthFilter,
         UserController.delete)
 

@@ -20,7 +20,7 @@ module.exports = {
    },
    async patientGetPage(req, res) {
       try {
-         console.log(req.query)
+         //console.log(req.query)
          const page = parseInt(req.query.page)-1
          const pageSize = (req.query.size > 0)?req.query.size:100
          const registryId = req.query.registryId
@@ -34,7 +34,7 @@ module.exports = {
             .where('registryId', registryId)
             .orderBy(sortBy, descending)
             .page(page, pageSize);
-         console.log(result)
+         //console.log(result)
          return res.send(result)
       } catch (err) {
          console.log(err)
@@ -45,7 +45,7 @@ module.exports = {
    },
    async patientSearch(req, res) {
       try {
-         console.log(req.query)
+         //console.log(req.query)
          const search = req.query.searchText
          let max = (req.query.max)?req.query.max:10
          //if (max == -1) max = 500

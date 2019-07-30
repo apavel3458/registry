@@ -11,7 +11,7 @@ export default {
     return (await Api().delete(`registry/patient/${p.id}/delete`)).data
   },
   async registryList() {
-    return (await Api().post(`registry/list`)).data
+    return (await Api().get(`registry`)).data
   },
   async patient(id) {
     return (await Api().get(`registry/patient/${id}`)).data

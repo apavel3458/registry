@@ -111,7 +111,7 @@
         </v-card-actions>
     </v-card>
 </v-dialog>
-
+    <messaging></messaging>
   </v-container>
 
 </template>
@@ -121,9 +121,11 @@ import AdminUserService from '@/services/AdminUserService'
 import Moment from 'moment'
 import UserEdit from './AdminUserEdit'
 import AdminGroups from '@/components/user/AdminGroups'
+import { mapMutations } from 'vuex'
+import Messaging from '@/components/util/Messaging'
 
 export default {
-    components: {UserEdit, AdminGroups},
+    components: {UserEdit, AdminGroups, Messaging},
     data() {
         return {
             search: '',
@@ -153,6 +155,10 @@ export default {
         }
     },
     methods: {
+        ...mapMutations({
+            showError: 'messaging/showError',
+            showSuccess: 'messaging/showSuccess'
+        }),
         formatDate (d) {
             const ndate = new Moment(d)
             if (!ndate.isValid()) {
@@ -163,65 +169,46 @@ export default {
         },
         async toggleDisableUser (user) {
             const action = user.active?'BLOCK': 'ACTIVATE'
-            if (!confirm(`Are you sure you want to ${action} ${user.firstName} ${user.lastName} (${user.email})`)) {
+            if (!confirm(`Are you sure you want to ${action} user '${user.username}' (${user.email})`)) {
                 return
             }
             const selected = this.users[this.users.indexOf(user)]
             selected.active = !selected.active
             selected.loginAttempts = 0
-            try {
-                var reply = (await AdminUserService.put(selected)).data
-                if (reply.error) {
-                    throw new Error("Server Error")
-                } else {
+            await AdminUserService.put(selected)
+                .then((reply) => {
                     this.selected = reply
-                }
-            } catch (err) {
-                alert("Error on page: " + err)
-                selected.active = !selected.active //change it back
-            }
+                    this.showSuccess(`User '${selected.username}' is now ${selected.active?'ACTIVATED':'BLOCKED'}`)
+                }).catch(err => {
+                    this.showError(err.response.data.error)
+                    selected.active = !selected.active
+                })
+
         },
         async updateUser(user) {
-            try {
 
-                var reply = (await AdminUserService.put(user)).data
-                //alert(JSON.stringify(user))
-                if (reply.error) {
-                    throw new Error("Server Error")
-                } else {
-                    this.users.splice(this.users.indexOf(user), 1, reply)
-                    this.groups = await AdminUserService.groups({params: {eager: '[users]'}})
-                }
-            } catch (err) {
-                alert("Error on page: " + err)
-                this.dialog = false
-                await this.loadData()
-            }
-            this.dialog = false
-                //             await AdminUserService.put(user)
-                // .then(async reply => {
-                //     alert("success")
-                //     this.users.splice(this.users.indexOf(user), 1, reply)
-                //     this.groups = await AdminUserService.groups({params: {eager: '[users]'}})
-                //     this.dialog = false
-                // }).catch(async err => {
-                //     alert("err:" + err)
-                //     this.dialog = false
-                //     await this.loadData()
-                // })
+                await AdminUserService.put(user)
+                    .then(async (reply) => {
+                        this.user = reply
+                        this.groups = await AdminUserService.groups({params: {eager: '[users]'}})
+                        this.showSuccess(`User '${user.username}' successfully updated`)
+                        this.dialog = false
+                    }).catch(async err => {
+                        this.showError("ERROR: " + err.response.data.error)
+                        await this.loadData()
+                    })
         },
         async deleteUser(user) {
             if (confirm(`Are you sure you want to delete ${user.firstName} ${user.lastName} (${user.email})?`)) {
-                try {
-                    const reply = (await AdminUserService.delete(user)).data
-                    if (reply.error) {
-                        throw new Error("Server Error: " + reply.error)
-                    }
-                    this.users.splice(this.users.indexOf(user), 1)
-                } catch (err) {
-                    alert("Error on page: " + err)
-                    await this.loadData()
-                }
+                await AdminUserService.delete(user)
+                    .then(() => {
+                        this.users.splice(this.users.indexOf(user), 1)
+                        this.showSuccess(`User '${user.username}' successfully deleted`)
+                        this.dialog = false
+                    }).catch(async err => {
+                        this.showError("Error" + err.response.data.error)
+                        await this.loadData()
+                    })
             }
         },
         editUserDialog(user) {
@@ -229,11 +216,11 @@ export default {
             this.dialog = true
         },
         async loadData() {
-            this.users = (await AdminUserService.index({
+            this.users = await AdminUserService.index({
                 params: {
                     eager: `[usergroups]`
                 }
-                })).data
+                })
             this.groups = await AdminUserService.groups({params: {eager: 'users'}})
         },
 

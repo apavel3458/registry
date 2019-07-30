@@ -1,4 +1,5 @@
 <template>
+  <div>
   <v-toolbar dense dark color="primary">
     <v-toolbar-side-icon></v-toolbar-side-icon>
 
@@ -100,9 +101,8 @@
           </v-list-tile>
         </v-list>
       </v-menu>
-
-
   </v-toolbar>
+</div>
 </template>
 
 <script>

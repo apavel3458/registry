@@ -1,14 +1,14 @@
 import Api from '@/services/Api'
 
 export default {
-  index (params) {
-    return Api().get('admin/users', params)
+  async index (params) {
+      return (await Api().get('admin/users', params)).data
   },
-  put (user) {
-      return Api().put(`admin/users/${user.id}`, user)
+  async put (user) {
+      return (await Api().put(`admin/users/${user.id}`, user)).data
   },
-  delete (user) {
-    return Api().post(`admin/users/${user.id}/delete`, user)
+  async delete (user) {
+    return (await Api().delete(`admin/users/${user.id}/delete`, user)).data
   },
   async groups (params) {
     return (await Api().get(`admin/groups`, params)).data

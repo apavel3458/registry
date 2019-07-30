@@ -183,7 +183,7 @@ export default {
 
     },
     async mounted() {
-       this.registryList = await this.$store.dispatch('fetchRegistryList')
+       this.registryList = this.$store.state.registryList
        this.selectedRegistry = this.registry
     }
 
