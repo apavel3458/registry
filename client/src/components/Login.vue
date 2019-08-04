@@ -41,7 +41,8 @@ export default {
     return {
       username: '',
       password: '',
-      error: ''
+      error: '',
+      url: ''
     }
   },
   components: {},
@@ -68,6 +69,7 @@ export default {
   },
   mounted() {
     this.error = this.$route.params.error || ''
+    this.url = this.$route.params.url || ''
     this.$store.commit('logout')
     this.$refs.username.focus();
   }

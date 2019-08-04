@@ -17,7 +17,7 @@ export default new Vuex.Store({
     token: null,
     user: null,
     registryList: [], //may not need to store list
-    activeRegistryId: null,
+    activeRegistry: null,
     activePatient: null
   },
   mutations: {
@@ -67,14 +67,8 @@ export default new Vuex.Store({
     getActivePatient: (state) => {
       return state.activePatient
     },
-    getActiveRegistry: (state) => {
-      return state.activeRegistry
-    },
     getRegistryList: (state) => { //does not fetch, just gets data
       return state.registryList
-    },
-    activeRegistry: (state) => {
-      return state.registryList.find(r => r.id == state.activeRegistryId)
     }
   }
 })

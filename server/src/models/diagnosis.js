@@ -1,7 +1,7 @@
 'use strict';
 
 const { Model } = require('objection');
-const _ = require('lodash')
+const { prepJson } = require('./util')
 
 class Diagnosis extends Model {
   // Table name is the only required property.
@@ -11,7 +11,7 @@ class Diagnosis extends Model {
 
   $parseJson(json, opt) {
     json = super.$parseJson(json, opt);
-    return _.pick(json, Object.keys(this.constructor.jsonSchema.properties));
+    return prepJson(json, this.constructor.jsonSchema.properties)
   }
 
   

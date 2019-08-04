@@ -15,12 +15,13 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
+
 export default {
    data () {
       return {
          snackbar: false,
-         type: '',
-         message: '',
+         //message: '',
          timer: 4000
       }
    },
@@ -28,6 +29,12 @@ export default {
       snackbar: function (trigger) {
          if (!trigger) this.$store.commit('messaging/reset')
       }
+   },
+   computed: {
+      ...mapState ({
+         message: state => state.messaging.message,
+         type: state => state.messaging.type
+      })
    },
    methods: {
       setTimer() {
@@ -42,18 +49,22 @@ export default {
                this.timer = 3000;
                break;
          }
-      }
-   },
-   created: function () {
-      this.$store.watch(state => state.messaging.message, (message) => {
-         if (message && message !== '') {
-               this.message = message
-               this.type = this.$store.state.messaging.type
+      },
+      showMessage() {
+         if (this.message && this.message !== '') {
                this.setTimer()
                this.snackbar = true
          }
-         
+      }
+   },
+   mounted: function () {
+      this.$store.watch(state => state.messaging.message, () => {
+         this.showMessage()
       })
+      
+      if (this.message != null) {
+         this.showMessage()
+      }
    }
 }
 </script>

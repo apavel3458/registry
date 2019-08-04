@@ -11,35 +11,26 @@ const routes = [
     //     name: 'accounts',
     //     component: Accounts
     // }
-    {
-        path: '/patient',
+      {
+        path: '/registry',
+        redirect: '/registry/1',
         name: 'home',
         component: Patient
       },
       {
-        path: '/patient/:id',
+        path: '/registry/:registryId',
+        name: 'registry',
+        component: Patient
+      },
+      {
+        path: '/patient/:patientId',
         name: 'patient',
         component: Patient
       },
       {
-        path: '/patient/:id/data/:component',
+        path: '/patient/:patientId/data/:component',
         name: 'patientData',
         component: Patient
-      },
-      {
-        path: '/referrals/create',
-        name: 'CreateReferral',
-        component: CreateReferral
-      },
-      {
-        path: '/referrals/:referralId',
-        name: 'referral',
-        component: ViewReferral
-      },
-      {
-        path: '/referrals/:referralId/edit',
-        name: 'edit-referral',
-        component: EditReferral
       },
       {
         path: '/useroptions',

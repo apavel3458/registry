@@ -11,12 +11,15 @@ export default () => {
     }
   })
 
-  function notAuthenticated() {
+  function notAuthenticated(error) {
     router.push(
       { 
         name: 'login', 
         //query: { error: 'You must log in to access this resource' },
-        params: { error: "You must log in to access this page" }
+        params: { 
+          error: "You must log in to access this page",
+          url: error.response.config.url
+        }
       }
     )
     return Promise.reject({error: "Not Authenticated"}) //deal with error
@@ -31,7 +34,7 @@ export default () => {
       const method = error.config.method.toUpperCase() + ' /' + error.config.url.replace(error.config.baseURL, '')
       switch (error.response.status) {
         case 401:
-            return notAuthenticated()
+            return notAuthenticated(error)
         case 404:
           alert("Server action not found. Error Status: " + error.response.status + " | \n" + method)
           break

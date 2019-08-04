@@ -41,6 +41,10 @@
                 <v-list-tile-content class="align-end">{{ props.item.biopsyProven?'Yes':'No' }}</v-list-tile-content>
               </v-list-tile>
               <v-list-tile>
+                <v-list-tile-content>NYHA Class:</v-list-tile-content>
+                <v-list-tile-content class="align-end">{{ props.item.details.NYHAatDx }}</v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile>
                 <v-list-tile-content>More Properties:</v-list-tile-content>
                 <v-list-tile-content class="align-end">{{ Object.keys(props.item.details).length }}</v-list-tile-content>
               </v-list-tile>
@@ -157,6 +161,16 @@
                         :label="detail.text" hide-details
                         ></v-text-field>
                      </template>
+                     <template v-else-if="detail.type == 'date'">
+                          <v-text-field box
+                          mask="####-##-##"
+                          append-icon="event"
+                          :rules="detail.required?[rules.required]:[]"
+                          v-model="editedItem.details[detail.name]"
+                          :label="detail.text" hide-details
+                          ></v-text-field>
+                     </template>
+                     
                   </v-flex>
                </template>
             </v-layout>
@@ -204,6 +218,9 @@ export default {
             this.editedIndex = -1;
          }
       },
+      async patient() {
+         this.diagnoses = await RegistryPatientDataService.diagnosisGet(this.patient.id)
+      }
    },
    computed: {
       formTitle() {

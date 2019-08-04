@@ -20,7 +20,7 @@
             class="dataTable elevation-3"
          >
             <template v-slot:items="props">
-               <tr @click="$router.push({name:'patient', params:{id: props.item.id}})" class="row" :key="props.index">
+               <tr @click="$router.push({name:'patient', params:{registryId: $store.state.activeRegistry.id, patientId: props.item.id}})" class="row" :key="props.index">
                <td class="text-xs-left">{{ props.item.lastName }}, {{ props.item.firstName }}</td>
                <td class="text-xs-center">{{ props.item.mrn }}</td>
                <td class="text-xs-center">{{props.item.dob}} Age: ({{ age(props.item.dob) }})</td>

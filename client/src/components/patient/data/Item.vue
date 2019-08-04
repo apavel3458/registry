@@ -154,19 +154,22 @@
 
 import _ from 'lodash'
 import RegistryPatientDataService from '@/services/RegistryPatientDataService'
+import {mapState} from 'vuex'
 
 export default {
-  props: ['patientP', 
+  props: [
       'typesJson', 
       'itemType', 
       'itemTitle', 
       'tableHeaders', 
-      'defaultItem',], //a blank item that is used for new entries
+      'defaultItem',
+      'sortBy'], //a blank item that is used for new entries
   data () {
     return {
       dialog: false,
       pagination: {
-          descending: true
+          descending: true,
+          rowsPerPage: -1
         },
       expand: false,
       studies: [],
@@ -175,7 +178,6 @@ export default {
       },
       
       itemTypes: [],
-      patient: this.patientP,
       itemTypeName: '',
       itemFormValid: false,
       snackbar: false,
@@ -195,15 +197,15 @@ export default {
       var item = this.itemTypes.filter(x => x[this.itemTypeName] == this.editedItem[this.itemTypeName])
       if (item.length == 0) return null
       return item[0].details
-    }
+    },
+    ...mapState ({
+         patient: 'activePatient'
+      })
   },
 
   watch: {
-    patientP(val) {
-      this.patient = val
-    },
-    '$route.params.id': function(val) {
-      this.initialize(val)
+    patient: function(val) {
+      this.initialize(val.id)
     },
     dialog(val) {
       val || this.close();
@@ -221,7 +223,7 @@ export default {
   },
 
   created() {
-    this.initialize(this.$route.params.id);
+    this.initialize(this.patient.id);
   },
 
   methods: {
@@ -237,6 +239,7 @@ export default {
                         && alert(err.response.data.error)
                   })
       }
+      if (this.sortByP) this.pagination.sortBy = this.sortByP
     },
 
     itemDefaultDetails(item) {
@@ -297,7 +300,7 @@ export default {
         this.snackbar = true
         return
       }
-      this.editedItem.patientId = this.$route.params.id
+      this.editedItem.patientId = this.patient.id
 
       //add visibleDetail so it shows up in main table 
       this.editedItem.visibleDetail = this.getVisibleDetail(this.editedItem)

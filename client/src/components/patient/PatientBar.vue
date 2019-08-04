@@ -137,10 +137,16 @@ export default {
          //val && val != '' && this.$store.dispatch('setActivePatient', val) //do this in patient component
       },
       selectedRegistry(val) {
-         if (val != this.registry) {
-            this.$store.dispatch('loadRegistry', val)
+         if (val != this.registry && this.$store.state.activeRegistry != val) {
+            this.$store.dispatch('setActiveRegistry', val)
+         }
+      },
+      '$store.state.activeRegistry': {
+         handler (newRegistry) {
+            if (newRegistry != null) this.selectedRegistry = this.$store.state.activeRegistry
          }
       }
+
    },
    computed: {
       ...mapState({

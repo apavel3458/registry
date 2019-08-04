@@ -39,7 +39,7 @@ export default {
     watch: {
         tabSelected(val) {
             if (this.patient) {
-                this.$router.push({name:'patientData', params:{id: this.patient.id, component: this.tabs[val]}})
+                this.$router.push({name:'patientData', params:{patientId: this.patient.id, component: this.tabs[val]}})
             }
         },
         componentP() {

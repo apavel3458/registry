@@ -9,8 +9,8 @@
          },
          {
             "name": "VitDdate",
-            "text": "Vitamin D Date",
-            "type": "string"
+            "text": "Vitamin D Date (YYYY-MM-DD)",
+            "type": "date"
          },
          {
             "name": "VitDlevel",
