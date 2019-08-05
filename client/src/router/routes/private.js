@@ -1,7 +1,4 @@
 import Patient from '@/components/patient/Patient'
-import CreateReferral from '@/components/referral/CreateReferral'
-import ViewReferral from '@/components/referral/ViewReferral'
-import EditReferral from '@/components/referral/EditReferral'
 import UserOptions from '@/components/user/UserOptions'
 import Reports from '@/components/report/Reports'
 

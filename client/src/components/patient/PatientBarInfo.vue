@@ -2,55 +2,54 @@
 <div>
 
    <v-list two-line>
-          <v-list-tile>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>{{patient.lastName}}, {{patient.firstName}}</v-list-item-title>
+              <v-list-item-subtitle>Name</v-list-item-subtitle>
+            </v-list-item-content>
 
-            <v-list-tile-content>
-              <v-list-tile-title>{{patient.lastName}}, {{patient.firstName}}</v-list-tile-title>
-              <v-list-tile-sub-title>Name</v-list-tile-sub-title>
-            </v-list-tile-content>
-
-            <!-- <v-list-tile-action>
+            <!-- <v-list-item-action>
               <v-icon>chat</v-icon>
-            </v-list-tile-action> -->
-          </v-list-tile>
+            </v-list-item-action> -->
+          </v-list-item>
 
-          <v-list-tile>
+          <v-list-item>
 
-            <v-list-tile-content>
-              <v-list-tile-title>{{patient.mrn}}</v-list-tile-title>
-              <v-list-tile-sub-title>Medical Record Number</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
+            <v-list-item-content>
+              <v-list-item-title>{{patient.mrn}}</v-list-item-title>
+              <v-list-item-subtitle>Medical Record Number</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
 
-         <v-list-tile>
-            <v-list-tile-content>
-              <v-list-tile-title>{{patient.dob}} (Age {{age(patient.dob)}})</v-list-tile-title>
-              <v-list-tile-sub-title>Date of Birth</v-list-tile-sub-title>
-            </v-list-tile-content>
-         </v-list-tile>
+         <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>{{patient.dob}} (Age {{age(patient.dob)}})</v-list-item-title>
+              <v-list-item-subtitle>Date of Birth</v-list-item-subtitle>
+            </v-list-item-content>
+         </v-list-item>
 
-         <v-list-tile v-if="patient.causeOfDeath" class="">
-            <v-list-tile-content>
-              <v-list-tile-title class="font-weight-bold red--text">DECEASED: {{patient.causeOfDeath}} </v-list-tile-title>
-              <v-list-tile-sub-title class="font-weight-bold red--text"> {{patient.deceasedDate}} (Age {{age(patient.dob, patient.deceasedDate)}})</v-list-tile-sub-title>
-            </v-list-tile-content>
-         </v-list-tile>
+         <v-list-item v-if="patient.causeOfDeath" class="">
+            <v-list-item-content>
+              <v-list-item-title class="font-weight-bold red--text">DECEASED: {{patient.causeOfDeath}} </v-list-item-title>
+              <v-list-item-subtitle class="font-weight-bold red--text"> {{patient.deceasedDate}} (Age {{age(patient.dob, patient.deceasedDate)}})</v-list-item-subtitle>
+            </v-list-item-content>
+         </v-list-item>
 
           <v-divider inset></v-divider>
 
-          <v-list-tile class="grey lighten-3">
-            <v-list-tile-content>
-              <v-list-tile-title>{{patient.createdAt}}</v-list-tile-title>
-              <v-list-tile-sub-title>Date Created</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
+          <v-list-item class="grey lighten-3">
+            <v-list-item-content>
+              <v-list-item-title>{{patient.createdAt}}</v-list-item-title>
+              <v-list-item-subtitle>Date Created</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
 
-         <v-list-tile  class="grey lighten-3">
-            <v-list-tile-content>
-              <v-list-tile-title>{{patient.createdBy}}</v-list-tile-title>
-              <v-list-tile-sub-title>Created By</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
+         <v-list-item  class="grey lighten-3">
+            <v-list-item-content>
+              <v-list-item-title>{{patient.createdBy}}</v-list-item-title>
+              <v-list-item-subtitle>Created By</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
 
 

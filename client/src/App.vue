@@ -27,8 +27,20 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   /*margin-top: 60px;*/
+}
+.overflow-cell-wrapper {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.overflow-cell {
+    display: table-cell;
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 </style>

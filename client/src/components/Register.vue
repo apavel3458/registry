@@ -53,7 +53,7 @@
                       :value="successMessage"
                       color="success"
                       icon="check_circle"
-                      outline
+                      outlined
                     >
                       {{successMessage}}
                     </v-alert>
@@ -61,7 +61,7 @@
                       :value="errorMessage"
                       color="error"
                       icon="warning"
-                      outline
+                      outlined
                     >
                       {{errorMessage}}
                     </v-alert>

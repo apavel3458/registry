@@ -9,34 +9,35 @@
             no-action
           >
             <template v-slot:activator>
-              <v-list-tile>
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ group.groupName }}</v-list-tile-title>
-                </v-list-tile-content>
-                <v-list-tile-action>
-                    <v-btn outline small fab color="red lighten-1" @click="deleteGroup(group)">
-                        <v-icon>delete</v-icon>
+                <v-list-item-content>
+                  <v-list-item-title>{{ group.groupName }}</v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-action>
+                    <v-btn outlined x-small fab color="red lighten-1" @click="deleteGroup(group)">
+                        <v-icon>mdi-delete</v-icon>
                     </v-btn>
-                </v-list-tile-action>
-              </v-list-tile>
-
+                </v-list-item-action>
+                
             </template>
-
-            <v-list-tile
+            <v-divider></v-divider>
+            <v-list-item
               v-for="user in group.users"
               :key="user.id"
+               style="background-color: #f7f7f7;"
             >
-              <v-list-tile-content>
-                <v-list-tile-title>{{ user.firstName }}, {{ user.lastName }}</v-list-tile-title>
-              </v-list-tile-content>
+              <v-list-item-content>
+                <v-list-item-title>{{ user.firstName }}, {{ user.lastName }}</v-list-item-title>
+              </v-list-item-content>
 
-              <v-list-tile-action>
-                    <v-btn fab outline small color="primary" @click="removeFromGroup(group, user)">
-                        <v-icon dark>remove</v-icon>
+              <v-list-item-action>
+                    <v-btn fab outlined x-small color="primary" @click="removeFromGroup(group, user)">
+                        <v-icon dark>mdi-exit-to-app</v-icon>
                     </v-btn>
-              </v-list-tile-action>
-            </v-list-tile>
+              </v-list-item-action>
+            </v-list-item>
+            <v-divider></v-divider>
           </v-list-group>
+          <v-divider></v-divider>
         </v-list>
         <v-btn
               color="pink"
@@ -47,7 +48,7 @@
               fab
               @click="addGroupDialog=true"
             >
-              <v-icon>add</v-icon>
+              <v-icon>mdi-plus</v-icon>
         </v-btn>
 
 
@@ -69,7 +70,7 @@
 
                 <v-btn
                     color="green darken-1"
-                    flat="flat"
+                    text
                     @click="addGroupDialog = false"
                 >
                     Cancel
@@ -77,7 +78,7 @@
 
                 <v-btn
                     color="green darken-1"
-                    flat="flat"
+                    text
                     @click="addGroup()"
                 >
                     Add

@@ -1,14 +1,15 @@
 <template>
     <div>
-        <v-container grid-list-md pa-2 text-xs-center fluid fill-height align-center>
+        <v-container grid-list-md pa-2 fluid fill-height>
+            <!-- <v-layout row :class="{'wrap':$vuetify.breakpoint.xs}"> -->
             <v-layout row :class="{'wrap':$vuetify.breakpoint.xs}">
-            <v-flex 
+            <v-flex style="width: 250px"
                 :class="[{'shrink':$vuetify.breakpoint.smAndUp}, 
                         {'xs12':$vuetify.breakpoint.xsAndDown},
                         {'patientBar':$vuetify.breakpoint.smAndUp}]">
                 <patient-bar></patient-bar>
             </v-flex>
-            <v-flex>
+            <v-flex :class="{'patientData':$vuetify.breakpoint.smAndUp}" grow>
                 <patient-data v-if="patient" :componentP="dataComponent"></patient-data>
                 <patient-list v-else> </patient-list>
             </v-flex>
@@ -100,12 +101,15 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="stylus">
-  /deep/ .compact {
+<style scoped style="scss">
+  ::v-deep .compact {
     transform: scale(0.875);
     transform-origin: middle;
   }
   .patientBar {
       width: 250px;
+  }
+  .patientData {
+      width: 400px;
   }
 </style>

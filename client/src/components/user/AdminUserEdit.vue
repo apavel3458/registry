@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import Moment from 'moment'
+import {isValid, format} from 'date-fns'
 export default {
     props: {
         user: {
@@ -80,11 +80,10 @@ export default {
     },
     methods: {
         formatDate (d) {
-            var ndate = new Moment(d)
-            if (!ndate.isValid()) {
+            if (!d || !isValid(new Date(d))) {
               return '????'
             } else {
-                return ndate.format('YYYY-MM-DD HH:MM:SS')
+                return format(new Date(d), 'YYYY-MM-DD HH:MM:SS')
             }
         },
     }

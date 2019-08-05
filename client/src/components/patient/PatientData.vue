@@ -1,11 +1,11 @@
 <template>
     <v-card>
-        <v-tabs v-model="tabSelected" color="blue" dark align-with-title slider-color="yellow">
+        <v-tabs v-model="tabSelected" background-color="blue" dark align-with-title slider-color="yellow">
             <v-tab v-for="tab in tabs" 
                 :key="tab"
                 >{{tab}}</v-tab>
             <v-tab-item v-for="tab in tabs" 
-                :key="tab" lazy 
+                :key="tab" 
                 :transition="false" 
                 :reverse-transition="false">
                 <v-card flat>

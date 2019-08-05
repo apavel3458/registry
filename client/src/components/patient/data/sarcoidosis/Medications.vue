@@ -5,6 +5,7 @@
     itemTitle="Medications"
     :tableHeaders="tableHeaders"
     :defaultItem="defaultItem"
+    sortByP="startDate"
     :typesJson="classes">
     <template v-slot:dataEdit="{editedItem, types}">
               <!-- <v-flex xs12 sm6>
@@ -23,7 +24,7 @@
                 <v-flex xs12 sm6>
                   <v-autocomplete
                     v-model="editedItem.medicationName"
-                    box
+                    filled
                     label="Class"
                     :items="types"
                     item-text="medicationName"
@@ -37,7 +38,7 @@
                   <v-text-field
                     v-if="editedItem.medicationName=='Steroid'"
                     v-model.number="editedItem.dose"
-                    box
+                    filled
                     label="Dose (number only)"
                     type="number"
                     required :rules="[() => (!editedItem.dose && editedItem.medicationName=='Steroid') && 'This field is required']"
@@ -46,24 +47,23 @@
                 <v-flex xs12 sm6>
                   <v-text-field
                     v-model="editedItem.startDate"
-                    box
+                    filled
                     label="Start Date (YYYY-MM-DD)"
-                    prepend-icon="event"
+                    prepend-inner-icon="mdi-calendar"
                     required
                     return-masked-value
-                    mask="####-##-##"
+                    v-mask="'####-##-##'"
                     :rules="[() => !!editedItem.startDate || 'This field is required']"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6>
                   <v-text-field
                     v-model="editedItem.endDate"
-                    box
+                    filled
                     label="End Date (YYYY-MM-DD)"
-                    prepend-icon="event"
+                    prepend-inner-icon="mdi-calendar"
                     required
-                    return-masked-value
-                    mask="####-##-##"
+                    v-mask="'####-##-##'"
                   ></v-text-field>
                 </v-flex>
     </template>
@@ -72,7 +72,9 @@
           <td class="text-xs-center nowrap">{{ props.item.dose }}</td>
           <td class="eventName nowrap">{{ props.item.startDate }}</td>
           <td class="eventName nowrap">{{ props.item.endDate }}</td>
-          <td class="text-xs-center hideOverflow">{{ props.item.comments }}</td>
+          <td class="text-xs-center overflow-cell-wrapper">
+            <div class="overflow-cell">{{ props.item.comments }}</div>
+          </td>
     </template>
   </item>
 </template>
@@ -139,12 +141,6 @@ export default {
 <style scoped>
 .nowrap {
   white-space: nowrap;
-}
-.hideOverflow {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  /* max-width: 200px;
-  white-space: nowrap;  --> makes it one line*/
 }
 .eventName {
   font-weight: bold;

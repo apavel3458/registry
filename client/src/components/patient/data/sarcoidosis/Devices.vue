@@ -5,12 +5,13 @@
     itemTitle="Devices"
     :tableHeaders="tableHeaders"
     :defaultItem="defaultItem"
+    sortByP = "implantDate"
     :typesJson="deviceTypes">
     <template v-slot:dataEdit="{editedItem, types}">
                 <v-flex xs12 sm6>
                   <v-select
                     v-model="editedItem.deviceName"
-                    box
+                    filled
                     label="Device Type"
                     :items="types"
                     item-text="deviceName"
@@ -23,24 +24,22 @@
                 <v-flex xs6 sm6>
                   <v-text-field
                     v-model="editedItem.implantDate"
-                    box
+                    filled
                     label="Implant Date (YYYY-MM-DD)"
-                    prepend-icon="event"
+                    prepend-inner-icon="mdi-calendar"
                     required
-                    return-masked-value
-                    mask="####-##-##"
+                    v-mask="'####-##-##'"
                     :rules="[() => !!editedItem.implantDate || 'This field is required']"
                   ></v-text-field>
                 </v-flex>
                 <v-flex offset-sm6 xs6 sm6>
                   <v-text-field
                     v-model="editedItem.explantDate"
-                    box
+                    filled
                     label="Explant Date (YYYY-MM-DD)"
-                    prepend-icon="event"
+                    prepend-inner-icon="mdi-calendar"
                     required
-                    return-masked-value
-                    mask="####-##-##"
+                    v-mask="'####-##-##'"
                   ></v-text-field>
                 </v-flex>
     </template>
@@ -49,7 +48,9 @@
           <td class="eventName nowrap">{{ props.item.visibleDetail }}</td>
           <td class="text-xs-center nowrap">{{ props.item.implantDate }}</td>
           <td class="text-xs-center nowrap">{{ props.item.explantDate }}</td>
-          <td class="text-xs-center hideOverflow">{{ props.item.comments }}</td>
+          <td class="text-xs-center overflow-cell-wrapper">
+            <div class="overflow-cell">{{ props.item.comments }}</div>
+            </td>
     </template>
   </item>
 </template>

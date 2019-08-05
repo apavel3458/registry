@@ -1,7 +1,7 @@
 <template>
   <div>
   <v-toolbar dense dark color="primary">
-    <v-toolbar-side-icon></v-toolbar-side-icon>
+    <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
     <v-toolbar-title class="white--text">
       <span class="home" @click="navigateTo('root')">
@@ -14,28 +14,28 @@
     <v-toolbar-items class="hidden-sm-and-down">
         <v-btn
             v-if="isAuthenticated"
-            flat
+            text
             dark
             @click="navigateTo('home')">
           Home
         </v-btn>
         <v-btn
             v-if="isAuthenticated"
-            flat
+            text
             dark
             @click="navigateTo('reports')">
           Reports
         </v-btn>
         <v-btn
             v-if="isAdmin"
-            flat
+            text
             dark
             @click="navigateTo('admin-users')">
           Users
         </v-btn>
         <v-btn
           v-if="!isAuthenticated"
-            flat
+            text
             dark
             @click="navigateTo('login')">
           Login
@@ -44,12 +44,12 @@
       <v-btn icon
         v-if="!$store.getters.isAuthenticated"
         @click="navigateTo('register')">
-        <v-icon>account_box</v-icon>
+        <v-icon>mdi-account-box</v-icon>
       </v-btn>
 
       
-      <v-btn flat dark v-if="$store.getters.isAuthenticated">
-        <v-icon>account_box</v-icon>
+      <v-btn text dark v-if="$store.getters.isAuthenticated">
+        <v-icon>mdi-account-box</v-icon>
         {{$store.state.user.firstName}} {{$store.state.user.lastName}} ({{$store.state.user.username}})
       </v-btn>
       </v-toolbar-items>
@@ -59,7 +59,7 @@
           <v-btn icon
             v-on="on"
             @click="logout()">
-            <v-icon>exit_to_app</v-icon>
+            <v-icon>mdi-exit-to-app</v-icon>
           </v-btn>
         </template>
         <span>Logout</span>
@@ -68,37 +68,37 @@
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
-                <v-icon>more_vert</v-icon>
+                <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
         <v-list>
-          <v-list-tile
+          <v-list-item
             v-if="!isAuthenticated"
             @click="$router.push({name: 'login'})"
           >
-            <v-list-tile-title>Login</v-list-tile-title>
-          </v-list-tile>
-          <v-list-tile
+            <v-list-item-title>Login</v-list-item-title>
+          </v-list-item>
+          <v-list-item
             v-if="!isAuthenticated"
             @click="$router.push({name: 'register'})"
           >
-            <v-list-tile-title>Register</v-list-tile-title>
-          </v-list-tile>
-          <v-list-tile
+            <v-list-item-title>Register</v-list-item-title>
+          </v-list-item>
+          <v-list-item
             v-if="isAdmin"
             @click="$router.push({name: 'admin-users'})">
-            <v-list-tile-title>User Management</v-list-tile-title>
-          </v-list-tile>
-          <v-list-tile
+            <v-list-item-title>User Management</v-list-item-title>
+          </v-list-item>
+          <v-list-item
             v-if="isAuthenticated"
             @click="$router.push({name: 'useroptions'})">
-            <v-list-tile-title>Change Password</v-list-tile-title>
-          </v-list-tile>
-                    <v-list-tile
+            <v-list-item-title>Change Password</v-list-item-title>
+          </v-list-item>
+                    <v-list-item
             v-if="isAuthenticated"
             @click="logout">
-            <v-list-tile-title>Logout</v-list-tile-title>
-          </v-list-tile>
+            <v-list-item-title>Logout</v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
   </v-toolbar>

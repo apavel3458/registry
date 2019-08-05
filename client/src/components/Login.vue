@@ -4,27 +4,33 @@
       <v-flex xs12 sm6 offset-sm3>
         <panel title="Login">
           <v-form @submit.prevent="login()" ref="submitLoginForm" id="submitLoginForm">
-          <v-flex xs12 sm12 md8 offset-md2>
+          <v-flex xs12 sm12 md10 offset-md1>
                   <v-text-field
                     label="Username"
+                    placeholder="Username"
                     type="username"
                     name="username"
                     ref="username"
+                    prepend-icon="mdi-account-circle"
                     v-model="username"
                     v-on:keyup.enter="login" 
-                    placeholder="Username">
+                    >
                   </v-text-field>
                   <v-text-field
                     label="Password"
+                    placeholder="Password"
                     type="password"
                     name="password"
                     ref="password"
-                    placeholder="Password"
+                    prepend-icon="mdi-lock"
+                    append-icon="mdi-eye-off"
                     v-on:keyup.enter="login"
                     v-model="password">
                   </v-text-field>
-                <div class="error" v-html="error" />
-                <v-btn @click.prevent="login()" color="info">Login</v-btn>
+                <v-alert dense type="error" v-if="error">{{error}} </v-alert>
+                <div class="text-center">
+                  <v-btn @click.prevent="login()" color="info">Login</v-btn>
+                </div>
           </v-flex>
           </v-form>
        </panel>

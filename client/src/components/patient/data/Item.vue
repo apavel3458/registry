@@ -16,7 +16,7 @@
                   <slot name="dataEdit" v-bind:editedItem="editedItem" v-bind:types="itemTypes"></slot>
                   <v-flex xs12>
                     <v-textarea 
-                      box auto-grow clearable rows="2" hide-details
+                      filled auto-grow clearable rows="2" hide-details
                       v-model="editedItem.comments"
                       label="Comments"
                     ></v-textarea>
@@ -29,7 +29,7 @@
                             type="number" 
                             :rules="detail.required?[rules.required]:[]"
                             v-model.number="editedItem.details[detail.name]" 
-                            :label="detail.text" box
+                            :label="detail.text" filled
                             hide-details></v-text-field>
                       </template>
                       <template v-else-if="detail.type == 'boolean'">
@@ -40,14 +40,14 @@
                           ></v-checkbox>
                       </template>
                       <template v-else-if="detail.type == 'string'">
-                          <v-text-field box
+                          <v-text-field filled
                           :rules="detail.required?[rules.required]:[]"
                           v-model.trim="editedItem.details[detail.name]"
                           :label="detail.text" hide-details
                           ></v-text-field>
                       </template>
                       <template v-else-if="detail.type == 'date'">
-                          <v-text-field box
+                          <v-text-field filled
                           mask="####-##-##"
                           prepend-icon="event"
                           :rules="detail.required?[rules.required]:[]"
@@ -56,14 +56,14 @@
                           ></v-text-field>
                       </template>
                       <template v-else-if="detail.type == 'autocomplete string'">
-                          <v-autocomplete box clearable
+                          <v-autocomplete filled clearable
                               :rules="detail.required?[rules.required]:[]"
                               v-model="editedItem.details[detail.name]" :items="detail.options"
                               :label="detail.text">
                           </v-autocomplete>
                       </template>
                       <template v-else-if="detail.type == 'combobox string'">
-                          <v-combobox box clearable
+                          <v-combobox filled clearable
                               @input.native="editedItem.details[detail.name]=$event.srcElement.value"
                               :rules="detail.required?[rules.required]:[]"
                               v-model.trim="editedItem.details[detail.name]" :items="detail.options"
@@ -79,73 +79,79 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-            <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+            <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+            <v-btn color="blue darken-1" text @click="save">Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
-    <v-data-table
-      :headers="tableHeaders"
-      :items="studies"
-      :expand="expand"
-      item-key="id"
-      class="itemTable"
-      hide-actions
-      :pagination.sync="pagination"
-    >
-      <template v-slot:items="props">
-         <tr @click="props.expanded = !props.expanded">
-            <slot name="dataTable" v-bind:item="props.item"></slot>
-            <td class="justify-center nowrap">
-              <v-btn outline small dark fab class="my-0 mx-0 actionButton" color="grey darken-1" @click.stop="editItem(props.item)" style="display: inline-block;">
-                <v-icon>edit</v-icon>
-              </v-btn>
-              <v-btn outline small dark fab ma-0 class="my-0 mx-1 actionButton" color="grey darken-1" @click.stop="deleteItem(props.item)" style="display: inline-block;">
-                <v-icon>delete</v-icon>
-              </v-btn>
-            </td>
-         </tr>
-      </template>
-      <template v-slot:no-data>
-        No items found.  Click <v-btn dark fab small color="green lighten-2"
-                                              @click="dialog=true">
-                                              <v-icon>add</v-icon>
-                                            </v-btn> to add an item.
-      </template>
-      <template v-slot:expand="props">
-        <v-card class="elevation-1">
-          <v-card-text>
-            <span v-for="(d, i) in itemsAndDetails(props.item)" v-bind:key="i" class="detailParent">
-              <v-chip :outline="(d.type=='boolean'&&!d.value)" :class="{falseBoolean:(d.type=='boolean'&&!d.value)}">
-                <span class="detailHeader">{{d.text}}</span>
-                <span class="detailValue" v-if="props.item.details[d.name] !== true && !!props.item.details[d.name]">
-                  <span class="detailHeader">: </span>{{props.item.details[d.name]}}
-                </span> 
-              </v-chip>
-            </span>
-            <span v-if="Object.keys(props.item.details).length == 0">
-              No extra properties
-            </span>
-          </v-card-text>
-        </v-card>
+      <div class="tableWrapper">
+      <v-data-table
+        :headers="tableHeaders"
+        :items="studies"
+        :single-expand="true"
+        :expanded.sync="expanded"
+        item-key="id"
+        class="itemTable"
+        hide-default-footer
+        must-sort
+        :options.sync="options"
+      >
+        <template v-slot:item="props">
+          <tr @click="!expanded.length||expanded[0]!=props.item?expanded = [props.item]:expanded = []">
+              <slot name="dataTable" v-bind:item="props.item"></slot>
+              <td class="justify-center nowrap">
+                <v-btn outlined x-small dark fab class="my-0 mx-0 text-center" color="grey darken-1" @click.stop="editItem(props.item)" style="display: inline-block;">
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+                <v-btn outlined x-small dark fab ma-0 class="my-0 mx-1 text-center" color="grey darken-1" @click.stop="deleteItem(props.item)" style="display: inline-block;">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </td>
+          </tr>
+        </template>
+        <template v-slot:no-data>
+          No items found.  Click <v-btn dark fab small color="green lighten-2"
+                                                @click="dialog=true">
+                                                <v-icon>mdi-plus</v-icon>
+                                              </v-btn> to add an item.
+        </template>
+        <template v-slot:expanded-item="props">
+          <td :colspan="props.headers.length">
+          <v-card class="elevation-1 expandedRow">
+            <v-card-text>
+              <span v-for="(d, i) in itemsAndDetails(props.item)" v-bind:key="i" class="detailParent">
+                <v-chip :outlined="(d.type=='boolean'&&!d.value)" :class="{falseBoolean:(d.type=='boolean'&&!d.value)}">
+                  <span class="detailHeader">{{d.text}}</span>
+                  <span class="detailValue" v-if="props.item.details[d.name] !== true && !!props.item.details[d.name]">
+                    <span class="detailHeader">: </span>{{props.item.details[d.name]}}
+                  </span> 
+                </v-chip>
+              </span>
+              <span v-if="Object.keys(props.item.details).length == 0">
+                No extra properties
+              </span>
+            </v-card-text>
+          </v-card>
+          </td>
 
-      </template>
-    </v-data-table>
+        </template>
+      </v-data-table>
+      </div>
 
     <v-btn absolute dark fab bottom small right color="green lighten-2" style="right:5em"
       @click="dialog=true">
-      <v-icon>add</v-icon>
+      <v-icon>mdi-plus</v-icon>
     </v-btn>
 
     <v-snackbar
       v-model="snackbar"
       color="error"
-      :timeout="6000">
+      :timeout="3000">
       {{ snackbarMessage }}
-      <v-btn dark flat
+      <!-- <v-btn dark text
         @click="snackbar = false">
         Close
-      </v-btn>
+      </v-btn> -->
     </v-snackbar>
   </div>
 </template>
@@ -162,16 +168,20 @@ export default {
       'itemType', 
       'itemTitle', 
       'tableHeaders', 
-      'defaultItem',
-      'sortBy'], //a blank item that is used for new entries
+      'defaultItem',//a blank item that is used for new entries
+      'sortByP'], 
   data () {
     return {
       dialog: false,
-      pagination: {
-          descending: true,
-          rowsPerPage: -1
+      options: {
+          sortDesc: [true],
+          sortBy: [],
+          itemsPerPage: -1,
+          multiSort: true,
+          mustSort: true
         },
-      expand: false,
+      expanded: [],
+      singleExpand: null,
       studies: [],
       editedIndex: -1,
       editedItem: {
@@ -239,7 +249,7 @@ export default {
                         && alert(err.response.data.error)
                   })
       }
-      if (this.sortByP) this.pagination.sortBy = this.sortByP
+      if (this.sortByP) this.options.sortBy.push(this.sortByP)
     },
 
     itemDefaultDetails(item) {
@@ -364,35 +374,33 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped style="scss">
 
-.falseBoolean.v-chip.v-chip--outline {
+.falseBoolean.v-chip.v-chip--outlined {
   color: #d4d4d4;
 }
 .falseBoolean span.detailHeader {
   color: #8c8c8c;
 }
-.compact {
+/* .compact {
     transform: scale(0.875);
     transform-origin: left;
-}
-.actionButton {
-  font-size: 200%;
-  transform: scale(0.875);
-  transform-origin: left;
-}
+} */
 .nowrap {
+  white-space: nowrap;
+}
+
+.itemTable {
+  text-align: center;
+  width: 100%;
+}
+::v-deep .itemTable th {
   white-space: nowrap;
 }
 .itemTable tr {
    cursor: pointer;
 }
-table.v-table thead tr th {
-  font-size: 14px;
-}
-table.v-table tbody tr td {
-  font-size: 14px;
-}
+
 .detailParent {
   padding-left: 4px;
   font-size: 14px;
@@ -404,5 +412,8 @@ table.v-table tbody tr td {
 }
 .detailValue {
   padding: 0 2px 0 2px;
+}
+.expandedRow {
+  background-color: #fbfbfb;
 }
 </style>

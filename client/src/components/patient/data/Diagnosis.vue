@@ -5,15 +5,14 @@
      <v-layout align-start justify-space-around row fill-height>
     <v-data-iterator
       :items="diagnoses"
-      content-tag="v-layout"
-      hide-actions
+      hide-default-footer
       row
       wrap
     >
       <template v-slot:no-data>
          No diagnosis found.  All patients must have at least one diagnosis. Click <v-btn dark fab small color="green lighten-2"
                                               @click="dialog=true">
-                                              <v-icon>add</v-icon>
+                                              <v-icon>mdi-plus</v-icon>
                                             </v-btn> to add a diagnosis.
       </template>
       <template v-slot:item="props">
@@ -24,41 +23,41 @@
             <v-card-title><h4>{{ props.item.diagnosisName }}</h4></v-card-title>
             <v-divider></v-divider>
             <v-list dense>
-              <v-list-tile>
-                <v-list-tile-content>Start Date:</v-list-tile-content>
-                <v-list-tile-content class="align-end">{{ props.item.dateStart }}</v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile>
-                <v-list-tile-content>End Date:</v-list-tile-content>
-                <v-list-tile-content class="align-end">{{ props.item.dateEnd }}</v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile>
-                <v-list-tile-content>Treating Physician:</v-list-tile-content>
-                <v-list-tile-content class="align-end">{{ props.item.treatingPhysician }}</v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile>
-                <v-list-tile-content>Biopsy Proven?</v-list-tile-content>
-                <v-list-tile-content class="align-end">{{ props.item.biopsyProven?'Yes':'No' }}</v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile>
-                <v-list-tile-content>NYHA Class:</v-list-tile-content>
-                <v-list-tile-content class="align-end">{{ props.item.details.NYHAatDx }}</v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile>
-                <v-list-tile-content>More Properties:</v-list-tile-content>
-                <v-list-tile-content class="align-end">{{ Object.keys(props.item.details).length }}</v-list-tile-content>
-              </v-list-tile>
+              <v-list-item>
+                <v-list-item-content class="heading">Start Date:</v-list-item-content>
+                <v-list-item-content class="align-end fudge">{{ props.item.dateStart }}</v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content class="heading">End Date:</v-list-item-content>
+                <v-list-item-content class="align-end fudge">{{ props.item.dateEnd }}</v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content class="heading">Treating Physician:</v-list-item-content>
+                <v-list-item-content class="align-end fudge">{{ props.item.treatingPhysician }}</v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content class="heading">Biopsy Proven?</v-list-item-content>
+                <v-list-item-content class="align-end fudge">{{ props.item.biopsyProven?'Yes':'No' }}</v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content class="heading">NYHA Class:</v-list-item-content>
+                <v-list-item-content class="align-end fudge">{{ props.item.details.NYHAatDx }}</v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content class="heading">More Properties:</v-list-item-content>
+                <v-list-item-content class="align-end fudge">{{ Object.keys(props.item.details).length }}</v-list-item-content>
+              </v-list-item>
             </v-list>
             <div class="oneline">
-               Comments: {{limit(props.item.comments, 100)}}
+               <span class="heading">Comments:</span> {{limit(props.item.comments, 100)}}
             </div>
             <v-btn absolute dark fab bottom small right color="blue lighten-2"
                @click="editItem(props.item)">
-               <v-icon>edit</v-icon>
+               <v-icon>mdi-pencil</v-icon>
             </v-btn>
             <v-btn absolute dark fab bottom small right color="red lighten-2" style="right:5em"
                @click="deleteItem(props.item)">
-               <v-icon>delete</v-icon>
+               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </v-card>
         </v-flex>
@@ -77,7 +76,7 @@
                <v-flex xs12>
                   <v-select
                      v-model="editedItem.diagnosisName"
-                     box
+                     filled
                      label="Diagnosis"
                      :items="diagnosisTypes"
                      item-text="diagnosisName"
@@ -91,11 +90,10 @@
                <v-flex xs12 sm6>
                   <v-text-field
                      v-model="editedItem.dateStart"
-                     box
+                     filled
                      label="Start Date (YYYY-MM-DD)"
-                     prepend-inner-icon="event"
-                     return-masked-value
-                     mask="####-##-##"
+                     prepend-inner-icon="mdi-calendar"
+                     v-mask="'####-##-##'"
                      :rules="[() => !!editedItem.dateStart || 'This field is required']"
                      hide-details
                   ></v-text-field>
@@ -104,11 +102,10 @@
                <v-flex xs12 sm6>
                   <v-text-field
                      v-model="editedItem.dateEnd"
-                     box
+                     filled
                      label="End Date (YYYY-MM-DD) (optional)"
-                     prepend-inner-icon="event"
-                     return-masked-value
-                     mask="####-##-##"
+                     prepend-inner-icon="mdi-calendar"
+                     v-mask="'####-##-##'"
                      hide-details
                   ></v-text-field>
                </v-flex>
@@ -117,9 +114,9 @@
                   <v-text-field
                      v-model="editedItem.treatingPhysician"
                      hide-details
-                     box
+                     filled
                      label="Treating Physician"
-                     prepend-inner-icon="person"
+                     prepend-inner-icon="mdi-account-tie"
                   ></v-text-field>
                </v-flex>
 
@@ -127,14 +124,14 @@
                   <v-checkbox
                      v-model="editedItem.biopsyProven"
                      hide-details
-                     box
+                     filled
                      label="Biopsy Proven"
                   ></v-checkbox>
                </v-flex>
                
                <v-flex xs12>
                   <v-textarea 
-                     box auto-grow clearable rows="2" hide-details
+                     filled auto-grow clearable rows="2" hide-details
                      v-model="editedItem.comments"
                      label="Comments"
                   ></v-textarea>
@@ -146,7 +143,7 @@
                         <v-text-field
                            type="number" 
                            v-model="editedItem.details[detail.name]" 
-                           :label="detail.text" box
+                           :label="detail.text" filled
                            hide-details></v-text-field>
                      </template>
                      <template v-else-if="detail.type == 'boolean'">
@@ -156,15 +153,16 @@
                         ></v-checkbox>
                      </template>
                      <template v-else-if="detail.type == 'string'">
-                        <v-text-field box
+                        <v-text-field filled
                         v-model="editedItem.details[detail.name]"
                         :label="detail.text" hide-details
                         ></v-text-field>
                      </template>
                      <template v-else-if="detail.type == 'date'">
-                          <v-text-field box
-                          mask="####-##-##"
-                          append-icon="event"
+                          <v-text-field filled
+                          type="tel"
+                          v-mask="'####-##-##'"
+                          append-icon="mdi-calendar"
                           :rules="detail.required?[rules.required]:[]"
                           v-model="editedItem.details[detail.name]"
                           :label="detail.text" hide-details
@@ -179,14 +177,14 @@
 
          <v-card-actions>
          <v-spacer></v-spacer>
-         <v-btn color="blue darken-1" flat @click="dialog=false">Cancel</v-btn>
-         <v-btn color="blue darken-1" flat @click="saveItem()">Save</v-btn>
+         <v-btn color="blue darken-1" text @click="dialog=false">Cancel</v-btn>
+         <v-btn color="blue darken-1" text @click="saveItem()">Save</v-btn>
          </v-card-actions>
       </v-card>
    </v-dialog>
    <v-btn absolute dark fab bottom small right color="green lighten-1" style="right:10em"
       @click="dialog=true">
-      <v-icon>add</v-icon>
+      <v-icon>mdi-plus</v-icon>
    </v-btn>
 </div>
 </template>
@@ -243,7 +241,7 @@ export default {
          this.dialog = true;
       },
       async saveItem() {
-         this.editedItem.patientId = this.$route.params.id
+         this.editedItem.patientId = this.$route.params.patientId
          if (this.editedIndex > -1) { //edited itemv
             await RegistryPatientDataService.diagnosisPut(this.editedItem)
                      .then((reply) => {
@@ -295,7 +293,11 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped type="sass">
+.heading {
+   font-weight: bold;
+   color: #3f824f;
+}
 .oneline {
    width: 100%;
    text-align: left;
@@ -305,7 +307,12 @@ export default {
 .dataheader {
    z-index: 10;
 }
-.v-list__tile__content {
+.v-list__item__content {
   font-size: 15px;
+}
+.fudge {
+   position: absolute;
+   margin-right: 10px;
+   right: 10px;
 }
 </style>

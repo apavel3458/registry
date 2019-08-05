@@ -1,5 +1,5 @@
 <template>
-  <div class="elevation-2">
+  <v-card class="elevation-3">
       <v-toolbar flat dense dark :class="barColour" height="35">
         <v-toolbar-title :class="{'alignCenter':alignCenter}">{{title}}</v-toolbar-title>
       </v-toolbar>
@@ -8,7 +8,7 @@
           No content
         </slot>
       </div>
-  </div>
+  </v-card>
 </template>
 
 <script>

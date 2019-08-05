@@ -4,18 +4,16 @@ import 'babel-polyfill'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import Vuetify from 'vuetify'
 import { sync } from 'vuex-router-sync'
 import store from '@/store/store'
-import VueMoment from 'vue-moment'
 import Panel from '@/components/globals/Panel'
-import 'vuetify/dist/vuetify.min.css'
+import vuetify from '@/plugins/vuetify'
+import VueTheMask from 'vue-the-mask'
+//import 'vuetify/dist/vuetify.min.css'
 
 Vue.config.productionTip = false
 
-Vue.use(Vuetify)
-Vue.use(VueMoment)
-
+Vue.use(VueTheMask)
 Vue.component('panel', Panel)
 
 sync(store, router)
@@ -23,8 +21,10 @@ sync(store, router)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  
   router,
   store,
   components: { App },
+  vuetify,
   template: '<App/>'
 })

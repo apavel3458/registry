@@ -5,12 +5,12 @@
       <v-flex xs12>
         <v-card>
             <v-toolbar color="indigo lighten" dark dense>
-                <v-toolbar-side-icon></v-toolbar-side-icon>
+                <v-app-bar-nav-icon></v-app-bar-nav-icon>
                 <v-toolbar-title>Users</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-text-field
                     v-model="search"
-                    append-icon="search"
+                    append-icon="mdi-magnify"
                     label="Search"
                     single-line
                     hide-details
@@ -21,7 +21,6 @@
             :headers="computedHeaders"
             :items="users"
             :search="search"
-            :rows-per-page-items="rowsPerPage"
             class="userTable"
             >
 
@@ -31,46 +30,49 @@
                 </span>
             </template>
             
-            <template v-slot:items="props">
-                <td class="text-xs-center pa-0" :class="{inactive:!props.item.active}">{{ props.item.username }}</td>
-                <td class="text-xs-center pa-0" :class="{inactive:!props.item.active}">{{ props.item.firstName }}</td>
-                <td class="text-xs-center pa-0" :class="{inactive:!props.item.active}">{{ props.item.lastName }}</td>
-                <td class="text-xs-center pa-0" :class="{inactive:!props.item.active}" 
-                    v-if="!$vuetify.breakpoint.smAndDown">
-                    {{ formatDate(props.item.lastLogin) }}
-                </td>
-                <td class="text-xs-center pa-0" :class="{inactive:!props.item.active}">
-                    <v-btn :class="[{activate:props.item.active}]"
-                     fab small outline color="purple lighten-1" 
-                     v-if="!props.item.active"
-                     class="ma-0 pa-0" @click="toggleDisableUser(props.item)">
-                        <v-icon>
-                            remove_circle
-                        </v-icon>
-                    </v-btn>
-                    <v-btn :class="[{activate:props.item.active}]"
-                     fab small outline color="green lighten-1" 
-                     v-if="props.item.active"
-                     class="ma-0 pa-0" @click="toggleDisableUser(props.item)">
-                        <v-icon>
-                            text_format
-                        </v-icon>
-                    </v-btn>
-                </td>
-                <td class="text-xs-center pa-0 text-no-wrap" :class="{inactive:!props.item.active}">
+            <template v-slot:item="props">
+                <tr>
+                    <td class="text-center" :class="{inactive:!props.item.active}">{{ props.item.username }}</td>
+                    <td class="text-center" :class="{inactive:!props.item.active}">{{ props.item.firstName }}</td>
+                    <td class="text-center" :class="{inactive:!props.item.active}">{{ props.item.lastName }}</td>
+                    <td class="text-center" :class="{inactive:!props.item.active}" 
+                        v-if="!$vuetify.breakpoint.smAndDown">
+                        {{ formatDate(props.item.lastLogin) }}
+                    </td>
+                    <td class="text-xs-center pa-0" :class="{inactive:!props.item.active}">
+                        <v-btn :class="[{activate:props.item.active}]"
+                        fab x-small outlined color="purple lighten-1" 
+                        v-if="!props.item.active"
+                        class="ma-0 pa-0" @click="toggleDisableUser(props.item)">
+                            <v-icon>
+                                mdi-format-color-text
+                            </v-icon>
+                        </v-btn>
+                        <v-btn :class="[{activate:props.item.active}]"
+                        fab x-small outlined color="green lighten-1" 
+                        v-if="props.item.active"
+                        class="ma-0 pa-0" @click="toggleDisableUser(props.item)">
+                            <v-icon>
+                                mdi-cancel
+                            </v-icon>
+                        </v-btn>
+                    </td>
+                    <td class="text-center pa-0 text-no-wrap" :class="{inactive:!props.item.active}">
 
-                    <v-btn small fab outline color="blue" @click="editUserDialog(props.item)">
-                        <v-icon>
-                            build
-                        </v-icon>
-                    </v-btn>
-                    
-                    <v-btn small fab outline color="red lighten-1" class="ma-0 pa-0" icon @click="deleteUser(props.item)">
-                          <v-icon>
-                            delete
-                          </v-icon>
-                    </v-btn>
-            </td>
+                        <v-btn x-small fab outlined color="blue" @click="editUserDialog(props.item)">
+                            <v-icon>
+                                mdi-wrench
+                            </v-icon>
+                        </v-btn>
+                        
+                        
+                        <v-btn x-small fab outlined color="red lighten-1" class="ma-0 pa-0" icon @click="deleteUser(props.item)">
+                            <v-icon>
+                                mdi-delete
+                            </v-icon>
+                        </v-btn>
+                    </td>
+                </tr>
             </template>
             <v-alert v-slot:no-results :value="true" color="error" icon="warning">
                 Your search for "{{ search }}" found no results.
@@ -79,10 +81,10 @@
         </v-card>
       </v-flex>
 
-      <v-flex xs12 md8 offset-md2 class="mt-3">
+      <v-flex xs12 md6 offset-md2 class="mt-3">
         <v-card>
             <v-toolbar color="red" dark dense>
-                <v-toolbar-side-icon></v-toolbar-side-icon>
+                <v-app-bar-nav-icon></v-app-bar-nav-icon>
                 <v-toolbar-title>Groups</v-toolbar-title>
                 <v-spacer></v-spacer>
             </v-toolbar>
@@ -106,8 +108,8 @@
         </v-card-text>
         <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
-        <v-btn color="blue darken-1" flat @click="updateUser(dialogUser)">Save</v-btn>
+        <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+        <v-btn color="blue darken-1" text @click="updateUser(dialogUser)">Save</v-btn>
         </v-card-actions>
     </v-card>
 </v-dialog>
@@ -118,7 +120,7 @@
 
 <script>
 import AdminUserService from '@/services/AdminUserService'
-import Moment from 'moment'
+import {format, isValid} from 'date-fns'
 import UserEdit from './AdminUserEdit'
 import AdminGroups from '@/components/user/AdminGroups'
 import { mapMutations } from 'vuex'
@@ -135,18 +137,18 @@ export default {
             groups: [],
             headers: [
                 { text: 'Username', value: 'username', align: 'center'},
-                { text: 'Last Name', value: 'lastName' },
+                { text: 'Last Name', value: 'lastName', align: 'center' },
                 {
                     text: 'First Name',
-                    align: 'left',
+                    align: 'center',
                     sortable: true,
                     value: 'firstName'
                 },
                 { text: 'Last Login', value: 'lastLogin', align: 'center', hide: 'smAndDown'},
                 { text: 'Active?', value: 'active', align: 'center', width: 20},
                 { text: 'Actions', value: 'actions', align: 'center'}
-            ],
-            rowsPerPage: [10,20,25, {"text":"$vuetify.dataIterator.rowsPerPageAll","value":-1}]
+            ]//,
+            //rowsPerPage: [10,20,25, {"text":"$vuetify.dataIterator.rowsPerPageAll","value":-1}]
         }
     },
     computed: {
@@ -159,13 +161,11 @@ export default {
             showError: 'messaging/showError',
             showSuccess: 'messaging/showSuccess'
         }),
-        formatDate (d) {
-            const ndate = new Moment(d)
-            if (!ndate.isValid()) {
+        formatDate (dd) {
+            if (!dd || !isValid(new Date(dd)))
                 return '---'
-            } else {
-                return ndate.format('YYYY-MM-DD HH:mm:ss')
-            }
+            else
+                return format(new Date(dd), 'YYYY-MM-DD HH:mm:ss')
         },
         async toggleDisableUser (user) {
             const action = user.active?'BLOCK': 'ACTIVATE'

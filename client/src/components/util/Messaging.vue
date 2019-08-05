@@ -6,7 +6,7 @@
         top
         :timeout="timer">
         {{ message }}
-        <v-btn dark flat
+        <v-btn dark text
           @click="snackbar = false">
           Close
         </v-btn>

@@ -6,13 +6,14 @@
     :tableHeaders="tableHeaders"
     :defaultItem="defaultItem"
     v-on:preSave="preSave($event)"
+    sortByP="studyDate"
     :typesJson="imagingTypes">
     <template v-slot:dataEdit="{editedItem, types}">
       
                 <v-flex xs12 sm6>
                   <v-select
                     v-model.trim="editedItem.imagingName"
-                    box
+                    filled
                     label="Imaging Type"
                     :items="imagingTypes"
                     item-text="imagingName"
@@ -26,12 +27,11 @@
                   
                   <v-text-field
                     v-model="editedItem.studyDate"
-                    box
+                    filled
                     label="Study Date (YYYY-MM-DD)"
-                    prepend-icon="event"
+                    prepend-inner-icon="mdi-calendar"
                     required
-                    return-masked-value
-                    mask="####-##-##"
+                    v-mask="'####-##-##'"
                     :rules="[() => !!editedItem.studyDate || 'This field is required']"
                   ></v-text-field>
 
@@ -39,9 +39,8 @@
                 <v-flex xs12 sm6>
                   <v-text-field 
                     v-model.trim="editedItem.EFtext" 
-                    box 
-                    return-masked-value 
-                    mask="##-##" 
+                    filled 
+                    v-mask="'##-##'" 
                     hide-details 
                     required :rules="[() => !!editedItem.EFtext || 'This field is required']"
                     label="EF % (Range or Exact)"></v-text-field>
@@ -50,17 +49,24 @@
                   <v-text-field 
                     type="number" 
                     v-model.number="editedItem.EF" 
-                    box hide-details disabled 
+                    filled hide-details disabled 
                     label="EF Absolute (Calculated)"></v-text-field>
                 </v-flex>
     </template>
     <template v-slot:dataTable="props">
-          <td class="eventName" style="white-space: nowrap; font-weight: bold;">{{ props.item.studyDate }}</td>
-          <td class="eventName nowrap">{{ props.item.imagingName }}</td>
-          <td class="text-xs-center nowrap">{{ props.item.EFtext }}</td>
-          <td class="text-xs-center nowrap">{{ props.item.EF }}</td>
-          <td class="text-xs-center nowrap">{{ props.item.visibleDetail }}</td>
-          <td class="text-xs-center hideOverflow">{{ props.item.comments }}</td>
+          <td class="eventName text-no-wrap" style="white-space: nowrap; font-weight: bold;">{{ props.item.studyDate }}</td>
+          <td class="eventName text-no-wrap nowrap">{{ props.item.imagingName }}</td>
+          <td class="text-center nowrap">{{ props.item.EFtext }}</td>
+          <td class="text-center nowrap">{{ props.item.EF }}</td>
+          <td class="text-center text-no-wrap nowrap">{{ props.item.visibleDetail }}</td>
+            <v-tooltip bottom>
+              <template v-slot:activator="{on}">
+                <td class="text-center overflow-cell-wrapper">
+                  <div class="overflow-cell" v-on="on">{{ props.item.comments }}</div>
+                </td>
+              </template>
+              <span>{{props.item.comments}}</span>
+            </v-tooltip>
     </template>
   </item>
 </template>
@@ -77,13 +83,13 @@ export default {
     return {
       imagingTypes: ImagingTypes,
       tableHeaders: [
-        { text: "Study Date", value: "studyDate", align: "center", width: "1%"},
-        { text: "Study Type", value: "imagingName", align: "center", width: "1%"},
-        { text: "EF", value: "EFtext", align: "center", width: "1%"},
-        { text: "EF (absolute)", value: "EF", align: "center", width: "1%" },
-        { text: "Details", value: "visibleDetail", align: "center", width: "1%" },
+        { text: "Study Date", value: "studyDate", align: "center"},
+        { text: "Study Type", value: "imagingName", align: "center"},
+        { text: "EF", value: "EFtext", align: "center"},
+        { text: "EF (absolute)", value: "EF", align: "center"},
+        { text: "Details", value: "visibleDetail", align: "center"},
         { text: "Comments", align: "center", value: "comments"},
-        { text: "Actions", align: "center", value: "name", sortable: false, width: "1%" }
+        { text: "Actions", align: "center", value: "name", sortable: false}
       ],
       defaultItem: {
         studyDate: "",
@@ -110,12 +116,7 @@ export default {
 .nowrap {
   white-space: nowrap;
 }
-.hideOverflow {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  /* max-width: 200px;
-  white-space: nowrap;  --> makes it one line*/
-}
+
 .eventName {
   font-weight: bold;
 }

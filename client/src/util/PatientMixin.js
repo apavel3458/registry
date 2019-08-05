@@ -1,21 +1,16 @@
-import Moment from 'moment'
+import {dateFns, differenceInCalendarYears} from 'date-fns'
 
 var mixin = {
    methods: {
       age(dob, nowD) {
-         if (nowD) {
-            return Moment(nowD).diff(dob, 'years')
-         } else {
-            return Moment().diff(dob, 'years');
-         }
+         if (!nowD) nowD = new Date()
+         return differenceInCalendarYears(nowD, dob)
       },
       formatDate (d) {
-         const ndate = new Moment(d)
-         if (!ndate.isValid()) {
+         if (dateFns.isValid(d))
+            return dateFns.format(d, 'YYYY-MM-DD')
+         else
              return '---'
-         } else {
-             return ndate.format('YYYY-MM-DD')
-         }
      }
    }
 

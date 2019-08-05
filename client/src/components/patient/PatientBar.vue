@@ -6,7 +6,7 @@
                   <v-btn
                   absolute dark small fab right color="green lighten-1" style="right: -.5em"
                   @click="newPatient()">
-                     <v-icon>add</v-icon>
+                     <v-icon>mdi-plus</v-icon>
                   </v-btn>
                   
                   <v-spacer></v-spacer>
@@ -14,17 +14,18 @@
             </v-toolbar>
             <v-select
                v-model="selectedRegistry" :items="registryList" item-text="registryName"
-               return-object label="Registry" prepend-icon="recent_actors"
-               class="mr-1 ml-1 mt-3 mb-0 pt-0 pb-0 pl-2 pr-2">
+               height="25"
+               return-object label="Registry"
+               prepend-icon="mdi-database-refresh"
+               class="mr-1 ml-1 mb-0 pt-5 pb-0 pl-1 pr-2">
+               <template v-slot:prepend="">
+                  <v-icon class="mt-n2">mdi-database-refresh</v-icon>
+               </template>
                <template v-slot:item="{ item }">
-                     <v-list-tile-content>
-                        <v-list-tile-title>{{item.registryName}} ({{item.registrySize}})</v-list-tile-title>
-                     </v-list-tile-content>
+                     {{item.registryName}} ({{item.registrySize}})
                </template>
                <template v-slot:selection="{ item }">
-                     <v-list-tile-content>
-                        <v-list-tile-title>{{item.registryName}} ({{item.registrySize}})</v-list-tile-title>
-                     </v-list-tile-content>
+                     {{item.registryName}} ({{item.registrySize}})
                </template>
             </v-select>
 
@@ -34,30 +35,29 @@
                   :items="searchResults"
                   :search-input.sync="searchText"
                   :loading="isLoading"
-                  prepend-icon="search"
+                  prepend-icon="mdi-magnify"
                   label="Search Name or PIN"
                   placeholder="Start typing..."
                   flat clearable
-                  item-text="firstName"
+                  item-text="lastName"
                   item-value="id"
                   no-filter
-                  class="mx-1 my-0 px-2 py-0">
+                  class="mx-1 my-0 pl-1 pr-2 py-0">
 
                   <template v-slot:no-data>
-                  <v-list-tile>
-                     <v-list-tile-title>
+                  <v-list-item>
+                     <v-list-item-title>
                         No results yet...
-                     </v-list-tile-title>
-                  </v-list-tile>
+                     </v-list-item-title>
+                  </v-list-item>
                   </template>
 
                   <template v-slot:item="{ item }">
-                     <v-list-tile-content>
-                        <v-list-tile-title>{{item.lastName}}, {{item.firstName}}</v-list-tile-title>
-                        <v-list-tile-sub-title>DOB: {{item.dob}} (Age {{age(item.dob)}})</v-list-tile-sub-title>
-                     </v-list-tile-content>
+                     <v-list-item-content class="text-left pa-0 ma-0">
+                        <v-list-item-title>{{item.lastName}}, {{item.firstName}}</v-list-item-title>
+                        <v-list-item-subtitle>DOB: {{item.dob}} (Age {{age(item.dob)}})</v-list-item-subtitle>
+                     </v-list-item-content>
                   </template>
-
             </v-autocomplete>
 
 
@@ -77,11 +77,11 @@
          <patient-bar-info v-if="patient"></patient-bar-info>
          <v-btn absolute dark fab bottom small right 
             color="blue lighten-2" @click="editPatient(patient)">
-            <v-icon>edit</v-icon>
+            <v-icon>mdi-account-edit</v-icon>
          </v-btn>
          <v-btn absolute dark fab bottom small right color="red lighten-2" style="right:5em"
             @click="deletePatient(patient)">
-            <v-icon>delete</v-icon>
+            <v-icon>mdi-delete</v-icon>
          </v-btn>
       </v-card>
 
@@ -197,7 +197,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped style="stylus">
+<style scoped style="css">
 .centered-input input {
   text-align: center
 }

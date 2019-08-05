@@ -6,12 +6,13 @@
     itemTitle="Clinical Events"
     :tableHeaders="tableHeaders"
     :defaultItem="defaultItem"
+    sortByP="eventDate"
     :typesJson="eventTypes">
     <template v-slot:dataEdit="{editedItem, types}">
                 <v-flex xs12 sm6>
                   <v-select
                     v-model="editedItem.eventName"
-                    box
+                    filled
                     label="Event Type"
                     :items="types"
                     item-text="eventName"
@@ -24,12 +25,11 @@
                 <v-flex xs12 sm6>
                   <v-text-field
                     v-model="editedItem.eventDate"
-                    box
+                    filled
                     label="Event Date (YYYY-MM-DD)"
-                    prepend-icon="event"
+                    prepend-inner-icon="mdi-calendar"
                     required
-                    return-masked-value
-                    mask="####-##-##"
+                    v-mask="'####-##-##'"
                     :rules="[() => !!editedItem.eventDate || 'This field is required']"
                   ></v-text-field>
                 </v-flex>
@@ -38,7 +38,7 @@
           <td class="text-xs-center" style="white-space: nowrap;">{{ props.item.eventDate }}</td>
           <td class="eventName nowrap">{{ props.item.eventName }}</td>
           <td class="text-xs-center nowrap">{{ props.item.visibleDetail }}</td>
-          <td class="text-xs-center hideOverflow">{{ props.item.comments }}</td>
+          <td class="text-xs-center overflow-cell-wrapper"><div class="overflow-cell">{{ props.item.comments }}</div></td>
     </template>
   </item>
 </template>

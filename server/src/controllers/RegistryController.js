@@ -29,11 +29,11 @@ module.exports = {
          console.log("descending: " + descending)
          const result = await Patient
             .query()
-            //.skipUndefined()
+            .skipUndefined()
             .select('id', 'firstName', 'lastName', 'mrn', 'dob', 'createdAt')
             .where('registryId', registryId)
             .orderBy(sortBy, descending)
-            .page(page, pageSize);
+            .page(page, pageSize)
          //console.log(result)
          return res.send(result)
       } catch (err) {
