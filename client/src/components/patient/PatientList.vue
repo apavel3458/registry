@@ -1,6 +1,6 @@
 /* eslint-disable vue/valid-template-root */
 <template>
-<v-card flat>
+<v-card class="elevation-3 pb-0">
 
       <v-toolbar dark color="purple lighten-1" dense>
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
@@ -18,7 +18,7 @@
             :loading="loading"
             must-sort
             no-data-text="No patients in this registry"
-            class="elevation-3 dataTable"
+            class="dataTable"
             @click:row="open($event)"
          >
             <template v-slot:item.dob="{item, header, value}">
@@ -29,7 +29,7 @@
             </template>
          </v-data-table>
         <div class="text-center">
-          <v-btn dark fab small class="mt-n10" color="green lighten-2" 
+          <v-btn dark fab small absolute class="mt-n4" color="green lighten-2" 
                     @click="editPatientDialog=true">
                     <v-icon>mdi-plus</v-icon>
           </v-btn>
@@ -147,5 +147,8 @@ export default {
   ::v-deep tr {
   cursor: pointer;
  }
+}
+.clearBackground {
+  background-color:transparent;
 }
 </style>

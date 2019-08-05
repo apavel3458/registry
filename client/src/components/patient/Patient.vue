@@ -2,7 +2,7 @@
     <div>
         <v-container grid-list-md pa-2 fluid fill-height>
             <!-- <v-layout row :class="{'wrap':$vuetify.breakpoint.xs}"> -->
-            <v-layout row :class="{'wrap':$vuetify.breakpoint.xs}">
+            <v-layout row :class="{'wrap':$vuetify.breakpoint.xs}" style="background: 0">
             <v-flex style="width: 250px"
                 :class="[{'shrink':$vuetify.breakpoint.smAndUp}, 
                         {'xs12':$vuetify.breakpoint.xsAndDown},

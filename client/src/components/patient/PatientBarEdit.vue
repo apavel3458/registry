@@ -6,14 +6,14 @@
    <v-card>
       <v-card-title class="headline">Register Patient</v-card-title>
 
-      <v-card-text>
+      <v-card-text class="px-5">
          <v-form ref="ptForm">
          <v-layout row wrap>
             
                <v-flex xs12>
                      <v-select
                         :items="registryList" return-object
-                        label="Registry" prepend-icon="recent_actors"
+                        label="Registry" prepend-icon="mdi-database"
                         item-text="registryName" disabled
                         v-model="pt.registry" style="width: 50%">
                      </v-select>
@@ -21,47 +21,51 @@
                <v-flex xs6>
                   <v-text-field
                         label="First Name" type="text" required :rules="[() => !!pt.firstName || 'This field is required']"
+                        prepend-icon="mdi-account"
                         v-model="pt.firstName" autofocus>
                   </v-text-field>
                </v-flex>
-               <v-flex xs6 class="pl-2">
+               <v-flex xs6 class="px-2">
                   <v-text-field
                         label="Last Name" type="text" required :rules="[() => !!pt.lastName || 'This field is required']"
+                        prepend-icon="mdi-account"
                         v-model="pt.lastName">
                   </v-text-field>
                </v-flex>
                <v-flex xs6>
                   <v-text-field
                         label="MRN" type="text"
+                        prepend-icon="mdi-laptop"
                         v-model="pt.mrn">
                   </v-text-field>
                </v-flex>
-               <v-flex xs6 class="pl-2">
+               <v-flex xs6 class="px-2">
                   <v-text-field
                         v-model="pt.dob" label="Date of Birth (YYYY-MM-DD)"
-                        prepend-icon="event"
-                        required return-masked-value mask="####-##-##"
+                        prepend-icon="mdi-calendar"
+                        required v-mask="'####-##-##'"
                         :rules="[() => !!pt.dob || 'This field is required']"
                      ></v-text-field>
                </v-flex>
-               <v-flex xs12 class="pl-2">
+               <v-flex xs12 class="px-2">
                   <v-checkbox
                      v-model="deceased"
                      label="Deceased?"
                   ></v-checkbox>
                </v-flex>
                <v-flex xs6 v-if="deceased">
-                  <v-text-field
-                        v-model="pt.causeOfDeath" label="Cause of Death"
-                        >
+                        <v-combobox
+                           v-model="pt.causeOfDeath"
+                           label="Cause of Death (select or type in)"
+                           :items="causesOfDeath"
+                        ></v-combobox>
                   </v-text-field>
                </v-flex>
                <v-flex xs6 v-if="deceased">
                   <v-text-field
                         v-model="pt.deceasedDate" label="Date Deceased"
-                        prepend-icon="event"
-                        return-masked-value
-                        mask="####-##-##" class="ml-2"
+                        prepend-icon="mdi-calendar"
+                        v-mask="'####-##-##'" class="ml-2"
                   ></v-text-field>
                </v-flex>
             
@@ -74,14 +78,14 @@
 
          <v-btn
             color="green darken-1"
-            flat="flat"
+            text
             @click="editPatientDialog = false">
             Cancel
          </v-btn>
 
          <v-btn
             color="green darken-1"
-            flat="flat"
+            text
             @click="save()">
             Save Patient
          </v-btn>
@@ -110,7 +114,8 @@ export default {
          pt: {},
          deceased: false,
          registrySelected: null,
-         editPatientDialog: false
+         editPatientDialog: false,
+         causesOfDeath: ['Arrhythmia', 'Heart Failure', 'Malignancy', "Other", "Unknown"]
       }
    },
    props: {
@@ -141,6 +146,7 @@ export default {
       initialize() {
          if (this.patientP) {
             Object.assign(this.pt, this.patientP)
+            if (this.pt.deceasedDate) this.deceased = true
          } else {
             this.pt = Object.assign({}, this.defaultPt)
             this.pt.registry = this.activeRegistry

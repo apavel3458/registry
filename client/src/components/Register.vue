@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md text-xs-center>
     <v-layout row wrap>
-      <v-flex xs12 sm6 offset-sm3>
+      <v-flex xs12 sm8 offset-sm2>
           <panel title="Register New User">
                 <v-flex xs12 sm12 md10 offset-md1>
                   <v-form name="registrationForm" ref="registrationForm" autocomplete="off">
@@ -10,18 +10,21 @@
                       type="text"
                       name="firstName"
                       ref="firstName"
+                      prepend-icon="mdi-account"
                       v-model="user.firstName">
                     </v-text-field>
                     <v-text-field
                       label="Last Name"
                       type="text"
                       name="lastName"
+                      prepend-icon="mdi-account"                      
                       v-model="user.lastName">
                     </v-text-field>
                     <v-text-field
                       label="Username"
                       type="text"
                       name="username"
+                      prepend-icon="mdi-account-card-details"
                       :rules="[() => !!user.username || 'This field is required']"
                       v-model="user.username">
                     </v-text-field>
@@ -29,6 +32,7 @@
                       label="E-Mail"
                       type="email"
                       name="email"
+                      prepend-icon="mdi-email"
                       :rules="emailRules"
                       v-model="user.email">
                     </v-text-field>
@@ -37,10 +41,11 @@
                       :rules="[() => !!user.password || 'This field is required']"
                       type="password"
                       name="password"
+                      prepend-icon="mdi-lock"
                       autocomplete="new-password"
                       v-model="user.password">
                     </v-text-field>
-                    <div>
+                    <div class="center mt-2">
                       <vue-recaptcha
                         ref="recaptcha"
                         @verify="onVerify"
@@ -65,7 +70,9 @@
                     >
                       {{errorMessage}}
                     </v-alert>
-                    <v-btn color="info" @click="register">Register</v-btn>
+                    <div class="center">
+                      <v-btn color="info" @click="register" class="mt-2">Register</v-btn>
+                    </div>
                   </v-form>
                 </v-flex>                
           </panel>
@@ -137,6 +144,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .error {
+  .center {
+    text-align: center;
   }
 </style>

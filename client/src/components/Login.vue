@@ -1,13 +1,12 @@
 <template>
   <v-container grid-list-md text-xs-center>
     <v-layout row wrap>
-      <v-flex xs12 sm6 offset-sm3>
+      <v-flex xs12 sm6 offset-sm3 mt-10>
         <panel title="Login">
           <v-form @submit.prevent="login()" ref="submitLoginForm" id="submitLoginForm">
           <v-flex xs12 sm12 md10 offset-md1>
                   <v-text-field
                     label="Username"
-                    placeholder="Username"
                     type="username"
                     name="username"
                     ref="username"
@@ -18,7 +17,6 @@
                   </v-text-field>
                   <v-text-field
                     label="Password"
-                    placeholder="Password"
                     type="password"
                     name="password"
                     ref="password"
