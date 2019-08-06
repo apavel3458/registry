@@ -84,6 +84,31 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+          
+          
+          
+      <div class="searchWindow" v-show="searchDialog">
+          <v-card flat class="mt-n1">
+            <v-card-text class="pt-0" style="width: 50%">
+                <v-text-field dense solo
+                  v-model="searchText" ref="sech"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  single-line
+                  hide-details
+                  clearable
+                  width="50%"
+                  style="display: inline; width: 50%;"
+                  @click:clear="openCloseSearch"
+              ></v-text-field>
+            </v-card-text>
+            
+          </v-card>
+      </div>
+
+
+
+    
       <div class="tableWrapper">
       <v-data-table
         :headers="tableHeaders"
@@ -95,6 +120,7 @@
         hide-default-footer
         must-sort
         :options.sync="options"
+        :search="searchText"
       >
         <template v-slot:item="props">
           <tr @click="!expanded.length||expanded[0]!=props.item?expanded = [props.item]:expanded = []">
@@ -141,6 +167,12 @@
     <v-btn absolute dark fab bottom small right color="green lighten-2" style="right:5em"
       @click="dialog=true">
       <v-icon>mdi-plus</v-icon>
+    </v-btn>
+
+    <v-btn absolute dark fab bottom small right color="blue lighten-2" style="right:10em"
+      @click="openCloseSearch()">
+      <v-icon v-if="searchDialog">mdi-magnify-close</v-icon>
+      <v-icon v-else>mdi-magnify</v-icon>
     </v-btn>
 
     <v-snackbar
@@ -194,7 +226,9 @@ export default {
       snackbarMessage: 'ERROR',
       rules: {
         required: value => !!value || 'Required'
-      }
+      },
+      searchText: null,
+      searchDialog: false
     }
   },
 
@@ -365,6 +399,15 @@ export default {
           return item.details[visibleDetailName]
       } else {
         return "--"
+      }
+    },
+    openCloseSearch() {
+      if (this.searchDialog) {
+        this.searchDialog = false
+        this.searchText = null
+      } else {
+        this.searchDialog=true; 
+        this.$nextTick(this.$refs.sech.focus)
       }
     }
   },
