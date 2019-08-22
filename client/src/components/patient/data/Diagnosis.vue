@@ -283,6 +283,7 @@ export default {
       //default diagnosis set to registry
       let defaultDiagnosisName = DiagnosisTypes.filter(x => x.diagnosisName == this.patient.registry.registryName)
       this.defaultItem.diagnosisName = defaultDiagnosisName?defaultDiagnosisName[0].diagnosisName:null
+      
    },
    async created() {
       this.diagnoses = await RegistryPatientDataService.diagnosisGet(this.patient.id)
