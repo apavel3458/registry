@@ -151,7 +151,7 @@ async patientDelete(req, res) {
        })
    }
 },
-  async registryList(req, res) {
+  async registryListAll(req, res) {
      try {
         const registryList = await Registry.query()
             .select('registries.*', Registry.relatedQuery('patients').count().as('registrySize'))
@@ -163,5 +163,23 @@ async patientDelete(req, res) {
             error: 'An error has occured while trying to fetch the registry list.'
          })
      }
-  }
+  },
+  async registryListUser(req, res) {
+   try {
+      const groupMemberships = req.user.usergroups.map(x=>x.groupName)
+      console.log(groupMemberships)
+      const registryList = await Registry.query()
+          .select('registries.*', Registry.relatedQuery('patients').count().as('registrySize'))
+            .whereIn('registries.registryName', groupMemberships)
+            .andWhere('active', true)
+            
+      console.log(registryList)
+      return res.send(registryList)
+   } catch (err) {
+       console.log(err)
+       res.status(500).send({
+          error: 'An error has occured while trying to fetch the registry list.'
+       })
+   }
+}
 }

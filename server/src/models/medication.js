@@ -12,16 +12,16 @@ class Event extends Model {
   $parseJson(json, opt) {
     json = super.$parseJson(json, opt);
     //json = JSON.parse(JSON.stringify(json).replace(/null/g, '""')) //remove all nulls
-    const props = this.constructor.jsonSchema.properties;
-    Object.keys(props).filter(p => props[p].type == 'string').forEach(d => {  //replace string nulls  to '' (otherwise database freaks out)
-      json[d] = (json[d] == null)?'':json[d]
-    })
-    Object.keys(props).filter(p => props[p].type == 'number').forEach(d => {  //replace string nulls  to '' (otherwise database freaks out)
-      if (json[d] == null) delete json[d]
-  })
-    Object.keys(props).filter(p => props[p].type == 'date').forEach(d => {  //replace date ''  to null (otherwise database freaks out)
-      json[d] = (json[d] == '')?null:json[d]
-    })
+  //   const props = this.constructor.jsonSchema.properties;
+  //   Object.keys(props).filter(p => props[p].type == 'string').forEach(d => {  //replace string nulls  to '' (otherwise database freaks out)
+  //     json[d] = (json[d] == null)?'':json[d]
+  //   })
+  //   Object.keys(props).filter(p => props[p].type == 'number').forEach(d => {  //replace string nulls  to '' (otherwise database freaks out)
+  //     if (json[d] == null) delete json[d]
+  // })
+  //   Object.keys(props).filter(p => props[p].type == 'date').forEach(d => {  //replace date ''  to null (otherwise database freaks out)
+  //     json[d] = (json[d] == '')?null:json[d]
+  //   })
     return _.pick(json, Object.keys(this.constructor.jsonSchema.properties));
   }
 
@@ -37,13 +37,14 @@ class Event extends Model {
         id: { type: 'integer' },
         patientId: { type: 'integer', required: true},
         medicationName: { type: 'string', minLength: 1, maxLength: 255 },
-        class: { type: 'string' },
-        dose: { type: 'number'},
-        unit: { type: 'string'},
+        drugName: { type: ['string', null]},
+        drugClass: { type: ['string', null] },
+        dose: { type: ['number', null]},
+        unit: { type: ['string', null]},
         startDate: { type: 'date'},
-        endDate: { type: 'date'},
-        visibleDetail: { type: 'string' },
-        comments: { type: 'string' },
+        endDate: { type: ['date', null]},
+        visibleDetail: { type: ['string', null] },
+        comments: { type: ['string', null] },
         details: { type: 'object' },
         patient: { type: 'object'}
       }

@@ -1,0 +1,61 @@
+[
+   {
+      "eventName": "Hospitalization",
+      "visibleDetail": "reason",
+      "details": [
+         {
+            "name": "reason",
+            "text": "Reason",
+            "required": true,
+            "options": ["Heart Failure", "Arrhythmia"],
+            "type": "combobox string"
+         }
+      ]
+   },
+   {
+      "eventName": "ER Visit",
+      "visibleDetail": "reason",
+      "details": [
+         {
+            "name": "lengthOfStay",
+            "text": "Length of Stay (days)",
+            "type": "number"
+         },
+         {
+            "name": "reason",
+            "text": "Reason",
+            "options": ["Heart Failure", "Medication Intolerance", "Syncope", "Arrhythmia", "Other"],
+            "type": "autocomplete string"
+         }
+      ]
+   },
+   {
+      "eventName": "Device Shock",
+      "visibleDetail": "appropriate",
+      "details": [
+         {
+            "name": "appropriate",
+            "text": "Appropriate",
+            "type": "boolean"
+         }
+      ]
+   },
+   {
+      "eventName": "Arrhythmia",
+      "visibleDetail": "arrhythmiaType",
+      "details": [
+         {
+            "name": "arrhythmiaType",
+            "text": "Arrhythmia Type",
+            "required": true,
+            "options": ["Unknown", "Atrial", "Ventricular"],
+            "type": "autocomplete string"
+         }
+      ]
+   },
+   {
+      "eventName": "Heart Failure Exacerbation",
+      "details": [
+      ]
+   }
+]

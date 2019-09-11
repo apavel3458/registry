@@ -2,9 +2,9 @@
   <v-container grid-list-md text-xs-center>
     <v-layout row wrap>
       <v-flex xs12 sm6 offset-sm3 mt-10>
-        <panel title="Login">
+        <panel title="Login" style="width: 380px;" class="mx-auto">
           <v-form @submit.prevent="login()" ref="submitLoginForm" id="submitLoginForm">
-          <v-flex xs12 sm12 md10 offset-md1>
+          <div>
                   <v-text-field
                     label="Username"
                     type="username"
@@ -25,28 +25,34 @@
                     v-on:keyup.enter="login"
                     v-model="password">
                   </v-text-field>
-                <v-alert dense type="error" v-if="error">{{error}} </v-alert>
+                <v-alert dense type="error" v-if="error" class="text-center">{{error}} </v-alert>
                 <div class="text-center">
-                  <v-btn @click.prevent="login()" color="info">Login</v-btn>
+                  <v-btn @click.prevent="login()" :loading="loading" color="info">Login</v-btn>
                 </div>
-          </v-flex>
+          </div>
           </v-form>
        </panel>
       </v-flex>
     </v-layout>
+    <v-btn :to="{name:'register'}" text class="hiddenRegister white--text">Register</v-btn>
   </v-container>
+  
 </template>
 
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
+import GeneralMixin from '@/util/GeneralMixin'
+
 export default {
   name: 'HelloWorld',
+  mixins: [GeneralMixin],
   data () {
     return {
       username: '',
       password: '',
       error: '',
-      url: ''
+      url: '',
+      loading: false
     }
   },
   components: {},
@@ -57,19 +63,22 @@ export default {
         password: this.password
       })
         .then(async (response) =>  {
-          this.$store.commit('login', {token: response.token, user: response.user})
-          await this.$store.dispatch('init')
-          this.$router.push({
-            name: 'home'
-          })
+          this.loading = false
+          this.loginSuccess(response)
         }).catch((err) => {
-          if (err.response.status == 400) {
-            this.error = err.response.data.error
-          } else {
-            this.error = "There was an error contacting the server: " + this.response.status
-          }
+          this.loading = false
+          // eslint-disable-next-line no-console
+          console.log(JSON.stringify(err))
+          this.error = this.processError(err)
         })
-    }
+    },
+    async loginSuccess({token, user}) {      
+      this.$store.commit('login', {token, user})
+      await this.$store.dispatch('init')
+      this.$router.push({
+        name: 'registryselect'
+      })
+    },
   },
   mounted() {
     this.error = this.$route.params.error || ''
@@ -82,6 +91,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .error {
-  }
+.hiddenRegister {
+  position: absolute;
+  top:0 ;
+  right: 0;
+}
 </style>

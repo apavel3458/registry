@@ -16,7 +16,7 @@ module.exports = {
         }
 
         const {error, value} = Joi.validate(req.body, schema)
-        console.log("VALIDATION: " + JSON.stringify(req.body))
+        //console.log("VALIDATION: " + JSON.stringify(req.body))
         if (error) {
             console.log(error)
             switch(error.details[0].context.key) {

@@ -1,0 +1,63 @@
+[
+   {
+      "imagingName": "Echo",
+      "visibleDetail": "3DLVEF",
+      "details": [
+         {
+            "name": "LVGLS",
+            "text": "LV Global Longitudinal Strain",
+            "type": "number"
+         },
+         {
+            "name": "3DLVEF",
+            "text": "3D LV EF %",
+            "type": "number"
+         },
+         {
+            "name": "3DRVEF",
+            "text": "3D RV EF %",
+            "type": "number"
+         },
+         {
+            "name": "vortexArea",
+            "text": "Vortex Area",
+            "type": "number"
+         },
+         {
+            "name": "vortexIntensity",
+            "text": "Vortex Intensity",
+            "type": "number"
+         },
+         {
+            "name": "vortexLength",
+            "text": "Vortex Length",
+            "type": "number"
+         },
+         {
+            "name": "vorticityFluctuation",
+            "text": "Vorticity Fluctuation",
+            "type": "number"
+         },
+         {
+            "name": "kineticEnergyFluctuation",
+            "text": "Kinetic Energy Fluctuation",
+            "type": "number"
+         },
+         {
+            "name": "shearStressFluctuation",
+            "text": "Shear Stress Fluctuation",
+            "type": "number"
+         },
+         {
+            "name": "showForceAngle",
+            "text": "Show Force Angle",
+            "type": "number"
+         },
+         {
+            "name": "showForceDispersionAngle",
+            "text": "Show Force Dispersion Angle",
+            "type": "number"
+         }
+      ]
+   }
+]

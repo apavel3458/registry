@@ -4,7 +4,8 @@ const { transaction } = require('objection');
 const User = require('../models/user')
 const UserGroup = require('../models/usergroup')
 const _ = require('lodash')
-const knex = require('knex');
+const knex = require('knex')
+const AuthenticationController = require('./AuthenticationController')
 
 module.exports = {
     async index(req, res) {
@@ -156,7 +157,7 @@ module.exports = {
     //     res.send(group)
     // },
 
-    async changepw(req, res) {
+    async updateUserOptions(req, res) {
         try {
             
             const input = req.body
@@ -166,27 +167,47 @@ module.exports = {
                 .select('id', 'password')
                 .where('id', req.user.id)
                 .first()).password
+
             const isPasswordValid = await User.comparePassword(input.password, userPassword)
             if (!isPasswordValid) {
+                console.log("Not authenticated to edit user settings")
                 return res.status(401).send({
                     error: "Password change failed: Current password is incorrect"
                 })
             }
             
-            //USER IS AUTHENTIC------
-            const newPasswordHashed = await User.hashPassword(input.newPassword)
-            //const user = await User.query().patchAndFetchById(req.user.id, {password: newPasswordHashed})
-            if (newPasswordHashed) {//manually update password
-                await User.knex().from('users')
-                    .where({id: req.user.id})
-                    .update({ password: newPasswordHashed })
+            //-------------   USER IS AUTHENTIC   ------
+
+
+            let passwordHashedToStore = userPassword
+            if (input.newPassword && input.newPassword.length > 0) { //if provided new password
+                passwordHashedToStore = await User.hashPassword(input.newPassword)
             }
-            //console.log(user)
-            res.send({success: true})
+            
+            const validation = await AuthenticationController.validateUser(input, req.user.id)
+
+            if (validation.error) {
+                return res.status(400).send({
+                    error: validation.message
+                })
+            }
+
+            const result = await User.knex().from('users')
+                    .where({id: req.user.id})
+                    .update({ password: passwordHashedToStore , username: input.username, email: input.email, lastName: input.lastName, firstName: input.firstName})
+            
+            const user = await User.query().findById(req.user.id).eager('[usergroups]')
+
+            const userClean = user.cleanForJWT()
+            console.log(AuthenticationController.jwtSignUser)
+            return res.send({
+                        user: user,
+                        token: AuthenticationController.jwtSignUser(userClean)
+            })
         } catch (err) {
             console.log(err)
             res.status(500).send({
-                error: 'An error has occured trying to fetch user.'
+                error: 'An error has occured trying to update user options.'
             })
         }
     },

@@ -1,6 +1,7 @@
 [
    {
       "diagnosisName": "Sarcoidosis",
+      "primary": true,
       "details": [
          {
             "name": "BMD",

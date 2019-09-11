@@ -1,0 +1,125 @@
+[
+   {
+      "drugName": "Atenolol",
+      "drugClass": "Beta Blocker",
+      "dose": 50,
+      "unit": "mg"
+   },
+   {
+      "drugName": "Metoprolol",
+      "drugClass": "Beta Blocker",
+      "dose": 50,
+      "unit": "mg"
+   },
+   {
+      "drugName": "Bisoprolol",
+      "drugClass": "Beta Blocker",
+      "dose": 10,
+      "unit": "mg"
+   },
+   {
+      "drugName": "Nadolol",
+      "drugClass": "Beta Blocker",
+      "dose": 40,
+      "unit": "mg"
+   },
+   {
+      "drugName": "Propranolol",
+      "drugClass": "Beta Blocker",
+      "dose": 40,
+      "unit": "mg"
+   },
+   {
+      "drugName": "Carvedilol",
+      "drugClass": "Beta Blocker",
+      "dose": 25,
+      "unit": "mg"
+   },
+  
+
+
+   {
+      "drugName": "Captopril",
+      "drugClass": "ACE Inhibitor",
+      "dose": 50,
+      "unit": "mg"
+   },
+   {
+      "drugName": "Enalapril",
+      "drugClass": "ACE Inhibitor",
+      "dose": 10,
+      "unit": "mg"
+   },
+   {
+      "drugName": "Ramipril",
+      "drugClass": "ACE Inhibitor",
+      "dose": 10,
+      "unit": "mg"
+   },
+   {
+      "drugName": "Perindopril",
+      "drugClass": "ACE Inhibitor",
+      "dose": 8,
+      "unit": "mg"
+   },
+   {
+      "drugName": "Lisinopril",
+      "drugClass": "ACE Inhibitor",
+      "dose": 20,
+      "unit": "mg"
+   },
+
+
+
+   {
+      "drugName": "Candesartan",
+      "drugClass": "ARB",
+      "dose": 32,
+      "unit": "mg"
+   },
+   {
+      "drugName": "Irbesartan",
+      "drugClass": "ARB",
+      "dose": 300,
+      "unit": "mg"
+   },
+   {
+      "drugName": "Losartan",
+      "drugClass": "ARB",
+      "dose": 50,
+      "unit": "mg"
+   },
+   {
+      "drugName": "Telmisartan",
+      "drugClass": "ARB",
+      "dose": 80,
+      "unit": "mg"
+   },
+   {
+      "drugName": "Valsartan",
+      "drugClass": "ARB",
+      "dose": 160,
+      "unit": "mg"
+   },
+
+
+   {
+      "drugName": "Spironolactone",
+      "drugClass": "MRA",
+      "dose": 25,
+      "unit": "mg"
+   },
+   {
+      "drugName": "Eplerenone",
+      "drugClass": "MRA",
+      "dose": 50,
+      "unit": "mg"
+   },
+
+   {
+      "drugName": "Sacubitril/Valsartan",
+      "drugClass": "ARNI",
+      "dose": 49,
+      "unit": "mg"
+   }
+]

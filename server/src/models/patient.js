@@ -47,8 +47,6 @@ class Patient extends Model {
         dob: { type: 'date' },
         deceasedDate: { type: ['date'], minLength: 1, maxLength: 255 },
         causeOfDeath: { type: ['string'], minLength: 1, maxLength: 255 },
-        createdBy: { type: 'string' },
-        updatedBy: { type: 'string' },
         createdAt: { type: 'date' },
         updatedAt: { type: 'date' }
       },

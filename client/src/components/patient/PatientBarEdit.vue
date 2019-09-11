@@ -59,7 +59,6 @@
                            label="Cause of Death (select or type in)"
                            :items="causesOfDeath"
                         ></v-combobox>
-                  </v-text-field>
                </v-flex>
                <v-flex xs6 v-if="deceased">
                   <v-text-field

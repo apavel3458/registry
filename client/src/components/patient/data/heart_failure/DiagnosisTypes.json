@@ -1,0 +1,19 @@
+[
+   {
+      "diagnosisName": "Heart Failure",
+      "primary": true,
+      "details": [
+         {
+            "name": "NYHA",
+            "text": "NYHA (1-4)",
+            "type": "number"
+         },
+         {
+            "name": "type",
+            "text": "Type",
+            "type": "autocomplete string",
+            "options": ["Ischemic", "Non-Ischemic", "Mixed"]
+         }
+      ]
+   }
+]

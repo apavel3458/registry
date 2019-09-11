@@ -1,0 +1,83 @@
+[
+   {
+      "imagingName": "CMR",
+      "visibleDetail": "LGE",
+      "details": [
+         {
+            "name": "LVEDVolumeIndex",
+            "text": "LVED Volume Index",
+            "type": "number"
+         }, 
+         {
+            "name": "RVEF",
+            "text": "RV EF %",
+            "type": "number"
+         }, 
+         {
+            "name": "LGE",
+            "text": "LGE",
+            "type": "boolean"
+         }
+      ]
+   },
+   {
+      "imagingName": "Echo",
+      "visibleDetail": "RVFunction",
+      "details": [
+         {
+            "name": "RMWA",
+            "text": "Regional WMA",
+            "type": "boolean"
+         },
+         {
+            "name": "RVFunction",
+            "text": "RV Function",
+            "type": "autocomplete string",
+            "options": ["Normal", "Mild", "Moderate", "Severe"]
+         },
+         {
+            "name": "TR",
+            "text": "TR",
+            "type": "autocomplete string",
+            "options": ["Normal", "Mild", "Moderate", "Severe"]
+         },
+         {
+            "name": "MR",
+            "text": "MR",
+            "type": "autocomplete string",
+            "options": ["Normal", "Mild", "Moderate", "Severe"]
+         },
+         {
+            "name": "LVEDD",
+            "text": "LV End Diastolic Dimension",
+            "type": "number"
+         },
+         {
+            "name": "LAVolumeIndex",
+            "text": "LA Volume Index",
+            "type": "number"
+         }
+      ]
+   },
+   {
+      "imagingName": "PET",
+      "visibleDetail": "FDGUptakeFocal",
+      "details": [
+         {
+            "name": "FDGUptakeDiffuse",
+            "text": "FDG Uptake Diffuse",
+            "type": "boolean"
+         },
+         {
+            "name": "FDGUptakeFocal",
+            "text": "FDG Uptake Focal",
+            "type": "boolean"
+         },
+         {
+            "name": "perfusionDefect",
+            "text": "Perfusion Defect",
+            "type": "boolean"
+         }
+      ]
+   }
+]

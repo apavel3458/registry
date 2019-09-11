@@ -107,7 +107,6 @@ export default {
     data() {
         return {
             groups: [],
-            loading: false,
             newGroup: {
                 groupName: ''
             },
@@ -121,7 +120,6 @@ export default {
     },
     methods: {
         async addGroup() {
-            this.loading= true;
             const newGroupReturn = await AdminUserService.addGroup(this.newGroup)
             if (newGroupReturn.error) {
                 //alert(newGroupReturn.error)
@@ -130,7 +128,6 @@ export default {
                 this.newGroup = {groupName: ''}
                 this.$emit('updateGroup', this.groups)
             }
-            this.loading=false;
             this.addGroupDialog = false
         },
         async removeFromGroup(group, user) {
@@ -153,13 +150,13 @@ export default {
     },
     
     async mounted() {
-        if (this.groups.length == 0) {
-            this.groups = await AdminUserService.groups({
-                params: {
-                    eager: '[users]'
-                }
-            })
-        }
+        this.loading = true
+        this.groups = await AdminUserService.groups({
+            params: {
+                eager: '[users]'
+            }
+        })
+        this.loading = false
     }
     
 }

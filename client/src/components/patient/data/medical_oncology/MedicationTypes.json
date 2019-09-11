@@ -1,0 +1,57 @@
+[
+   {
+      "medicationName": "Chemotherapy",
+      "visibleDetail": "chemoAgent",
+      "details": [
+         {
+            "name": "chemoAgent",
+            "text": "Chemo Agent",
+            "required": true,
+            "options": ["FEC-D", "Taxel", "Cyclosporin", "Other"],
+            "type": "autocomplete string"
+         }
+      ]
+   },
+   {
+      "medicationName": "Herceptin",
+      "visibleDetail": "change",
+      "details": [
+         {
+            "name": "change",
+            "text": "What happened?",
+            "required": true,
+            "options": ["Completed", "Stopped", "Restarted", "Ongoing"],
+            "type": "autocomplete string"
+         },
+         {
+            "name": "cycles",
+            "text": "# Cycles",
+            "required": true,
+            "options": ["Completed", "Stopped", "Restarted"],
+            "type": "number"
+         }
+      ]
+   },
+   {
+      "medicationName": "ACE/ARB",
+      "visibleDetail": "pretreatment",
+      "details": [
+         {
+            "name": "pretreatment",
+            "text": "Pre-treatment",
+            "type": "boolean"
+         }
+      ]
+   },
+   {
+      "medicationName": "Beta Blocker",
+      "visibleDetail": "pretreatment",
+      "details": [
+         {
+            "name": "pretreatment",
+            "text": "Pre-treatment",
+            "type": "boolean"
+         }
+      ]
+   }
+]

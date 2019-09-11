@@ -22,6 +22,7 @@
             :items="users"
             :search="search"
             class="userTable"
+            :loading="loading"
             >
 
             <template v-slot:headerCell="props" class="pa-0">
@@ -147,8 +148,9 @@ export default {
                 { text: 'Last Login', value: 'lastLogin', align: 'center', hide: 'smAndDown'},
                 { text: 'Active?', value: 'active', align: 'center', width: 20},
                 { text: 'Actions', value: 'actions', align: 'center'}
-            ]//,
+            ],//,
             //rowsPerPage: [10,20,25, {"text":"$vuetify.dataIterator.rowsPerPageAll","value":-1}]
+            loading: false
         }
     },
     computed: {
@@ -216,12 +218,14 @@ export default {
             this.dialog = true
         },
         async loadData() {
+            this.loading = true
             this.users = await AdminUserService.index({
                 params: {
                     eager: `[usergroups]`
                 }
                 })
             this.groups = await AdminUserService.groups({params: {eager: 'users'}})
+            this.loading = false
         },
 
 

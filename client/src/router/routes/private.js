@@ -1,6 +1,7 @@
 import Patient from '@/components/patient/Patient'
 import UserOptions from '@/components/user/UserOptions'
 import Reports from '@/components/report/Reports'
+import RegistrySelect from '@/components/RegistrySelect'
 
 const routes = [
     // {
@@ -10,9 +11,13 @@ const routes = [
     // }
       {
         path: '/registry',
-        redirect: '/registry/1',
         name: 'home',
         component: Patient
+      },
+      {
+        path: '/registryselect',
+        name: 'registryselect',
+        component: RegistrySelect
       },
       {
         path: '/registry/:registryId',
@@ -44,7 +49,7 @@ const routes = [
 export default routes.map(route => {
     return {...route, meta: 
         {
-            private: true,
+            authenticated: true,
             admin: false
         }}
 })

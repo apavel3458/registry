@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md text-xs-center>
-    <v-layout row wrap>
-      <v-flex xs12 sm8 offset-sm2>
+    <v-row justify="center">
+      <v-col xs="12" sm="8" md="6">
           <panel title="Register New User">
                 <v-flex xs12 sm12 md10 offset-md1>
                   <v-form name="registrationForm" ref="registrationForm" autocomplete="off">
@@ -45,46 +45,51 @@
                       autocomplete="new-password"
                       v-model="user.password">
                     </v-text-field>
-                    <div class="center mt-2">
+                    <div class="text-center mt-2 mx-auto">
                       <vue-recaptcha
                         ref="recaptcha"
                         @verify="onVerify"
                         @expired="onExpired"
+                        class="mx-auto"
                         :sitekey="sitekey">
                       </vue-recaptcha>
                     </div>
-
-                    <v-alert
-                      :value="successMessage"
-                      color="success"
-                      icon="check_circle"
-                      outlined
-                    >
-                      {{successMessage}}
-                    </v-alert>
-                    <v-alert
-                      :value="errorMessage"
-                      color="error"
-                      icon="warning"
-                      outlined
-                    >
-                      {{errorMessage}}
-                    </v-alert>
+                    <div class="mt-2">
+                      <v-alert
+                        :value="successMessage"
+                        color="success"
+                        icon="mdi-check-circle"
+                        dense text
+                      >
+                        {{successMessage}}
+                      </v-alert>
+                      <v-alert
+                        :value="errorMessage"
+                        color="error"
+                        icon="mdi-alert"
+                        dense text
+                      >
+                        {{errorMessage}}
+                      </v-alert>
+                    </div>
                     <div class="center">
-                      <v-btn color="info" @click="register" class="mt-2">Register</v-btn>
+                      <v-btn color="info" @click="register" class="mt-2 mr-3"><v-icon>mdi-account-box</v-icon> Register</v-btn>
+                      <v-btn color="" :to="{name:'login'}" class="mt-2"><v-icon>mdi-login-variant</v-icon> Back to Login</v-btn>
                     </div>
                   </v-form>
                 </v-flex>                
           </panel>
 
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
 import VueRecaptcha from 'vue-recaptcha';
+import siteConfig from '@/config/config.js'
+
 export default {
   name: 'HelloWorld',
   data () {
@@ -98,7 +103,7 @@ export default {
       },
       errorMessage: null,
       successMessage: null,
-      sitekey: '6LejLpgUAAAAAG0OivRXLro19nNSy0wUe94qgiJw',
+      sitekey: siteConfig.google.recaptchaSiteKey,
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+/.test(v) || 'E-mail must be valid'
@@ -109,6 +114,8 @@ export default {
   methods: {
     async register () {
         if (!this.$refs.registrationForm.validate()) return
+        this.errorMessage = null
+        this.successMessage = null
         await AuthenticationService.register(this.user)
         .then(async response => {
             if (response.successMessage) {
@@ -122,6 +129,7 @@ export default {
             }
         }).catch(err => {
             //console.log(err)
+            this.$refs.recaptcha.reset()
             if (err.response.status == 400) {
               this.errorMessage = err.response.data.error
             } else {

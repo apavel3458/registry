@@ -3,18 +3,22 @@
       "registryName": "Sarcoidosis",
       "prefix": "sa",
       "shortName": "sarcoidosis",
-      "color": "green"
+      "color": "green",
+      "imageURI": "@/assets/Herceptin.jpg"
    },
    {
       "registryName": "Medical Oncology",
       "prefix": "onc",
       "shortName": "medical_oncology",
-      "color": "red"
+      "color": "red",
+      "imageURI": "@/assets/Herceptin.jpg"
    },
    {
       "registryName": "Heart Failure",
       "prefix": "hf",
       "shortName": "heart_failure",
-      "color": "blue"
+      "color": "blue",
+      "imageURI": "@/assets/HeartFailure.jpg",
+      "active": false
    }
 ]

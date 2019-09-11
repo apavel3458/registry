@@ -32,6 +32,11 @@ export default () => {
     }, 
     function (error) {
       const method = error.config.method.toUpperCase() + ' /' + error.config.url.replace(error.config.baseURL, '')
+      //console.log(JSON.stringify(error))
+      if (!error.response) {
+        error.error = "Unable to contact server"
+        return Promise.reject(error)
+      }
       switch (error.response.status) {
         case 401:
             return notAuthenticated(error)

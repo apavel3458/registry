@@ -1,0 +1,41 @@
+[
+   {
+      "diagnosisName": "Breast Cancer",
+      "primary": true,
+      "details": [
+         {
+            "name": "extent",
+            "text": "Extent",
+            "type": "autocomplete string",
+            "required": true,
+            "options": ["Localized", "Metastatic"]
+         },
+         {
+            "name": "herceptinStudy",
+            "text": "Herceptin Study Group?",
+            "type": "boolean"
+         },
+         {
+            "name": "herceptinStudyDate",
+            "text": "Herceptin Study Enrollment Date (YYYY-MM-DD)",
+            "type": "date"
+         },
+
+         {
+            "name": "recurrence",
+            "text": "Recurrence?",
+            "type": "boolean"
+         },
+         {
+            "name": "hypertension",
+            "text": "Hypertension?",
+            "type": "boolean"
+         }, 
+         {
+            "name": "DM",
+            "text": "Diabetes?",
+            "type": "boolean"
+         }
+      ]
+   }
+]

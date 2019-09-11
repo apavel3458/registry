@@ -14,6 +14,8 @@
             </v-toolbar>
             <v-select
                v-model="selectedRegistry" :items="registryList" item-text="registryName"
+               @focus="$router.push({name: 'registryselect'})"
+               
                height="25"
                return-object label="Registry"
                prepend-icon="mdi-database-refresh"
@@ -85,9 +87,6 @@
          </v-btn>
       </v-card>
 
-      <error-handling :error.sync="error" :message.sync="message"></error-handling>
-
-
    </div>
 </template>
 
@@ -95,16 +94,14 @@
 import _ from 'lodash'
 import { mapState } from 'vuex'
 import PatientMixin from '@/util/PatientMixin'
-import ErrorHandling from '@/components/globals/ErrorHandling'
 import RegistryService from '@/services/RegistryService'
 
 
 export default {
    components: {
       'PatientBarEdit': () => import('./PatientBarEdit'),
-      'PatientBarInfo': () => import('./PatientBarInfo'),
-      ErrorHandling
-      },
+      'PatientBarInfo': () => import('./PatientBarInfo')
+   },
    mixins: [PatientMixin],
    data() {
       return {

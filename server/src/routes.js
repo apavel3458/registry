@@ -38,7 +38,7 @@ module.exports = (app) => {
 
     app.get('/registry',
             AuthFilter,
-            RegistryController.registryList)
+            RegistryController.registryListUser)
 
     app.put('/registry/patient/:id/update',
             AuthFilter,
@@ -112,7 +112,7 @@ module.exports = (app) => {
         AuthFilter,
         UserController.updateGroup)
 
-    app.put('/user/changepw',
+    app.put('/user/options',
         AuthFilter,
-        UserController.changepw)
+        UserController.updateUserOptions)
 }

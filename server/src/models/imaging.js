@@ -45,7 +45,7 @@ class Imaging extends Model {
         EF: { type: 'float' },
         EFtext: { type: ['string', 'number'], minLength: 1, maxLength: 255 },
         comments: { type: 'string' },
-        visibleDetail: { type: 'string' },
+        visibleDetail: { type: ['string','number',null] },
         details: { type: 'object' },
         patient: { type: 'object' },
         patientId: { type: 'integer', required: true}

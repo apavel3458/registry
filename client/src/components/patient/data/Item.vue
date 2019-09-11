@@ -121,6 +121,7 @@
         must-sort
         :options.sync="options"
         :search="searchText"
+        :loading="loading"
       >
         <template v-slot:item="props">
           <tr @click="!expanded.length||expanded[0]!=props.item?expanded = [props.item]:expanded = []">
@@ -136,8 +137,7 @@
           </tr>
         </template>
         <template v-slot:no-data>
-          No items found.  Click <v-btn dark fab small color="green lighten-2"
-                                                @click="dialog=true">
+          No items found.  Click <v-btn dark fab x-small color="green lighten-2" @click="dialog=true">
                                                 <v-icon>mdi-plus</v-icon>
                                               </v-btn> to add an item.
         </template>
@@ -174,17 +174,6 @@
       <v-icon v-if="searchDialog">mdi-magnify-close</v-icon>
       <v-icon v-else>mdi-magnify</v-icon>
     </v-btn>
-
-    <v-snackbar
-      v-model="snackbar"
-      color="error"
-      :timeout="3000">
-      {{ snackbarMessage }}
-      <!-- <v-btn dark text
-        @click="snackbar = false">
-        Close
-      </v-btn> -->
-    </v-snackbar>
   </div>
 </template>
 
@@ -192,7 +181,7 @@
 
 import _ from 'lodash'
 import RegistryPatientDataService from '@/services/RegistryPatientDataService'
-import {mapState} from 'vuex'
+import {mapState, mapMutations} from 'vuex'
 
 export default {
   props: [
@@ -222,13 +211,12 @@ export default {
       itemTypes: [],
       itemTypeName: '',
       itemFormValid: false,
-      snackbar: false,
-      snackbarMessage: 'ERROR',
       rules: {
         required: value => !!value || 'Required'
       },
       searchText: null,
-      searchDialog: false
+      searchDialog: false,
+      loading: false
     }
   },
 
@@ -266,22 +254,27 @@ export default {
     }
   },
 
-  created() {
+  mounted() {
     this.initialize(this.patient.id);
   },
 
   methods: {
+    ...mapMutations({
+          showError: 'messaging/showError',
+          showSuccess: 'messaging/showSuccess'
+    }),
     async initialize(id) {
       this.itemTypes = this.typesJson
       this.itemTypeName = this.itemType + "Name"
+      this.loading = true
       if (id) {
-        RegistryPatientDataService.itemGet(id, this.itemType)
+        await RegistryPatientDataService.itemGet(id, this.itemType)
                   .then((reply) => {
                       this.studies = reply
                   }).catch((err) => {
-                     err.response.status == 400 && err.response.data.error
-                        && alert(err.response.data.error)
+                     this.showError(err)
                   })
+        this.loading = false
       }
       if (this.sortByP) this.options.sortBy.push(this.sortByP)
     },
@@ -310,10 +303,13 @@ export default {
       this.editedIndex = this.studies.indexOf(item);
       if (!item.details || Array.isArray(item.details)) item.details = {} //remove null values, which mess this up
       this.editedItem = _.merge(_.assign({},this.defaultItem), item) //copy to default
-                                
-      this.editedItem.details = _.pick(this.editedItem.details, 
-                                this.itemTypes.find(t => t[this.itemTypeName] == item[this.itemTypeName])
-                                .details.map(x => {return x.name}))
+
+      const itemTypeFound = this.itemTypes.find(t => t[this.itemTypeName] == item[this.itemTypeName])
+      
+      if (itemTypeFound)
+        this.editedItem.details = _.pick(this.editedItem.details, 
+                                itemTypeFound.details.map(x => {return x.name}))
+
       //console.log(JSON.stringify(this.editedItem))
       this.dialog = true;
     },
@@ -321,12 +317,13 @@ export default {
     async deleteItem(item) {
       const index = this.studies.indexOf(item);
       if(confirm("Are you sure you want to delete this " + this.itemType + " item?")) {
-        const reply = await RegistryPatientDataService.itemDelete(item, this.itemType)
-        if (reply.error) {
-          this.error = reply.error
-        } else { //assume successful
-          this.studies.splice(index, 1);
-        }
+        await RegistryPatientDataService.itemDelete(item, this.itemType)
+            .then(() => {
+              this.studies.splice(index, 1);
+              this.showSuccess("Successfully deleted item")
+            }).catch(err => {
+              this.showError(err)
+            })
       }
     },
 
@@ -340,8 +337,7 @@ export default {
 
     async save() {
       if (!this.$refs.itemForm.validate()) {
-        this.snackbarMessage = "Please ensure the information is filled out correctly"
-        this.snackbar = true
+        this.showError("Please ensure the information is filled out correctly")
         return
       }
       this.editedItem.patientId = this.patient.id
@@ -353,22 +349,22 @@ export default {
       this.$emit('preSave', this.editedItem)
 
       if (this.editedIndex > -1) { //edited item
-        //console.log(this.editedItem.visibleDetail)
         await RegistryPatientDataService.itemPut(this.editedItem, this.itemType)
                   .then((reply) => {
                     Object.assign(this.studies[this.editedIndex], reply);
+                    this.showSuccess("Successfully updated item")
                   })
                   .catch((err) => {
-                    alert(err) 
+                    this.showError(err)
                   })
         
       } else { //new item
         await RegistryPatientDataService.itemPost(this.editedItem, this.itemType)
                   .then((reply) => {
                       this.studies.push(reply);
+                      this.showSuccess("Successfully added item")
                   }).catch((err) => {
-                     err.response.status == 400 && err.response.data.error
-                        && alert(err.response.data.error)
+                      this.showError(err)
                   })
       }
       this.close();
@@ -410,8 +406,6 @@ export default {
         this.$nextTick(this.$refs.sech.focus)
       }
     }
-  },
-  mounted() { 
   }
 };
 </script>

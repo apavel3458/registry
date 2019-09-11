@@ -28,8 +28,8 @@ class Diagnosis extends Model {
         diagnosisName: { type: 'string', minLength: 1, maxLength: 255 },
         dateStart: { type: 'date'},
         dateEnd: { type: 'date' },
-        treatingPhysician: { type: 'string', minLength: 1, maxLength: 255 },
-        biopsyProven: { type: ['boolean', 'integer'] },
+        treatingPhysician: { type: ['string', null]},
+        biopsyProven: { type: ['boolean', 'integer', null] },
         comments: { type: 'string' },
         details: { type: 'object' },
         patient: { type: 'object'}

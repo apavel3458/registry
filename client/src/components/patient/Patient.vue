@@ -10,29 +10,31 @@
                 <patient-bar></patient-bar>
             </v-flex>
             <v-flex :class="{'patientData':$vuetify.breakpoint.smAndUp}" grow>
-                <patient-data v-if="patient" :componentP="dataComponent"></patient-data>
+                <patient-data v-if="patient" :is="registryComponents[$store.state.activeRegistry.shortName]" :componentP="dataComponent"></patient-data>
                 <patient-list v-else> </patient-list>
             </v-flex>
             </v-layout>
             
         </v-container>
-        <messaging></messaging>
     </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex'
 import PatientBar from './PatientBar'
-import PatientData from './PatientData'
+import PatientDataSarcoidosis from './data/sarcoidosis/PatientData'
+import PatientDataMedicalOncology from './data/medical_oncology/PatientData'
+import PatientDataHeartFailure from './data/heart_failure/PatientData'
+//import PatientDataHeartFailure from './data/sarcoidosis/PatientData'
 import PatientList from './PatientList'
-import Messaging from '@/components/util/Messaging'
 
 export default {
-    components: {PatientBar, PatientData, PatientList, Messaging},
+    components: {PatientBar, PatientList, PatientDataSarcoidosis, PatientDataMedicalOncology},
     data() {
         return {
             search: null,
             dataComponent: 'diagnosis',
+            registryComponents: {'sarcoidosis': PatientDataSarcoidosis, 'medical_oncology': PatientDataMedicalOncology, 'heart_failure': PatientDataHeartFailure}
         }
     },
     watch: {
@@ -91,11 +93,12 @@ export default {
     async created() {
         if (this.$route.params.registryId == null) {
             //this.showError("Error: Registry ID not set")
-            this.$router.push({  name: 'registry', params: { registryId: 1 } })
+            this.$router.push({  name: 'registryselect' })
         } else {
             this.setRegistry(this.$route.params.registryId)
         }
         this.dataComponent = this.$route.params.component
+        //PatientData = import('./data/medical_oncology/PatientData')
     }
 }
 </script>

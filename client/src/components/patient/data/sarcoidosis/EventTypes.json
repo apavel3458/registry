@@ -7,8 +7,13 @@
             "name": "reason",
             "text": "Reason",
             "required": true,
-            "options": ["Heart Failure", "Arrhythmia"],
-            "type": "combobox string"
+            "options": ["Heart Failure", "Arrhythmia", "Syncope", "Other"],
+            "type": "autocomplete string"
+         },
+         {
+            "name": "lengthOfStay",
+            "text": "Length of Stay (days)",
+            "type": "number"
          }
       ]
    },
@@ -16,11 +21,6 @@
       "eventName": "ER Visit",
       "visibleDetail": "reason",
       "details": [
-         {
-            "name": "lengthOfStay",
-            "text": "Length of Stay (days)",
-            "type": "number"
-         },
          {
             "name": "reason",
             "text": "Reason",

@@ -1,58 +1,84 @@
 <template>
-  <div>
-  <v-toolbar dense dark color="primary">
+<div class="d-print-none">
+  <v-app-bar 
+    color="#6A76AB"
+    dark
+    shrink-on-scroll
+    prominent
+    src="https://picsum.photos/1920/1080/?blur=10"
+    fade-img-on-scroll
+    v-if="isAuthenticated">
+    
+    <template v-slot:img="{ props }">
+        <v-img
+          v-bind="props"
+          gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
+        ></v-img>
+    </template>
+
     <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-    <v-toolbar-title class="white--text">
+    <v-toolbar-title>
       <span class="home" @click="navigateTo('root')">
-      Registry
+        <template v-if="$store.state.activeRegistry">
+          TzemosLabs - {{$store.state.activeRegistry.registryName}}
+        </template>
+        <template v-else>
+          Welcome to TzemosLabs
+        </template>
       </span>
     </v-toolbar-title>
 
     <v-spacer></v-spacer>
 
-    <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn
-            v-if="isAuthenticated"
-            text
-            dark
-            @click="navigateTo('home')">
-          Home
-        </v-btn>
-        <v-btn
-            v-if="isAuthenticated"
-            text
-            dark
-            @click="navigateTo('reports')">
-          Reports
-        </v-btn>
-        <v-btn
-            v-if="isAdmin"
-            text
-            dark
-            @click="navigateTo('admin-users')">
-          Users
-        </v-btn>
-        <v-btn
-          v-if="!isAuthenticated"
-            text
-            dark
-            @click="navigateTo('login')">
-          Login
-        </v-btn>
 
-      <v-btn icon
-        v-if="!$store.getters.isAuthenticated"
-        @click="navigateTo('register')">
-        <v-icon>mdi-account-box</v-icon>
-      </v-btn>
+    <v-tooltip bottom v-if="!isAuthenticated">
+      <template v-slot:activator="{ on }">
+        <v-btn v-on="on" icon dark @click="navigateTo('Login')">
+          <v-icon>mdi-account-box</v-icon>
+        </v-btn>
+      </template>
+      <span>Login</span>
+    </v-tooltip>
 
-      
-      <v-btn text dark v-if="$store.getters.isAuthenticated">
-        <v-icon>mdi-account-box</v-icon>
-        {{$store.state.user.firstName}} {{$store.state.user.lastName}} ({{$store.state.user.username}})
-      </v-btn>
-      </v-toolbar-items>
+    <!-- <v-card class="body-1 mt-2 pa-1" outlined color="rgba(169, 169, 169, 0.2)"
+      v-if="isAuthenticated">{{$store.state.user.firstName}} {{$store.state.user.lastName}} ({{$store.state.user.username}})</v-card> -->
+
+    <v-tooltip bottom v-if="isAuthenticated">
+      <template v-slot:activator="{ on }">
+        <v-btn v-on="on" icon dark @click="$router.push({name: 'registryselect'})">
+          <v-icon>mdi-database-refresh</v-icon>
+        </v-btn>
+      </template>
+      <span>Select Different Registry</span>
+    </v-tooltip>
+
+    <v-tooltip bottom v-if="isAuthenticated">
+      <template v-slot:activator="{ on }">
+        <v-btn v-on="on" icon dark @click="navigateTo('home')">
+          <v-icon>mdi-home-variant</v-icon>
+        </v-btn>
+      </template>
+      <span>Registry Home</span>
+    </v-tooltip>
+
+    <v-tooltip bottom v-if="isAdmin">
+      <template v-slot:activator="{ on }">
+        <v-btn v-on="on" color="red lighten-2" icon dark @click="navigateTo('admin-users')">
+          <v-icon>mdi-shield-check</v-icon>
+        </v-btn>
+      </template>
+      <span>User Management</span>
+    </v-tooltip>
+
+    <v-tooltip bottom v-if="isAuthenticated">
+      <template v-slot:activator="{ on }">
+        <v-btn v-on="on" icon dark @click="navigateTo('useroptions')">
+          <v-icon>mdi-settings</v-icon>
+        </v-btn>
+      </template>
+      <span>User Options</span>
+    </v-tooltip>
 
       <v-tooltip bottom v-if="isAuthenticated">
         <template v-slot:activator="{ on }">
@@ -65,7 +91,7 @@
         <span>Logout</span>
       </v-tooltip>
 
-      <v-menu offset-y>
+      <v-menu>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
                 <v-icon>mdi-dots-vertical</v-icon>
@@ -85,14 +111,26 @@
             <v-list-item-title>Register</v-list-item-title>
           </v-list-item>
           <v-list-item
+            v-if="isAuthenticated"
+            @click="$router.push({name: 'registryselect'})"
+          >
+            <v-list-item-title>Select Registry</v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            v-if="isAuthenticated && $store.state.activeRegistry"
+            @click="$router.push({name: 'home'})"
+          >
+            <v-list-item-title>{{$store.state.activeRegistry.registryName}} Home</v-list-item-title>
+          </v-list-item>
+          <v-list-item
             v-if="isAdmin"
             @click="$router.push({name: 'admin-users'})">
-            <v-list-item-title>User Management</v-list-item-title>
+            <v-list-item-title class="red--text">User Management</v-list-item-title>
           </v-list-item>
           <v-list-item
             v-if="isAuthenticated"
             @click="$router.push({name: 'useroptions'})">
-            <v-list-item-title>Change Password</v-list-item-title>
+            <v-list-item-title>User Settings</v-list-item-title>
           </v-list-item>
                     <v-list-item
             v-if="isAuthenticated"
@@ -101,15 +139,26 @@
           </v-list-item>
         </v-list>
       </v-menu>
-  </v-toolbar>
-</div>
+  </v-app-bar>
+  
+    <v-footer 
+      absolute padless height="30"
+      color="primary lighten-3 text-center white--text font-weight-light d-flex justify-space-around body-2">
+        <v-flex><strong>TzemosLabs</strong> - {{ new Date().getFullYear() }} 
+            <span v-if="$store.state.user"> - Logged in as: {{$store.state.user.firstName}} {{$store.state.user.lastName}} ({{$store.state.user.username}})</span>
+        </v-flex>
+    </v-footer>
+    <messaging v-show="isAuthenticated"></messaging>
+
+    </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
+import Messaging from '@/components/util/Messaging'
 
 export default {
-  components: {},
+  components: { Messaging },
   computed: {
     ...mapGetters([
       'isAuthenticated',

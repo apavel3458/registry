@@ -191,7 +191,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import DiagnosisTypes from "./sarcoidosis/DiagnosisTypes.json"
+import DiagnosisTypes from "./DiagnosisTypes.json"
 import RegistryPatientDataService from "@/services/RegistryPatientDataService"
 import _ from "lodash"
 

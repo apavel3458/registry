@@ -8,7 +8,8 @@ export default {
   setUser ({commit}, user) {
       commit('setUser', user)
   },
-  async init({dispatch}) {
+  async init({dispatch, commit}) {
+    commit('SET_ACTIVE_REGISTRY', null)
     await dispatch('fetchRegistryList')
   },
 
@@ -36,10 +37,8 @@ export default {
 
   async fetchRegistryList ({commit}) {
       let registryList = await RegistryService.registryList()
-      registryList.map(x => x.registryName==='Medical Oncology'?x.disabled=true:x)
-      registryList.map(x => x.registryName==='Heart Failure'?x.disabled=true:x)
       commit('SET_REGISTRY_LIST', registryList)  //may not need to store list
-      commit('SET_ACTIVE_REGISTRY', registryList[0])
+      //commit('SET_ACTIVE_REGISTRY', registryList[0])
       return registryList
   },
 

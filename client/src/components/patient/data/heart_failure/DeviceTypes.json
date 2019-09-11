@@ -1,0 +1,40 @@
+[
+   {
+      "deviceName": "Pacemaker",
+      "visibleDetail": "mode",
+      "details": [
+         {
+            "name": "mode",
+            "text": "Mode",
+            "required": true,
+            "options": ["VVI", "DDD", "AAI"],
+            "type": "autocomplete string"
+         }
+      ]
+   },
+   {
+      "deviceName": "ICD",
+      "visibleDetail": "type",
+      "details": [
+         {
+            "name": "type",
+            "text": "Type",
+            "options": ["Single Chamber", "Dual Chamber"],
+            "type": "autocomplete string"
+         }
+      ]
+   },
+   {
+      "deviceName": "CRT",
+      "visibleDetail": "type",
+      "details": [
+         {
+            "name": "type",
+            "text": "Type",
+            "required": true,
+            "options": ["CRT-P", "CRT-D"],
+            "type": "autocomplete string"
+         }
+      ]
+   }
+]

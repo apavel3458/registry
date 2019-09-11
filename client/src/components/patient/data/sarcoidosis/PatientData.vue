@@ -23,11 +23,11 @@ import { mapState } from 'vuex'
 
 export default {
     components: {
-        'Imaging': () => import(`./data/sarcoidosis/Imaging`),
-        'Diagnosis': () => import('./data/Diagnosis'),
-        'Events': () => import('./data/sarcoidosis/Events'),
-        'Medications': () => import('./data/sarcoidosis/Medications'),
-        'Devices': () => import('./data/sarcoidosis/Devices'),
+        'Imaging': () => import(`./Imaging`),
+        'Diagnosis': () => import('./Diagnosis'),
+        'Events': () => import('./Events'),
+        'Medications': () => import('./Medications'),
+        'Devices': () => import('./Devices'),
     },
     props: ['componentP'],
     data() {
@@ -59,6 +59,9 @@ export default {
                 {return x.toUpperCase() === val.toUpperCase()})
             }
         }
+    },
+    created() {
+
     },
     mounted() {
         this.setComponent(this.componentP)
