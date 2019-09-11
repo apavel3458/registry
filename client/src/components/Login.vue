@@ -27,7 +27,7 @@
                   </v-text-field>
                 <v-alert dense type="error" v-if="error" class="text-center">{{error}} </v-alert>
                 <div class="text-center">
-                  <v-btn @click.prevent="login()" :loading="loading" color="info">Login</v-btn>
+                  <v-btn @click.prevent="login()" :loading="loading" :disabled="loading" color="info">Login</v-btn>
                 </div>
           </div>
           </v-form>
@@ -58,6 +58,7 @@ export default {
   components: {},
   methods: {
     async login () {
+      this.loading = true
       await AuthenticationService.login({
         username: this.username,
         password: this.password
