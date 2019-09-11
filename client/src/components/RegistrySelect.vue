@@ -66,8 +66,8 @@ export default {
     },
     methods: {
         getImage(item) {
-            //return require(`@/assets/${item.shortName}.jpg`)
-            return 'https://photricity.com/flw/ajax/'
+            return require(`@/assets/${item.shortName}.jpg`)
+            //return 'https://photricity.com/flw/ajax/' //infinite loading for testing
         }
     },
     async created() {
