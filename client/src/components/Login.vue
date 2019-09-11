@@ -27,7 +27,7 @@
                   </v-text-field>
                 <v-alert dense type="error" v-if="error" class="text-center">{{error}} </v-alert>
                 <div class="text-center">
-                  <v-btn @click.prevent="login()" :loading="loading" :disabled="loading" color="info">Login</v-btn>
+                  <v-btn @click.prevent="login()" :loading="loading" color="info">Login</v-btn>
                 </div>
           </div>
           </v-form>
@@ -64,13 +64,13 @@ export default {
         password: this.password
       })
         .then(async (response) =>  {
+          await this.loginSuccess(response)
           this.loading = false
-          this.loginSuccess(response)
         }).catch((err) => {
-          this.loading = false
           // eslint-disable-next-line no-console
           console.log(JSON.stringify(err))
           this.error = this.processError(err)
+          this.loading = false
         })
     },
     async loginSuccess({token, user}) {      
