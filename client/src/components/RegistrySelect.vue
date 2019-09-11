@@ -26,7 +26,7 @@
                         :src="getImage(item)"
                         height="200px"
                     >
-                            <template v-slot:placeholder>
+                            <!-- <template v-slot:placeholder>
                                 <v-row
                                 class="fill-height ma-0"
                                 align="center"
@@ -34,7 +34,7 @@
                                 >
                                 <v-progress-circular indeterminate color="grey" :size="50"></v-progress-circular>
                                 </v-row>
-                            </template>
+                            </template> -->
                     </v-img>
                     <!-- <v-fade-transition>
                         <div
@@ -55,18 +55,24 @@
 </template>
 
 <script>
+import sarcoidosis from '@/assets/sarcoidosis.jpg'
+import medical_oncology from '@/assets/medical_oncology.jpg'
+import heart_failure from '@/assets/heart_failure.jpg'
 export default {
     data() {
         return {
             registries: [
-                //{ title: 'Sarcoidosis', imageURI: require('@/assets/Sarcoidosis.jpg'), registryId: 1},
-                //{ title: 'Medical Oncology', imageURI: require('@/assets/Herceptin.jpg'), registryId: 2}
+                { shortName: 'sarcoidosis', image: sarcoidosis},
+                { shortName: 'medical_oncology', image: medical_oncology},
+                { shortName: 'heart_failure', image: heart_failure}
             ]
         }
     },
     methods: {
         getImage(item) {
-            return require(`@/assets/${item.shortName}.jpg`)
+            const found = this.registries.find(r=>{return item.shortName == r.shortName})
+            return found.image
+            //return require(`@/assets/${item.shortName}.jpg`)
             //return 'https://photricity.com/flw/ajax/' //infinite loading for testing
         }
     },
