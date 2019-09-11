@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 //const Components = ['../models/diagnosis.js', '../models/imaging.js'].map(require)
 
+const Patient = require('../models/patient')
+
 const components = ['diagnosis', 'imaging', 'event', 'medication', 'device']
 
 function findComponent(query) {
@@ -17,79 +19,21 @@ function getSignature(user) {
 }
 
 module.exports = {
-   // async imagingPost(req, res) {
-   //    try {
-   //       let imaging = req.body
-   //       imaging.patientId = parseInt(req.params.id)
 
-   //       console.log(imaging)
-   //       const result = await Imaging.query()
-   //              .insert(imaging)
-   //       console.log(result)
-   //       return res.send(result)
-   //    } catch (err) {
-   //       console.log(err)
-   //       return res.status(500).send({
-   //          error: 'An error has occured while trying to add imaging study.'
-   //      })
-   //    }
-   // },
+   async patientGetAll(req, res) {
+      try {
+         const id = req.params.id
 
-   // async imagingGet(req, res) {
-   //    try {
-   //       const patientId = parseInt(req.params.id)
-   //       console.log(patientId)
-   //       const result = await Imaging.query()
-   //                .where('patientId', patientId)
-   //       console.log(result)
-   //       return res.send(result)
-   //    } catch (err) {
-   //       console.log(err)
-   //       return res.status(500).send({
-   //          error: 'An error has occured while trying to get imaging study.'
-   //      })
-   //    }
-   // },
-
-   // async imagingPut(req, res) {
-   //    try {
-   //       let imaging = req.body
-   //       imaging.patientId = parseInt(req.params.id)
-   //       console.log(imaging)
-   //       const result = await Imaging.query()
-   //             .patchAndFetchById(imaging.id, imaging)
-   //       console.log(result)
-   //       return res.send(result)
-   //    } catch (err) {
-   //       console.log(err)
-   //       return res.status(500).send({
-   //          error: 'An error has occured while trying to update imaging study.'
-   //      })
-   //    }
-   // },
-
-   // async imagingDelete(req, res) {
-   //    try {
-   //       //const patientId = req.params.id
-   //       const imagingId = req.params.imagingid
-   //       console.log(imagingId)
-   //       const result = ''
-   //       // const result = await Imaging.query()
-   //       //       .deleteById(imagingId)
-   //       return res.send({
-   //          message: 'success',
-   //          deleted: result
-   //       })
-   //    } catch (err) {
-   //       console.log(err)
-   //       return res.status(500).send({
-   //          error: 'An error has occured while trying to delete imaging study.'
-   //      })
-   //    }
-   // },
-
-
-
+         const patient = await Patient.query().findById(id)
+            .eager('[registry, diagnosis, imaging, event, device]').first()
+         return res.send(patient)
+      } catch (err) {
+         console.log(err)
+         res.status(500).send({
+            error: 'An error occured while retrieving the patient'
+         })
+      }
+   },
    
    //------------ DIAGNOSIS METHODS-----------------
    async itemPost(req, res) {

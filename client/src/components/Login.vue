@@ -84,7 +84,7 @@ export default {
   mounted() {
     this.error = this.$route.params.error || ''
     this.url = this.$route.params.url || ''
-    this.$store.commit('logout')
+    this.$store.dispatch('logout')
     this.$refs.username.focus();
   }
 }

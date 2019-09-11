@@ -3,8 +3,6 @@
   <v-app-bar 
     color="#6A76AB"
     dark
-    shrink-on-scroll
-    prominent
     src="https://picsum.photos/1920/1080/?blur=10"
     fade-img-on-scroll
     v-if="isAuthenticated">
@@ -170,8 +168,7 @@ export default {
       this.$router.push({name: route})
     },
     logout () {
-      this.$store.dispatch('setToken', null)
-      this.$store.dispatch('setUser', null)
+      this.$store.dispatch('logout')
       this.$router.push({
         name: 'root'
       })

@@ -2,6 +2,7 @@
 <template>
    <item-block
       :typesJson="typesJson"
+      itemType="diagnosis"
       >
       <template v-slot:displayData="props">
          <v-list-item>

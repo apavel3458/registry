@@ -25,12 +25,19 @@
                         v-model="pt.firstName" autofocus>
                   </v-text-field>
                </v-flex>
-               <v-flex xs6 class="px-2">
+               <v-flex xs4 class="px-2">
                   <v-text-field
                         label="Last Name" type="text" required :rules="[() => !!pt.lastName || 'This field is required']"
                         prepend-icon="mdi-account"
                         v-model="pt.lastName">
                   </v-text-field>
+               </v-flex>
+               <v-flex xs2 class="px-2">
+                  <v-select
+                     :items="['M','F']"
+                     v-model="pt.gender"
+                     label="Gender"
+                  ></v-select>
                </v-flex>
                <v-flex xs6>
                   <v-text-field
@@ -107,6 +114,7 @@ export default {
             lastName: '',
             mrn: '',
             dob: '',
+            gender: '',
             deceasedDate: undefined,
             causeOfDeath: undefined
          },

@@ -45,6 +45,7 @@ class Patient extends Model {
         firstName: { type: 'string', minLength: 1, maxLength: 255 },
         mrn: { type: 'string', minLength: 1, maxLength: 255 },
         dob: { type: 'date' },
+        gender: {type: ['string', null]},
         deceasedDate: { type: ['date'], minLength: 1, maxLength: 255 },
         causeOfDeath: { type: ['string'], minLength: 1, maxLength: 255 },
         createdAt: { type: 'date' },
@@ -65,6 +66,14 @@ class Patient extends Model {
             to: 'registries.id'
             }
          },
+         diagnosis: {
+            relation: Model.HasManyRelation,
+            modelClass: __dirname + '/diagnosis',
+            join: {
+               from: 'patients.id',
+               to: 'diagnoses.patientId'
+            }
+         },
          imaging: {
             relation: Model.HasManyRelation,
             modelClass: __dirname + '/imaging',
@@ -72,7 +81,31 @@ class Patient extends Model {
                from: 'patients.id',
                to: 'imaging.patientId'
             }
-         }
+         },
+         medication: {
+            relation: Model.HasManyRelation,
+            modelClass: __dirname + '/medication',
+            join: {
+               from: 'patients.id',
+               to: 'medications.patientId'
+            },
+         },
+         event: {
+               relation: Model.HasManyRelation,
+               modelClass: __dirname + '/event',
+               join: {
+                  from: 'patients.id',
+                  to: 'events.patientId'
+               }
+         },
+         device: {
+            relation: Model.HasManyRelation,
+            modelClass: __dirname + '/device',
+            join: {
+               from: 'patients.id',
+               to: 'devices.patientId'
+            }
+      }
       }
    }
 }

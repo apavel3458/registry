@@ -12,6 +12,9 @@ export default {
     commit('SET_ACTIVE_REGISTRY', null)
     await dispatch('fetchRegistryList')
   },
+  logout({commit}) {
+    commit('LOGOUT')
+  },
 
   setActivePatient ({commit}, patient) {
       commit('SET_ACTIVE_PATIENT', patient)
@@ -43,20 +46,26 @@ export default {
   },
 
   async loadPatient(context, id) {
-      if (id && id != '')
+      if (id)
         router.push({name:'patient', params:{patientId: id}}) //if id is set, then go to ID
       else {
         id = router.currentRoute.params.patientId  //if id is not set then extract ID from URL
+        if (!id) {
+          context.commit('SET_ACTIVE_PATIENT', null)
+          router.push({name: 'registryselect'})
+          return
+        }
       }
       
-      if (id && id != '') {
-        let activePatient = await RegistryService.patient(id)
-        context.commit('SET_ACTIVE_PATIENT', activePatient)
-
-        //ensure active registry is patient's registry
-        if (activePatient.registryId != context.state.activeRegistry.id) context.commit('SET_ACTIVE_REGISTRY', activePatient.registry)
+      //by this point ID should be set
+      let activePatient = await RegistryService.patientAllData(id)
+      if (activePatient.registryId != context.state.activeRegistry.id) {
+        //if patient doesn't match active registry, abort all
+        context.commit('SET_ACTIVE_PATIENT', null)
+        router.push({name: 'registryselect'})
+        return
       } else {
-        context.commit('SET_ACTIVE_PATIENT', null) //if no ID found anywhere, then set it to null and take to nome page. 
+        context.commit('SET_ACTIVE_PATIENT', activePatient)
       }
       return context.activePatient
   },

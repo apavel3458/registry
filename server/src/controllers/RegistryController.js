@@ -26,7 +26,6 @@ module.exports = {
          const registryId = req.query.registryId
          const sortBy = req.query.sortBy
          const descending = (req.query.descending=='true')?'desc':'asc'
-         console.log("descending: " + descending)
          const result = await Patient
             .query()
             .skipUndefined()
@@ -167,13 +166,11 @@ async patientDelete(req, res) {
   async registryListUser(req, res) {
    try {
       const groupMemberships = req.user.usergroups.map(x=>x.groupName)
-      console.log(groupMemberships)
       const registryList = await Registry.query()
           .select('registries.*', Registry.relatedQuery('patients').count().as('registrySize'))
             .whereIn('registries.registryName', groupMemberships)
             .andWhere('active', true)
             
-      console.log(registryList)
       return res.send(registryList)
    } catch (err) {
        console.log(err)

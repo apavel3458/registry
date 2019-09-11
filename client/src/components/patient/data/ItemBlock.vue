@@ -4,7 +4,7 @@
   <v-container fluid grid-list-md pa-0>
      <v-layout align-start justify-space-around row fill-height>
     <v-data-iterator
-      :items="diagnoses"
+      :items="items"
       hide-default-footer
       :loading="loading"
       row
@@ -135,13 +135,13 @@ import RegistryPatientDataService from "@/services/RegistryPatientDataService"
 import _ from "lodash"
 
 export default {
-    props: ['typesJson'],
+    props: ['typesJson', 'itemType'],
     data() {
         return {
             dialog: false,
             editedIndex: -1,
             editedItem: {},
-            diagnoses: [],
+            items: [],
             defaultItem: {
                   diagnosisName: null,
                   details: {}
@@ -159,16 +159,16 @@ export default {
             this.editedIndex = -1;
          }
       },
-      async patient() {
-         this.loading = true
-         await RegistryPatientDataService.diagnosisGet(this.patient.id)
-         .then(reply => {
-            this.diagnoses = reply
-         }).catch(err => {
-            this.showError(err)
-         })
-         this.loading = false
-      }
+      // async patient() {
+      //    this.loading = true
+      //    await RegistryPatientDataService.diagnosisGet(this.patient.id)
+      //    .then(reply => {
+      //       this.items = reply
+      //    }).catch(err => {
+      //       this.showError(err)
+      //    })
+      //    this.loading = false
+      // }
    },
    computed: {
       formTitle() {
@@ -189,7 +189,7 @@ export default {
             showSuccess: 'messaging/showSuccess'
       }),
       editItem(item) {
-         this.editedIndex = this.diagnoses.indexOf(item);
+         this.editedIndex = this.items.indexOf(item);
          if (!item.details || Array.isArray(item.details)) item.details = {} //remove null values, which mess this up
          this.editedItem = _.merge(_.assign({},this.defaultItem), item) //copy to default
          this.dialog = true;
@@ -203,7 +203,7 @@ export default {
          if (this.editedIndex > -1) { //edited itemv
             await RegistryPatientDataService.diagnosisPut(this.editedItem)
                      .then((reply) => {
-                        Object.assign(this.diagnoses[this.editedIndex], reply)
+                        Object.assign(this.items[this.editedIndex], reply)
                         this.showSuccess("Record updated successfully")
                      })
                      .catch((err) => {
@@ -213,7 +213,7 @@ export default {
          } else { //new item
             await RegistryPatientDataService.diagnosisPost(this.editedItem)
                      .then((reply) => {
-                        this.diagnoses.push(reply);
+                        this.items.push(reply);
                         this.showSuccess("Record added successfully")
                      }).catch((err) => {
                         this.showError(err)
@@ -222,11 +222,11 @@ export default {
          this.dialog = false
       },
       async deleteItem(item) {
-       const index = this.diagnoses.indexOf(item)
+       const index = this.items.indexOf(item)
        if (!confirm(`Are you sure you want to delete '${item.diagnosisName}' diagnosis?`)) return
        RegistryPatientDataService.diagnosisDelete(item)
             .then(() => {
-               this.diagnoses.splice(index, 1)
+               this.items.splice(index, 1)
                this.showSuccess("Record deleted successfully")
             }).catch((err) => {
                this.showError(err)
@@ -243,14 +243,15 @@ export default {
       
    },
    async created() {
-      this.loading = true
-      await RegistryPatientDataService.diagnosisGet(this.patient.id)
-         .then(reply => {
-            this.diagnoses = reply
-         }).catch(err => {
-            this.showError(err)
-         })
-      this.loading = false
+      // this.loading = true
+      // await RegistryPatientDataService.diagnosisGet(this.patient.id)
+      //    .then(reply => {
+      //       this.diagnoses = reply
+      //    }).catch(err => {
+      //       this.showError(err)
+      //    })
+      // this.loading = false
+      this.items = this.patient[this.itemType]
    }
 
 

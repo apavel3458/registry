@@ -4,8 +4,8 @@
    <v-list two-line>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title>{{patient.lastName}}, {{patient.firstName}}</v-list-item-title>
-              <v-list-item-subtitle>Name</v-list-item-subtitle>
+              <v-list-item-title>{{patient.lastName}}, {{patient.firstName}} <span class="gender" v-if="patient.gender">({{patient.gender}})</span></v-list-item-title>
+              <v-list-item-subtitle>Name (Gender)</v-list-item-subtitle>
             </v-list-item-content>
 
             <!-- <v-list-item-action>
@@ -86,5 +86,8 @@ export default {
 <style scoped>
 .deceased {
    color: red;
+}
+.gender {
+  color: grey;
 }
 </style>

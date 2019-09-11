@@ -31,9 +31,12 @@ export default new Vuex.Store({
       state.token = payload.token
       state.user = payload.user
     },
-    logout (state) {
+    LOGOUT (state) {
       state.user = null
       state.token = null
+      state.activePatient = null
+      state.activeRegistry = null
+      state.registryList = null
     },
     SET_REGISTRY_LIST(state, registryList) {
       state.registryList = registryList

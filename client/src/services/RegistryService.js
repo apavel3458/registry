@@ -16,6 +16,9 @@ export default {
   async patient(id) {
     return (await Api().get(`registry/patient/${id}`)).data
   },
+  async patientAllData(id) {
+    return (await Api().get(`registry/patient/${id}/all`)).data
+  },
   async patientSearch(registryId, txt) {
     return (await Api().get(`registry/patient/search`, {
       params: {

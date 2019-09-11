@@ -112,7 +112,7 @@
       <div class="tableWrapper">
       <v-data-table
         :headers="tableHeaders"
-        :items="studies"
+        :items="patient[itemType]"
         :single-expand="true"
         :expanded.sync="expanded"
         item-key="id"
@@ -203,7 +203,7 @@ export default {
         },
       expanded: [],
       singleExpand: null,
-      studies: [],
+      items: [],
       editedIndex: -1,
       editedItem: {
       },
@@ -255,7 +255,7 @@ export default {
   },
 
   mounted() {
-    this.initialize(this.patient.id);
+    this.initialize();
   },
 
   methods: {
@@ -263,19 +263,20 @@ export default {
           showError: 'messaging/showError',
           showSuccess: 'messaging/showSuccess'
     }),
-    async initialize(id) {
+    async initialize() {
       this.itemTypes = this.typesJson
       this.itemTypeName = this.itemType + "Name"
-      this.loading = true
-      if (id) {
-        await RegistryPatientDataService.itemGet(id, this.itemType)
-                  .then((reply) => {
-                      this.studies = reply
-                  }).catch((err) => {
-                     this.showError(err)
-                  })
-        this.loading = false
-      }
+      this.items = this.patient[this.itemType]
+      // this.loading = true
+      // if (id) {
+      //   await RegistryPatientDataService.itemGet(id, this.itemType)
+      //             .then((reply) => {
+      //                 this.items = reply
+      //             }).catch((err) => {
+      //                this.showError(err)
+      //             })
+      //   this.loading = false
+      // }
       if (this.sortByP) this.options.sortBy.push(this.sortByP)
     },
 
@@ -300,7 +301,7 @@ export default {
     },
     
     editItem(item) {
-      this.editedIndex = this.studies.indexOf(item);
+      this.editedIndex = this.items.indexOf(item);
       if (!item.details || Array.isArray(item.details)) item.details = {} //remove null values, which mess this up
       this.editedItem = _.merge(_.assign({},this.defaultItem), item) //copy to default
 
@@ -315,11 +316,11 @@ export default {
     },
 
     async deleteItem(item) {
-      const index = this.studies.indexOf(item);
+      const index = this.items.indexOf(item);
       if(confirm("Are you sure you want to delete this " + this.itemType + " item?")) {
         await RegistryPatientDataService.itemDelete(item, this.itemType)
             .then(() => {
-              this.studies.splice(index, 1);
+              this.items.splice(index, 1);
               this.showSuccess("Successfully deleted item")
             }).catch(err => {
               this.showError(err)
@@ -361,7 +362,7 @@ export default {
       } else { //new item
         await RegistryPatientDataService.itemPost(this.editedItem, this.itemType)
                   .then((reply) => {
-                      this.studies.push(reply);
+                      this.items.push(reply);
                       this.showSuccess("Successfully added item")
                   }).catch((err) => {
                       this.showError(err)

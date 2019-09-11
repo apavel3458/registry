@@ -102,27 +102,6 @@ export default {
           const total = reply.total
           let items = reply.results
 
-          // if (this.pagination.sortBy) {
-          //   items = items.sort((a, b) => {
-          //     const sortA = a[sortBy]
-          //     const sortB = b[sortBy]
-
-          //     if (descending) {
-          //       if (sortA < sortB) return 1
-          //       if (sortA > sortB) return -1
-          //       return 0
-          //     } else {
-          //       if (sortA < sortB) return -1
-          //       if (sortA > sortB) return 1
-          //       return 0
-          //     }
-          //   })
-          // }
-
-          /*if (rowsPerPage > 0) {
-            items = items.slice((page - 1) * rowsPerPage, page * rowsPerPage)
-          }*/
-
             this.loading = false
             resolve({
               items,

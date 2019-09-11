@@ -67,6 +67,10 @@ module.exports = (app) => {
     //         RegistryPatientDataController.imagingDelete)
 
     //------------  PATIENT DATA ENDPOINTS ---------------
+    app.get('/registry/patient/:id/all',
+            AuthFilter,
+            RegistryPatientDataController.patientGetAll)
+
     app.get('/registry/patient/:patientId/data/:component',
         AuthFilter,
         RegistryPatientDataController.itemGet)
