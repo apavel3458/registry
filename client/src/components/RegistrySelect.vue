@@ -26,6 +26,15 @@
                         :src="getImage(item)"
                         height="200px"
                     >
+                            <template v-slot:placeholder>
+                                <v-row
+                                class="fill-height ma-0"
+                                align="center"
+                                justify="center"
+                                >
+                                <v-progress-circular indeterminate color="grey" :size="50"></v-progress-circular>
+                                </v-row>
+                            </template>
                     </v-img>
                     <!-- <v-fade-transition>
                         <div
@@ -57,7 +66,8 @@ export default {
     },
     methods: {
         getImage(item) {
-            return require(`@/assets/${item.shortName}.jpg`)
+            //return require(`@/assets/${item.shortName}.jpg`)
+            return 'https://photricity.com/flw/ajax/'
         }
     },
     async created() {
