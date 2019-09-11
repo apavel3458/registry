@@ -85,17 +85,20 @@ export default {
         async setRegistry(id) {
             const result = await this.$store.dispatch('setActiveRegistryById', id)
             if (!result) {
-                this.$router.push({  name: 'registry', params: { registryId: 1 } })
+                this.$router.push({  name: 'registryselect'})
                 this.showError("Unable to load registry with ID: " + id)
             }
         }
     },
     async created() {
-        if (this.$route.params.registryId == null) {
-            //this.showError("Error: Registry ID not set")
-            this.$router.push({  name: 'registryselect' })
-        } else {
-            this.setRegistry(this.$route.params.registryId)
+        if (!this.$route.params.registryId && !this.registry) {
+            this.$router.push({  name: 'registryselect'})
+            return
+        }
+
+        if (this.$route.params.registryId) {
+            if (!this.registry || this.registry.id != this.$route.params.registryId)
+                this.setRegistry(this.$route.params.registryId)
         }
         this.dataComponent = this.$route.params.component
         //PatientData = import('./data/medical_oncology/PatientData')

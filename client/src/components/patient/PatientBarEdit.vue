@@ -18,35 +18,36 @@
                         v-model="pt.registry" style="width: 50%">
                      </v-select>
                </v-flex>
-               <v-flex xs6>
-                  <v-text-field
-                        label="First Name" type="text" required :rules="[() => !!pt.firstName || 'This field is required']"
-                        prepend-icon="mdi-account"
-                        v-model="pt.firstName" autofocus>
-                  </v-text-field>
-               </v-flex>
-               <v-flex xs4 class="px-2">
+               <v-flex xs5>
                   <v-text-field
                         label="Last Name" type="text" required :rules="[() => !!pt.lastName || 'This field is required']"
                         prepend-icon="mdi-account"
-                        v-model="pt.lastName">
+                        v-model="pt.lastName" autofocus>
+                  </v-text-field>
+               </v-flex>
+               <v-flex xs5 class="px-2">
+                  <v-text-field
+                        label="First Name" type="text" required :rules="[() => !!pt.firstName || 'This field is required']"
+                        prepend-icon="mdi-account"
+                        v-model="pt.firstName">
                   </v-text-field>
                </v-flex>
                <v-flex xs2 class="px-2">
                   <v-select
                      :items="['M','F']"
                      v-model="pt.gender"
+                     required :rules="[() => !!pt.gender || 'This field is required']"
                      label="Gender"
                   ></v-select>
                </v-flex>
-               <v-flex xs6>
+               <v-flex xs5>
                   <v-text-field
                         label="MRN" type="text"
                         prepend-icon="mdi-laptop"
                         v-model="pt.mrn">
                   </v-text-field>
                </v-flex>
-               <v-flex xs6 class="px-2">
+               <v-flex xs7 class="px-2">
                   <v-text-field
                         v-model="pt.dob" label="Date of Birth (YYYY-MM-DD)"
                         prepend-icon="mdi-calendar"
@@ -103,7 +104,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import RegistryService from '@/services/RegistryService'
 
 export default {
@@ -146,10 +147,15 @@ export default {
    computed: {
       ...mapState ({
          registryList: 'registryList',
-         activeRegistry: 'activeRegistry'
+         activeRegistry: 'activeRegistry',
+         patient: 'activePatient'
       })
    },
    methods: {
+      ...mapMutations({
+          showError: 'messaging/showError',
+          showSuccess: 'messaging/showSuccess'
+      }),
       initialize() {
          if (this.patientP) {
             Object.assign(this.pt, this.patientP)
@@ -162,22 +168,28 @@ export default {
       async save() {
          if (!this.$refs.ptForm.validate()) return null
          this.pt.user = this.$store.state.user
-         let reply = null
          if (this.patientP) { //editing
-            reply = await RegistryService.updatePatient(this.pt)
+            RegistryService.updatePatient(this.pt)
+               .then(async reply => {
+                  let updatedPatient = Object.assign({}, this.patient)
+                  Object.assign(updatedPatient, reply)
+                  this.$store.dispatch('setActivePatient', updatedPatient) //update home object
+                  this.showSuccess("Successfully updated patient")
+                  this.editPatientDialog = false
+               })
          } else {
             this.$store.dispatch('registryCount', {registryId: this.activeRegistry.id, increment:1})
-            reply = await RegistryService.addPatient(this.pt)
+            RegistryService.addPatient(this.pt)
+               .then(async reply =>  {
+                  this.$store.dispatch('loadPatient', reply.id) //update home object
+                  this.$router.push({name:'patient', params:{id: reply.id}})
+                  this.showSuccess("Successfully added new patient")
+                  this.editPatientDialog = false
+               }).catch(err => {
+                  this.showError(err)
+               })
          }
-         if (reply.error) {
-               alert(reply.error)
-         } else if (reply.message) {
-               alert(reply.message)
-         }
-         this.editPatientDialog = false
-         this.$store.dispatch('setActivePatient', reply) //update home object
-         this.$router.push({name:'patient', params:{id: reply.id}})
-         
+
          
       }
    },

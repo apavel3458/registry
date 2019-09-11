@@ -49,7 +49,8 @@ class Patient extends Model {
         deceasedDate: { type: ['date'], minLength: 1, maxLength: 255 },
         causeOfDeath: { type: ['string'], minLength: 1, maxLength: 255 },
         createdAt: { type: 'date' },
-        updatedAt: { type: 'date' }
+        updatedAt: { type: 'date' },
+        createdBy: { type: 'string' },
       },
       readOnlyProps: ['registry']
     };

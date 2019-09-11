@@ -53,7 +53,7 @@
 
     <v-tooltip bottom v-if="isAuthenticated">
       <template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon dark @click="navigateTo('home')">
+        <v-btn v-on="on" icon dark @click="$router.push({name: 'registry', params: {registryId: $store.state.activeRegistry.id}})">
           <v-icon>mdi-home-variant</v-icon>
         </v-btn>
       </template>
@@ -116,7 +116,7 @@
           </v-list-item>
           <v-list-item
             v-if="isAuthenticated && $store.state.activeRegistry"
-            @click="$router.push({name: 'home'})"
+            @click="$router.push({name: 'registry', params: {registryId: $store.activeRegistry.id}})"
           >
             <v-list-item-title>{{$store.state.activeRegistry.registryName}} Home</v-list-item-title>
           </v-list-item>

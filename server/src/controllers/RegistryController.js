@@ -76,7 +76,7 @@ module.exports = {
    async patientAdd(req, res) {
       try {
          let graph = req.body
-         graph.createdBy = graph.user.lastName + ", " + graph.user.firstName
+         graph.createdBy = req.user.lastName + ", " + req.user.firstName
          graph.registry = {
             id: req.body.registry.id
          }
@@ -87,10 +87,11 @@ module.exports = {
                   .where('firstName', graph.firstName)
                   .andWhere('lastName', graph.lastName)
                   .andWhere('dob', graph.dob)
+                  .andWhere('registryId', graph.registry.id)
                if (duplicate.length != 0) {
                   console.log("Duplicate Detected")
                   return {
-                     message: "Patient already exists",
+                     error: "Patient already exists",
                      patient: duplicate
                   }
                }
@@ -105,7 +106,11 @@ module.exports = {
 
           })
           console.log(patient)
-          return res.send(patient)
+          if (patient.error) {
+             return res.status(400).send(patient)
+          } else {
+            return res.send(patient)
+          }
       } catch (err) {
           console.log(err)
           res.status(500).send({

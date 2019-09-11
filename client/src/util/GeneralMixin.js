@@ -11,6 +11,7 @@ var generalMixin = {
       processError: function (err) {
          // eslint-disable-next-line no-console
          console.log(JSON.stringify(err))
+         alert("test")
          if (!err) {
             return "An unknown error has occured"
          } else if (err.error) {

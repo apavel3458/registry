@@ -77,13 +77,12 @@ export default {
     watch: {
       options: {
         handler () {
-          this.getDataFromApi()
-            .then(data => {
-              this.patients = data.items
-              this.totalpatients = data.total
-            })
+          this.initialize()
         },
         deep: true
+      },
+      registry: function() {
+          this.initialize()
       }
     },
     mounted () {
@@ -94,7 +93,15 @@ export default {
       })
     },
     methods: {
+      async initialize() {
+          this.getDataFromApi()
+            .then(data => {
+                this.patients = data.items
+                this.totalpatients = data.total
+              })
+      },
       async getDataFromApi () {
+        
         this.loading = true
         return new Promise(async (resolve) => {
           const { sortBy, sortDesc, page, itemsPerPage } = this.options
@@ -113,7 +120,7 @@ export default {
         this.$router.push(
           {
             name:'patient', 
-            params:{registryId: this.$store.state.activeRegistry.id, patientId: item.id}}
+            params:{patientId: item.id}}
           )
       }
     }

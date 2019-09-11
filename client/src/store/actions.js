@@ -52,7 +52,6 @@ export default {
         id = router.currentRoute.params.patientId  //if id is not set then extract ID from URL
         if (!id) {
           context.commit('SET_ACTIVE_PATIENT', null)
-          router.push({name: 'registryselect'})
           return
         }
       }

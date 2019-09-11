@@ -252,6 +252,7 @@ export default {
       //    })
       // this.loading = false
       this.items = this.patient[this.itemType]
+      if (!this.items) this.items = []
    }
 
 
