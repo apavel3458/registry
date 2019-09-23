@@ -92,12 +92,13 @@ module.exports = {
       try {
          let graph = req.body
          graph.createdBy = req.user.lastName + ", " + req.user.firstName
-         if (!req.body.registry || !req.body.registry.id) res.status(400).send({error: 'Must have registry'})
+         console.log(req.body)
+         if (!req.body.registry || !req.body.registry.id) return res.status(400).send({error: 'Must have registry'})
          graph.registry = {
             id: req.body.registry.id
          }
          
-         console.log(graph)
+         //console.log(graph)
          const patient = await transaction(Patient.knex(), async trx => {
 
             const duplicate = await Patient.query(trx).skipUndefined()

@@ -80,8 +80,7 @@ import RegistryService from '@/services/RegistryService'
 import PatientMixin from '@/util/PatientMixin'
 import GeneralMixin from '@/util/GeneralMixin'
 import xlsx from 'xlsx'
-import {format} from 'date-fns'
-import {patientDataPreProcess} from '@/components/util/ImportScripts'
+import {patientDataPreProcess, patientPreProcess} from '@/components/util/ImportScripts'
 
 export default {
    mixins: [PatientMixin, GeneralMixin],
@@ -134,10 +133,13 @@ export default {
                   //let item = parsedJson[2]
                   let p = Object.assign({}, item)
                   // pre-processing
-                  p = this.patientPreProcess(p)
-                  if (p == null) return //skip if preProcess error
-                  console.log(p)
-                  RegistryService.addPatient(p)
+                  let target = patientPreProcess(p, this.$store.state.activeRegistry)
+                  if (target == null || target.success === false) {
+                    this.results.push(target)
+                    return
+                  }
+                  console.log(target)
+                  RegistryService.addPatient(target)
                     .then(reply => {
                         this.results.push({
                             index: 1,
@@ -162,40 +164,6 @@ export default {
                 
             }
             reader.readAsBinaryString(this.patientsFile)
-      },
-      patientPreProcess(p) {
-        //screen empties
-        if (!p) return null
-        if (!p.ptName) return null
-
-        p.registry = this.$store.state.activeRegistry
-
-        //screen date of birth
-        if (typeof p.dob == 'number') {//convert from excel date to javascript
-          let dateObj = new Date((p.dob - (25567 + 1))*86400*1000)
-          p.dob = format(dateObj, "YYYY-MM-DD" )
-          //p.dob = dateObj
-        }
-
-        //parse name
-        let nameLastFirst = p.ptName.trim().split(',')
-        if (nameLastFirst.length != 2) {
-          this.results.push({index: this.results.length-1, result: "ERROR", success: false,
-                                      output: `(MRN: ${p.mrn}) ${p.ptName} (DOB: ${p.dob})  - UNABLE TO SPLIT NAME INTO TWO`
-                                      })
-          return null
-        }
-
-        let nameFirstMiddle = nameLastFirst[1].trim().split(' ')
-        if (nameFirstMiddle.length >= 2) {
-          p.middleName = nameFirstMiddle[nameFirstMiddle.length-1] //last one bercomes middle name
-          nameFirstMiddle.pop()
-          p.firstName = nameFirstMiddle.join(' ') //all others become first
-        } else {
-          p.firstName = nameLastFirst[1]
-        }
-        p.lastName = nameLastFirst[0]
-        return p
       },
 
       uploadPatientsData() {
