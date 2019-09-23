@@ -130,13 +130,15 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 import RegistryPatientDataService from "@/services/RegistryPatientDataService"
 import _ from "lodash"
+import GeneralMixin from '@/util/GeneralMixin'
 
 export default {
-    props: ['typesJson', 'itemType'],
-    data() {
+   mixins: [GeneralMixin],
+   props: ['typesJson', 'itemType'],
+   data() {
         return {
             dialog: false,
             editedIndex: -1,
@@ -184,10 +186,6 @@ export default {
       })
    },
    methods: {
-      ...mapMutations({
-            showError: 'messaging/showError',
-            showSuccess: 'messaging/showSuccess'
-      }),
       editItem(item) {
          this.editedIndex = this.items.indexOf(item);
          if (!item.details || Array.isArray(item.details)) item.details = {} //remove null values, which mess this up
@@ -203,7 +201,8 @@ export default {
          if (this.editedIndex > -1) { //edited itemv
             await RegistryPatientDataService.diagnosisPut(this.editedItem)
                      .then((reply) => {
-                        Object.assign(this.items[this.editedIndex], reply)
+                        //Object.assign(this.items[this.editedIndex], reply)
+                        this.$store.commit('ACTIVE_PATIENT_PROPERTY_UPDATE', {prop: this.itemType, val: reply, index: this.editedIndex})
                         this.showSuccess("Record updated successfully")
                      })
                      .catch((err) => {
@@ -213,7 +212,8 @@ export default {
          } else { //new item
             await RegistryPatientDataService.diagnosisPost(this.editedItem)
                      .then((reply) => {
-                        this.items.push(reply);
+                        //this.items.push(reply);
+                        this.$store.commit('ACTIVE_PATIENT_PROPERTY_ADD', {prop: this.itemType, val: reply})
                         this.showSuccess("Record added successfully")
                      }).catch((err) => {
                         this.showError(err)
@@ -226,7 +226,8 @@ export default {
        if (!confirm(`Are you sure you want to delete '${item.diagnosisName}' diagnosis?`)) return
        RegistryPatientDataService.diagnosisDelete(item)
             .then(() => {
-               this.items.splice(index, 1)
+               //this.items.splice(index, 1)
+               this.$store.commit('ACTIVE_PATIENT_PROPERTY_DELETE', {prop: this.itemType, index: index})
                this.showSuccess("Record deleted successfully")
             }).catch((err) => {
                this.showError(err)

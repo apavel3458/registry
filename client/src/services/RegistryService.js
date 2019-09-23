@@ -13,13 +13,21 @@ export default {
   async registryList() {
     return (await Api().get(`registry`)).data
   },
-  async patient(id) {
+  async patient(id) { //for selecting patients with patientId
     return (await Api().get(`registry/patient/${id}`)).data
+  },
+  async patientSelect(registryId, params) { //for selecting the patient by non-id
+    return (await Api().get(`/registry/${registryId}/patient`, {
+      params: params
+    })).data
   },
   async patientAllData(id) {
     return (await Api().get(`registry/patient/${id}/all`)).data
   },
-  async patientSearch(registryId, txt) {
+  async updatePatientAllData(patient) {
+    return (await Api().patch(`registry/patient/${patient.id}/all`, patient)).data
+  },
+  async patientSearch(registryId, txt) { //for searching by keyword
     return (await Api().get(`registry/patient/search`, {
       params: {
         registryId: registryId,

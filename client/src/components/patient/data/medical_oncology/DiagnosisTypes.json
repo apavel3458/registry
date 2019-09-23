@@ -35,6 +35,21 @@
             "name": "DM",
             "text": "Diabetes?",
             "type": "boolean"
+         },
+         {
+            "name": "CVhx",
+            "text": "CV History?",
+            "type": "boolean"
+         },
+         {
+            "name": "CVsx",
+            "text": "CV Symptoms?",
+            "type": "boolean"
+         },
+         {
+            "name": "HxMiscMedPriorCond",
+            "text": "Other Misc Conditions?",
+            "type": "boolean"
          }
       ]
    }

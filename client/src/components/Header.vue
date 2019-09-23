@@ -51,13 +51,13 @@
       <span>Select Different Registry</span>
     </v-tooltip>
 
-    <v-tooltip bottom v-if="isAuthenticated">
+    <v-tooltip bottom v-if="isAuthenticated && $store.state.activeRegistry">
       <template v-slot:activator="{ on }">
         <v-btn v-on="on" icon dark @click="$router.push({name: 'registry', params: {registryId: $store.state.activeRegistry.id}})">
           <v-icon>mdi-home-variant</v-icon>
         </v-btn>
       </template>
-      <span>Registry Home</span>
+      <span>{{$store.state.activeRegistry.registryName}} Home</span>
     </v-tooltip>
 
     <v-tooltip bottom v-if="isAdmin">
@@ -116,7 +116,7 @@
           </v-list-item>
           <v-list-item
             v-if="isAuthenticated && $store.state.activeRegistry"
-            @click="$router.push({name: 'registry', params: {registryId: $store.activeRegistry.id}})"
+            @click="$router.push({name: 'registry', params: {registryId: $store.state.activeRegistry.id}})"
           >
             <v-list-item-title>{{$store.state.activeRegistry.registryName}} Home</v-list-item-title>
           </v-list-item>

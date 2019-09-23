@@ -5,31 +5,36 @@ var generalMixin = {
    },
    methods: {
       ...mapMutations({
-         showErrorMsg: 'messaging/showError',
-         showSuccessMsg: 'messaging/showSuccess'
+         showErrorVuex: 'messaging/showError',
+         showSuccessVuex: 'messaging/showSuccess'
      }),
-      processError: function (err) {
+      getErrorMessage: function (err) {
          // eslint-disable-next-line no-console
-         console.log(JSON.stringify(err))
-         alert("test")
+         //console.log(JSON.stringify(err))
          if (!err) {
             return "An unknown error has occured"
-         } else if (err.error) {
+         }
+         if (err.data) {
+            err = err.data
+         }
+         if (err.error) {
             return err.error
          } else if (err && err.response && err.response.status == 400) {
             return err.response.data.error
-         } else {
+         } else if (err && err.response && err.response.status == 500) {
             return "Server Error: " + err.response.data.error
+         } else {
+            return "Unknown Error: " + err
          }
      },
      showError: function(err) {
-        this.showErrorMsg(this.processError(err))
+        this.showErrorVuex(this.getErrorMessage(err))
      },
      showErrorMessage: function(errMsg) {
-      this.showErrorMsg(errMsg)
+      this.showErrorVuex(errMsg)
      },
      showSuccess: function(msg) {
-         this.showSuccessMsg(msg)
+         this.showSuccessVuex(msg)
       }
    }
  }

@@ -181,9 +181,11 @@
 
 import _ from 'lodash'
 import RegistryPatientDataService from '@/services/RegistryPatientDataService'
-import {mapState, mapMutations} from 'vuex'
+import {mapState} from 'vuex'
+import GeneralMixin from '@/util/GeneralMixin'
 
 export default {
+  mixins: [GeneralMixin],
   props: [
       'typesJson', 
       'itemType', 
@@ -259,10 +261,6 @@ export default {
   },
 
   methods: {
-    ...mapMutations({
-          showError: 'messaging/showError',
-          showSuccess: 'messaging/showSuccess'
-    }),
     async initialize() {
       this.itemTypes = this.typesJson
       this.itemTypeName = this.itemType + "Name"
@@ -320,7 +318,8 @@ export default {
       if(confirm("Are you sure you want to delete this " + this.itemType + " item?")) {
         await RegistryPatientDataService.itemDelete(item, this.itemType)
             .then(() => {
-              this.items.splice(index, 1);
+              //this.items.splice(index, 1);
+              this.$store.commit('ACTIVE_PATIENT_PROPERTY_DELETE', {prop: this.itemType, index: index})
               this.showSuccess("Successfully deleted item")
             }).catch(err => {
               this.showError(err)
@@ -352,7 +351,8 @@ export default {
       if (this.editedIndex > -1) { //edited item
         await RegistryPatientDataService.itemPut(this.editedItem, this.itemType)
                   .then((reply) => {
-                    Object.assign(this.studies[this.editedIndex], reply);
+                    //Object.assign(this.studies[this.editedIndex], reply);
+                    this.$store.commit('ACTIVE_PATIENT_PROPERTY_UPDATE', {prop: this.itemType, val: reply, index: this.editedIndex})
                     this.showSuccess("Successfully updated item")
                   })
                   .catch((err) => {
@@ -362,7 +362,8 @@ export default {
       } else { //new item
         await RegistryPatientDataService.itemPost(this.editedItem, this.itemType)
                   .then((reply) => {
-                      this.items.push(reply);
+                      //this.items.push(reply);
+                      this.$store.commit('ACTIVE_PATIENT_PROPERTY_ADD', {prop: this.itemType, val: reply})
                       this.showSuccess("Successfully added item")
                   }).catch((err) => {
                       this.showError(err)

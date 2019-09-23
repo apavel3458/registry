@@ -47,6 +47,19 @@ export default new Vuex.Store({
     SET_ACTIVE_PATIENT(state, patient) {
       state.activePatient = patient
     },
+    ACTIVE_PATIENT_PROPERTY_UPDATE(state, {prop, val, index}) {
+      if (index != null) {
+        state.activePatient[prop].splice(index, 1, val)
+      } else {
+        Vue.set(state.activePatient, prop, val)
+      }
+    },
+    ACTIVE_PATIENT_PROPERTY_ADD(state, {prop, val}) {
+        state.activePatient[prop].push(val)
+    },
+    ACTIVE_PATIENT_PROPERTY_DELETE(state, {prop, index}) {
+        state.activePatient[prop].splice(index, 1)
+    },
     INCREMENT_REGISTRY(state, {registryId, increment}) {
       let reg = state.registryList.find(r => r.id == registryId)
       reg.registrySize = reg.registrySize+increment

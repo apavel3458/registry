@@ -41,8 +41,8 @@ export default () => {
         case 401:
             return notAuthenticated(error)
         case 404:
-          alert("Server action not found. Error Status: " + error.response.status + " | \n" + method)
-          break
+            alert("Server action not found. Error Status: " + error.response.status + " | \n" + method)
+            break
         case 500:
             alert("The server encountered an error processing your request. Error Status: " + error.response.status + " | " + JSON.stringify(error.response.data.error))
             break

@@ -18,6 +18,21 @@ module.exports = {
          })
       }
    },
+   async patientGetSearch(req, res) {
+      try {
+         const registryId = req.params.registryId
+         if (!registryId) return res.status(400).send({error: 'Need registryId'})
+         console.log("Study Id: " + req.query.studyId)
+         const patient = await Patient.query().skipUndefined().where('studyId', req.query.studyId).andWhere('registryId', registryId)
+            .eager('[registry, diagnosis, imaging, event, device, medication]').first()
+         return res.send(patient)
+      } catch (err) {
+         console.log(err)
+         res.status(500).send({
+            error: 'An error occured while retrieving the patient'
+         })
+      }
+   },
    async patientGetPage(req, res) {
       try {
          //console.log(req.query)
@@ -29,7 +44,7 @@ module.exports = {
          const result = await Patient
             .query()
             .skipUndefined()
-            .select('id', 'firstName', 'lastName', 'mrn', 'dob', 'createdAt')
+            .select('id', 'firstName', 'middleName', 'lastName', 'mrn', 'dob', 'createdAt')
             .where('registryId', registryId)
             .orderBy(sortBy, descending)
             .page(page, pageSize)
@@ -77,27 +92,32 @@ module.exports = {
       try {
          let graph = req.body
          graph.createdBy = req.user.lastName + ", " + req.user.firstName
+         if (!req.body.registry || !req.body.registry.id) res.status(400).send({error: 'Must have registry'})
          graph.registry = {
             id: req.body.registry.id
          }
+         
          console.log(graph)
          const patient = await transaction(Patient.knex(), async trx => {
 
-         const duplicate = await Patient.query(trx)
-                  .where('firstName', graph.firstName)
-                  .andWhere('lastName', graph.lastName)
-                  .andWhere('dob', graph.dob)
-                  .andWhere('registryId', graph.registry.id)
-               if (duplicate.length != 0) {
-                  console.log("Duplicate Detected")
-                  return {
-                     error: "Patient already exists",
-                     patient: duplicate
-                  }
+            const duplicate = await Patient.query(trx).skipUndefined()
+                     .where(function() {
+                        this.where(function() {
+                           this.skipUndefined().where('firstName', graph.firstName).andWhere('lastName', graph.lastName).andWhere('dob', graph.dob)
+                        })
+                        .orWhere('mrn', graph.mrn)
+                     }).andWhere('registryId', graph.registry.id)
+                     .first()
+            if (duplicate && duplicate.length != 0) {
+               console.log("Duplicate Detected")
+               return {
+                  error: `Patient already exists: ${duplicate.lastName}, ${duplicate.firstName}, ${duplicate.middleName} (${duplicate.mrn})`,
+                  patient: duplicate
                }
-               const options = {
+            }
+            const options = {
                   relate: ['registry']
-               }
+            }
                return (
                   await Patient.query(trx)
                      .allowUpsert('[registry]')
@@ -121,16 +141,15 @@ module.exports = {
   
   async patientUpdate(req, res) {
    try {
-      let graph = req.body
+      let pt = req.body
       const id = req.params.id
-      graph.updatedBy = graph.user.lastName + ", " + graph.user.firstName
-      graph.id = parseInt(id)
-      console.log(graph)
+      pt.updatedBy = req.user.lastName + ", " + req.user.firstName
+      pt.id = parseInt(id)
+      console.log(pt)
        const patient = await transaction(Patient.knex(), async trx => {
             return (
                await Patient.query(trx)
-                  .allowUpsert('[registry]')
-                  .upsertGraph(graph, {relate: true})
+                  .patchAndFetchById(pt.id, pt)
             )
        })
        return res.send(patient)

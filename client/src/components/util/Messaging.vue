@@ -21,7 +21,6 @@ export default {
    data () {
       return {
          snackbar: false,
-         //message: '',
          timer: 4000
       }
    },

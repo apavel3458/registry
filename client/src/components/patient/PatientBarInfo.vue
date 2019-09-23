@@ -4,7 +4,13 @@
    <v-list two-line>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title>{{patient.lastName}}, {{patient.firstName}} <span class="gender" v-if="patient.gender">({{patient.gender}})</span></v-list-item-title>
+              <v-list-item-title>
+                  {{patient.lastName}}, {{patient.firstName}} 
+                  <span class="missing" v-if="!patient.lastName || !patient.firstName">
+                      MISSING DATA
+                  </span>
+                  <span class="gender" v-if="patient.gender">({{patient.gender}})</span>
+              </v-list-item-title>
               <v-list-item-subtitle>Name (Gender)</v-list-item-subtitle>
             </v-list-item-content>
 
@@ -16,19 +22,21 @@
           <v-list-item>
 
             <v-list-item-content>
-              <v-list-item-title>{{patient.mrn}}</v-list-item-title>
-              <v-list-item-subtitle>Medical Record Number</v-list-item-subtitle>
+              <v-list-item-title>{{patient.mrn}} <template v-if="patient.studyId">({{patient.studyId}})</template></v-list-item-title>
+              <v-list-item-subtitle>Medical Record # (Study ID)</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
 
          <v-list-item>
             <v-list-item-content>
-              <v-list-item-title>{{patient.dob}} (Age {{age(patient.dob)}})</v-list-item-title>
+              <v-list-item-title>
+                    <template v-if="patient.dob">{{patient.dob}} (Age {{age(patient.dob)}})</template>
+                    <span class="missing" v-if="!patient.dob">MISSING</span> </v-list-item-title>
               <v-list-item-subtitle>Date of Birth</v-list-item-subtitle>
             </v-list-item-content>
          </v-list-item>
 
-         <v-list-item v-if="patient.causeOfDeath" class="">
+         <v-list-item v-if="patient.deceasedDate" class="">
             <v-list-item-content>
               <v-list-item-title class="font-weight-bold red--text">DECEASED: {{patient.causeOfDeath}} </v-list-item-title>
               <v-list-item-subtitle class="font-weight-bold red--text"> {{patient.deceasedDate}} (Age {{age(patient.dob, patient.deceasedDate)}})</v-list-item-subtitle>
@@ -84,6 +92,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.missing {
+  font-weight: bold;
+  color: red;
+}
 .deceased {
    color: red;
 }

@@ -108,7 +108,7 @@ module.exports = {
         } catch (err) {
             console.log(err)
             return res.status(500).send({
-                error: 'An error has occured trying to log in.'
+                error: 'An server error has occured trying to log in, contact administrator.'
             })
         }
     }

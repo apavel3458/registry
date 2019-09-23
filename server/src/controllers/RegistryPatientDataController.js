@@ -23,14 +23,35 @@ module.exports = {
    async patientGetAll(req, res) {
       try {
          const id = req.params.id
-
          const patient = await Patient.query().findById(id)
-            .eager('[registry, diagnosis, imaging, event, device]').first()
+            .eager('[registry, diagnosis, imaging, event, medication, device]').first()
          return res.send(patient)
       } catch (err) {
          console.log(err)
          res.status(500).send({
             error: 'An error occured while retrieving the patient'
+         })
+      }
+   },
+
+   async patientUpdateAll(req, res) {
+      try {
+         //const registryId = req.params.registryId
+         let pt = req.body
+         pt.registry && delete pt.registry
+         pt.id = parseInt(req.params.id)
+         pt.updatedBy = `${req.user.lastName}, ${req.user.firstName}`
+         pt.updatedAt = new Date()
+         //console.log(pt)
+
+         const patient = await Patient.query()
+            .allowUpsert('[diagnosis, imaging, event, medication, device]')
+            .upsertGraph(pt)
+         return res.send(patient)
+      } catch (err) {
+         console.log(err)
+         res.status(500).send({
+            error: 'An error occured while upserting patient data'
          })
       }
    },

@@ -17,14 +17,11 @@ class Patient extends Model {
                _.pick(json[x], Object.keys(this.constructor.jsonSchema.properties[x].properties || {id:''}))
          }
       })
-      json = _.pick(json, Object.keys(this.constructor.jsonSchema.properties));
-      //console.log(json)
-      json = _.pickBy(json, _.identity);
+      //json = _.pick(json, Object.keys(this.constructor.jsonSchema.properties));
+      //json = _.pickBy(json, _.identity);
       //console.log(json)
       return json
   }
-  
-
 
 
   // Optional JSON schema. This is not the database schema! Nothing is generated
@@ -42,15 +39,17 @@ class Patient extends Model {
             id: { type: 'integer'}
          }},
         lastName: { type: 'string', minLength: 1, maxLength: 255 },
+        middleName: { type: ['string', null]},
         firstName: { type: 'string', minLength: 1, maxLength: 255 },
-        mrn: { type: 'string', minLength: 1, maxLength: 255 },
-        dob: { type: 'date' },
+        mrn: { type: ['string', 'integer', null]},
+        studyId: { type: ['string', null]},
+        dob: { type: ['date', null, 'string'] },
         gender: {type: ['string', null]},
-        deceasedDate: { type: ['date'], minLength: 1, maxLength: 255 },
-        causeOfDeath: { type: ['string'], minLength: 1, maxLength: 255 },
+        deceasedDate: { type: ['date','string', null], minLength: 1, maxLength: 255 },
+        causeOfDeath: { type: ['string', null], minLength: 1, maxLength: 255 },
         createdAt: { type: 'date' },
         updatedAt: { type: 'date' },
-        createdBy: { type: 'string' },
+        createdBy: { type: 'string'}
       },
       readOnlyProps: ['registry']
     };

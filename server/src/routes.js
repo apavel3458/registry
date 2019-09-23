@@ -36,6 +36,10 @@ module.exports = (app) => {
             AuthFilter,
             RegistryController.patientGet)
 
+    app.get('/registry/:registryId/patient',
+            AuthFilter,
+            RegistryController.patientGetSearch)
+
     app.get('/registry',
             AuthFilter,
             RegistryController.registryListUser)
@@ -70,6 +74,10 @@ module.exports = (app) => {
     app.get('/registry/patient/:id/all',
             AuthFilter,
             RegistryPatientDataController.patientGetAll)
+
+    app.patch('/registry/patient/:id/all',  //admin only!
+            AuthAdminFilter,
+            RegistryPatientDataController.patientUpdateAll)
 
     app.get('/registry/patient/:patientId/data/:component',
         AuthFilter,
@@ -119,4 +127,13 @@ module.exports = (app) => {
     app.put('/user/options',
         AuthFilter,
         UserController.updateUserOptions)
+
+
+    //-----------  MIGRATION ROUTES --------------
+
+    // app.post('/admin/migrate/:registryId',
+    // AuthFilter,
+    // RegistryController.patientAdd)
 }
+
+

@@ -23,7 +23,7 @@
          </v-list-item>
          <v-list-item>
             <v-list-item-content class="itemHeading">Diabetes?</v-list-item-content>
-            <v-list-item-content class="itemContent">{{props.item.details.diabetes?'Yes':'No'}}</v-list-item-content>
+            <v-list-item-content class="itemContent">{{props.item.details.DM?'Yes':'No'}}</v-list-item-content>
          </v-list-item>
          <v-list-item>
             <v-list-item-content class="itemHeading">Treating Physician</v-list-item-content>
@@ -35,7 +35,19 @@
          </v-list-item>
          <v-list-item>
             <v-list-item-content class="itemHeading">Herceptin Study Date?</v-list-item-content>
-            <v-list-item-content class="itemContent">{{props.item.details.herceptinStudyDate}}</v-list-item-content>
+            <v-list-item-content class="itemContent">{{props.item.details.herceptinStudyDate?props.item.details.herceptinStudyDate:'N/A'}}</v-list-item-content>
+         </v-list-item>
+         <v-list-item>
+            <v-list-item-content class="itemHeading">CV History?</v-list-item-content>
+            <v-list-item-content class="itemContent">{{props.item.details.CVhx?'Yes':'No'}}</v-list-item-content>
+         </v-list-item>
+         <v-list-item>
+            <v-list-item-content class="itemHeading">CV History?</v-list-item-content>
+            <v-list-item-content class="itemContent">{{props.item.details.CVsx?'Yes':'No'}}</v-list-item-content>
+         </v-list-item>
+         <v-list-item>
+            <v-list-item-content class="itemHeading">Other Misc Med Hx?</v-list-item-content>
+            <v-list-item-content class="itemContent">{{props.item.details.HxMiscMedPriorCond?'Yes':'No'}}</v-list-item-content>
          </v-list-item>
          <!-- <v-list-item>
             <v-list-item-content class="itemHeading">More Properties:</v-list-item-content>
