@@ -13,6 +13,12 @@ function patientPreProcess(source, registry) {
     return {success: false, output: `(MRN: ${source.mrn}) ${source.ptName} (DOB: ${source.dob})  - MRN MISSING`}
   }
 
+  if (source.studyId) {
+    target.studyId = source.studyId
+  } else {
+    return {success: false, output: `(MRN: ${source.mrn}) ${source.ptName} (DOB: ${source.dob})  - studyId MISSING`}
+  }
+
   //screen date of birth
   if (typeof source.dob == 'number') {//convert from excel date to javascript
     target.dob = excelDateToJS(source.dob)
@@ -40,6 +46,11 @@ function patientPreProcess(source, registry) {
   return target
 }
 
+
+
+
+
+
 function patientDataPreProcess (target, source) {
    if (!target.dob && source.dob) {
      target.dob = source.dob
@@ -58,7 +69,8 @@ function patientDataPreProcess (target, source) {
                           DM: source.DM?true:false,
                           HxMiscMedPriorCond: source.HxMiscMedPriorCond?true:false,
                           CVhx: source['CV History']?true:false,
-                          CVsx: source['CV Sx']?true:false
+                          CVsx: source['CV Sx']?true:false,
+                          herceptinStudy: source['HerceptinStudyGroup']?true:false
                       }
                     }
    let targetDiagnosis = target.diagnosis.find(d=> d.diagnosisName == 'Breast Cancer') || {}
@@ -78,7 +90,7 @@ function excelDateToJS(excelDate) {
   // 1. Subtract number of days between Jan 1, 1900 and Jan 1, 1970, plus 1 (Google "excel leap year bug")             
   // 2. Convert to milliseconds.
 
-	return format(new Date((excelDate - (25567 + 2))*86400*1000), 'YYYY-MM-DD')
+	return format(new Date((excelDate - (25567 + 1))*86400*1000), 'YYYY-MM-DD')
 
 }
    

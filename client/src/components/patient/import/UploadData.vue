@@ -182,41 +182,50 @@ export default {
                 console.log("Found rows: " + parsedJson.length)
                 //console.log(parsedJson)
                 await parsedJson.forEach((item) => {
-                  //let item = parsedJson.find(x=>{return x.studyId=="BR154"})
+                  //let item = parsedJson.find(x=>{return x.studyId=="BR1"})
                   if (!item) {
                     alert("cannot find item in excel file")
                     this.loading = false
                     return
                   }
-                  let p = Object.assign({}, item)
                   // pre-processing
-                  if (p == null) {
+                  if (item == null) {
                     this.results.push({result: "ERROR", success: false, output: 'FAILED TO LOAD PATIENT DATA FROM FILE'})
+                    return null
                   }
-                  RegistryService.patientSelect(this.$store.state.activeRegistry.id, {studyId: p.studyId})
+                  RegistryService.patientSelect(this.$store.state.activeRegistry.id, {studyId: item.studyId})
                     .then(pt => {
-                        pt = patientDataPreProcess(pt, p)
-                        RegistryService.updatePatientAllData(pt)
-                          .then(() => {
-                            this.results.push({ 
-                            result: "SUCCESS",
-                            success: true,
-                            output: `(StudyID: ${pt.studyId} | ${pt.lastName}, ${pt.firstName}) | Updated`
+                      console.log("found: " + pt)
+                      if (!pt) {
+                        this.results.push({result:"ERROR", success: false, output: `(StudyId: ${item.studyId}) | CANNOT FIND PATIENT`})
+                        return null
+                      }
+                      pt = patientDataPreProcess(pt, item)
+                      if (pt.success === false) {
+                        this.results.push(pt)
+                        return null
+                      }
+                          RegistryService.updatePatientAllData(pt)
+                            .then(() => {
+                              this.results.push({ 
+                              result: "SUCCESS",
+                              success: true,
+                              output: `(StudyID: ${pt.studyId} | ${pt.lastName}, ${pt.firstName}) | Updated`
+                              })
                             })
-                          })
-                          .catch(error => {
-                            this.results.push({ 
-                                result: "ERROR",
-                                success: false,
-                                output: `(StudyID: ${pt.studyId}) | ${pt.lastName}, ${pt.firstName} | CANNOT UPDATE PATIENT | Error: ${this.getErrorMessage(error)}`
+                            .catch(error => {
+                              this.results.push({ 
+                                  result: "ERROR",
+                                  success: false,
+                                  output: `(StudyID: ${pt.studyId}) | ${pt.lastName}, ${pt.firstName} | CANNOT UPDATE PATIENT | Error: ${this.getErrorMessage(error)}`
+                              })
                             })
-                          })
                     })
                     .catch(err => {
                         this.results.push({ 
                             result: "ERROR",
                             success: false,
-                            output: `(StudyID: ${p.studyId}) | CANNOT SELECT THE PATIENT | Error: ${this.getErrorMessage(err)}`
+                            output: `(StudyID: ${item.studyId}) | CANNOT SELECT THE PATIENT | Error: ${this.getErrorMessage(err)}`
                         })
                         if (err && err.response && err.response.status == 500)
                           alert("server error")

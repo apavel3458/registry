@@ -23,8 +23,9 @@ module.exports = {
          const registryId = req.params.registryId
          if (!registryId) return res.status(400).send({error: 'Need registryId'})
          console.log("Study Id: " + req.query.studyId)
-         const patient = await Patient.query().skipUndefined().where('studyId', req.query.studyId).andWhere('registryId', registryId)
+         const patient = await Patient.query().where('studyId', req.query.studyId).andWhere('registryId', registryId)
             .eager('[registry, diagnosis, imaging, event, device, medication]').first()
+         console.log(patient)
          return res.send(patient)
       } catch (err) {
          console.log(err)
@@ -73,6 +74,7 @@ module.exports = {
                   this.where('firstName', 'like', `%${search}%`)
                   .orWhere('lastName', 'like', `%${search}%`)
                   .orWhere('mrn', 'like', `%${search}%`)
+                  .orWhere('studyId', 'like', `%${search}%`)
                })
                   .orderBy('lastName', 'DESC')
                   .limit(max)
