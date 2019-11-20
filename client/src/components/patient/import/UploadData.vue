@@ -47,14 +47,16 @@
         </v-card>
       </v-col>
     </v-row>
-
-
-
-
-
     <v-card v-show="results && results.length > 0" class="pa-4">
+      <v-progress-linear
+        :value="progress"
+        v-show="progress && progress < 100"
+        height="10"
+        striped
+        color="deep-orange"
+      ></v-progress-linear>
       <v-toolbar dense elevation="2" color="grey lighten-4">
-        <v-toolbar-title>Results: (Records processed: {{results.length}}</v-toolbar-title>
+        <v-toolbar-title>Results: (Records processed: {{results.length}})</v-toolbar-title>
 
         <!-- <div class="flex-grow-1"></div> -->
 
@@ -90,6 +92,8 @@ export default {
         patientsFile: null,
         patientsDataFile: null,
         results: [], // [{result: 'Success', success: true, output: 'Blah'}],
+        totalItems: 0,
+        progress: 0,
         resultsHeaders: [
                   {
                     text: 'Success?',
@@ -108,6 +112,15 @@ export default {
       ...mapState({
         registry: 'activeRegistry'
       })
+    },
+    watch: {
+      results(oldV, newV) {
+        let newProgress = Math.round((newV.length/this.totalItems)*10)*10+10 //round to nearest 10
+        if (newProgress == this.progress) return
+        else {
+          this.progress = newProgress
+        }
+      }
     },
     methods: {
       async uploadPatients() {
@@ -128,7 +141,8 @@ export default {
               //   blankrows: true
               // });
                 var parsedJson= xlsx.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]]);
-                console.log("Found rows: " + parsedJson.length)
+                this.totalItems = parsedJson.length
+                console.log("Found rows: " + this.totalItems)
                 await parsedJson.forEach((item) => {
                   //let item = parsedJson[2]
                   let p = Object.assign({}, item)
@@ -180,9 +194,10 @@ export default {
               var workbook = xlsx.read(data, {type: 'binary'})
                 var parsedJson= xlsx.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]]);
                 console.log("Found rows: " + parsedJson.length)
+                this.totalItems = parsedJson.length
                 //console.log(parsedJson)
                 await parsedJson.forEach((item) => {
-                  //let item = parsedJson.find(x=>{return x.studyId=="BR1"})
+                  //let item = parsedJson.find(x=>{return x.studyId=="BR132"})
                   if (!item) {
                     alert("cannot find item in excel file")
                     this.loading = false

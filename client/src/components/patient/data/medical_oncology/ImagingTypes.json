@@ -57,6 +57,11 @@
             "name": "showForceDispersionAngle",
             "text": "Show Force Dispersion Angle",
             "type": "number"
+         },
+         {
+            "name": "preStudy",
+            "text": "Pre-Study",
+            "type": "boolean"
          }
       ]
    }

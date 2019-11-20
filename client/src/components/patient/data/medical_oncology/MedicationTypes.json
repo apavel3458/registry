@@ -13,21 +13,25 @@
       ]
    },
    {
+      "medicationName": "Pertuzumab",
+      "details": [
+      ]
+   },
+   {
       "medicationName": "Herceptin",
       "visibleDetail": "change",
       "details": [
          {
-            "name": "change",
-            "text": "What happened?",
+            "name": "status",
+            "text": "Status?",
             "required": true,
-            "options": ["Completed", "Stopped", "Restarted", "Ongoing"],
+            "options": ["Completed", "Stopped", "Ongoing"],
             "type": "autocomplete string"
          },
          {
             "name": "cycles",
             "text": "# Cycles",
             "required": true,
-            "options": ["Completed", "Stopped", "Restarted"],
             "type": "number"
          }
       ]
@@ -44,7 +48,7 @@
       ]
    },
    {
-      "medicationName": "Beta Blocker",
+      "medicationName": "B-Blocker",
       "visibleDetail": "pretreatment",
       "details": [
          {

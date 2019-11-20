@@ -69,9 +69,9 @@
     </template>
     <template v-slot:dataTable="props">
           <td class="text-xs-center text-no-wrap" style="">{{ props.item.medicationName }}</td>
+          <td class="nowrap">{{ props.item.visibleDetail }}</td>
           <td class="eventName nowrap">{{ props.item.startDate }}</td>
           <td class="eventName nowrap">{{ props.item.endDate }}</td>
-          <td class="nowrap">{{ props.item.visibleDetail }}</td>
           <td class="text-xs-center overflow-cell-wrapper">
             <div class="overflow-cell">{{ props.item.comments }}</div>
           </td>
@@ -98,9 +98,9 @@ export default {
       drugs: MedicationDrugTypes,
       tableHeaders: [
         { text: "Class", value: "medicationName", align: "center", width: "1%" },
+        { text: "Detail", value: "visibleDetail", align: "center", width: "1%"},
         { text: "Start Date", value: "startDate", align: "center", width: "1%"},
         { text: "End Date", value: "endDate", align: "center", width: "1%"},
-        { text: "Detail", value: "visibleDetail", align: "center", width: "1%"},
         { text: "Comments", align: "center", value: "comments"},
         { text: "Actions", align: "center", value: "name", sortable: false, width: "1%" }
       ],

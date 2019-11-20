@@ -10,6 +10,10 @@
             <v-list-item-content class="itemContent">{{props.item.dateStart}}</v-list-item-content>
          </v-list-item>
          <v-list-item>
+            <v-list-item-content class="itemHeading">End Date</v-list-item-content>
+            <v-list-item-content class="itemContent">{{props.item.dateEnd?props.item.dateEnd:'--'}}</v-list-item-content>
+         </v-list-item>
+         <v-list-item>
             <v-list-item-content class="itemHeading">Type</v-list-item-content>
             <v-list-item-content class="itemContent">{{props.item.details.type?props.item.details.type:'--'}}</v-list-item-content>
          </v-list-item>
