@@ -9,7 +9,7 @@
                 icon="mdi-alert-circle"
                 class="mx-3"
               >
-                Warning: this page is for mass data migration.  Do not touch this unless you know what you are doing!
+                Warning: this page is for mass data migration.  Do not touch this unless you know what you are doing!!
               </v-alert>
         </v-col>
     </v-row>
