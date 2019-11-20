@@ -42,7 +42,7 @@
             <v-list-item-content class="itemContent">{{props.item.details.CVhx?'Yes':'No'}}</v-list-item-content>
          </v-list-item>
          <v-list-item>
-            <v-list-item-content class="itemHeading">CV History?</v-list-item-content>
+            <v-list-item-content class="itemHeading">CV Symptoms?</v-list-item-content>
             <v-list-item-content class="itemContent">{{props.item.details.CVsx?'Yes':'No'}}</v-list-item-content>
          </v-list-item>
          <v-list-item>
