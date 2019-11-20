@@ -1,5 +1,11 @@
 [
    {
+      "drugName": "Furosemide",
+      "drugClass": "Diuretic",
+      "dose": 60,
+      "unit": "mg"
+   },
+   {
       "drugName": "Atenolol",
       "drugClass": "Beta Blocker",
       "dose": 50,

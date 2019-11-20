@@ -40,7 +40,7 @@
                   <v-text-field
                     v-model.number="editedItem.dose"
                     filled hide-details
-                    label="Dose (number only)"
+                    label="Total Daily Dose (number)"
                     type="number"
                   ></v-text-field>
                 </v-flex>
