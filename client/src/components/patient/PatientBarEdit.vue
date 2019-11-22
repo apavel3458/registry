@@ -211,8 +211,8 @@ export default {
             RegistryService.addPatient(this.pt)
                .then(reply =>  {
                   this.$store.dispatch('registryCount', {registryId: this.activeRegistry.id, increment:1})
-                  this.$store.dispatch('loadPatient', reply.id) //update home object
-                  this.$router.push({name:'patient', params:{id: reply.id}})
+                  //this.$store.dispatch('loadPatient', reply.id) //update home object
+                  this.$router.push({name:'patient', params:{patientId: reply.id}})
                   this.showSuccess("Successfully added new patient")
                   this.editPatientDialog = false
                }).catch(err => {
