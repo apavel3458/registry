@@ -33,7 +33,7 @@ var generalMixin = {
      showErrorMessage: function(errMsg) {
       this.showErrorVuex(errMsg)
      },
-     showSuccess: function(msg) {
+      showSuccess: function(msg) {
          this.showSuccessVuex(msg)
       }
    }

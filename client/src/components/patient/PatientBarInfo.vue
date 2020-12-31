@@ -21,8 +21,8 @@
 
           <v-list-item>
 
-            <v-list-item-content>
-              <v-list-item-title>{{patient.mrn}} <template v-if="patient.studyId">({{patient.studyId}})</template></v-list-item-title>
+            <v-list-item-content @click="copy(patient.mrn)" style="cursor: pointer;">
+              <v-list-item-title style="cursor: pointer;">{{patient.mrn}} <span v-if="patient.studyId" @click.stop="copy(patient.studyId)">({{patient.studyId}})</span></v-list-item-title>
               <v-list-item-subtitle>Medical Record # (Study ID)</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -67,13 +67,14 @@
 <script>
 import PatientMixin from '@/util/PatientMixin'
 import { mapState } from 'vuex'
+import GeneralMixin from '@/util/GeneralMixin.js'
 
 export default {
    data() {
       return {
       }
    },
-   mixins: [PatientMixin],
+   mixins: [PatientMixin, GeneralMixin],
    computed: {
      ...mapState({
          patient: 'activePatient'
@@ -82,7 +83,16 @@ export default {
    watch: {
    },
    methods: {
-
+     copy (text) {
+      var dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = text;
+      // dummy.setSelectionRange(0, 99999); /* For mobile devices */
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+      this.showSuccess(`Copied ${text} to clipboard`)
+     }
     },
     mounted() {
     }
