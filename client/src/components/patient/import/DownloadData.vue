@@ -18,7 +18,7 @@
               <v-alert
                 text
                 v-if="status"
-                type="success"
+                :type="statusCode"
                 icon="mdi-alert-circle"
                 class="mx-3"
               >
@@ -95,7 +95,8 @@ export default {
                   },
                   { text: 'Output', value: 'output' }
         ],
-        status: null
+        status: null,
+        statusCode: 'info'
       }
     },
     mounted () {
@@ -123,11 +124,13 @@ export default {
             const data = reply
             const end = window.performance.now();
             this.status = `Successfully downloaded ${reply.length} records. Executing time: ${Math.round(end - start)}ms`
+            this.statusCode = 'success'
             XLSXDownload.convertRecordXlsx(document, data)
          } catch (e) {
             console.log(e)
             const end = window.performance.now();
             this.status = `Error encoungered. Execution time: ${Math.round(end - start)}ms`
+            this.statusCode = 'error'
          }
          this.loading = false
          
