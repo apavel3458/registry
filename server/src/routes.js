@@ -128,7 +128,9 @@ module.exports = (app) => {
         AuthFilter,
         UserController.updateUserOptions)
 
-
+    app.get('/registry/:registryId/download/all', // MAY NEED ADMIN
+        AuthFilter,
+        RegistryController.registryDownloadAll)
     //-----------  MIGRATION ROUTES --------------
 
     // app.post('/admin/migrate/:registryId',

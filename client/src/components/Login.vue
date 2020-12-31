@@ -69,7 +69,7 @@ export default {
         }).catch((err) => {
           // eslint-disable-next-line no-console
           console.log(JSON.stringify(err))
-          this.error = this.processError(err)
+          this.error = this.getErrorMessage(err)
           this.loading = false
         })
     },

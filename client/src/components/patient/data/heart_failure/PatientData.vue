@@ -12,6 +12,15 @@
                     <v-card-text><imaging :is="tab"></imaging></v-card-text>
                 </v-card>
             </v-tab-item>
+                      <v-spacer></v-spacer>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn icon fab v-on="on" @click="$router.push({name: 'registry', params: {registryId: $store.state.activeRegistry.id}})" style="margin-top: -3px;">
+                    <v-icon>mdi-format-list-bulleted-square</v-icon>
+              </v-btn>
+            </template>
+            <span>Back to Patient List</span>
+          </v-tooltip>
         </v-tabs>
     </v-card>
 </template>

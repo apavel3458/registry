@@ -191,19 +191,40 @@ async patientDelete(req, res) {
      }
   },
   async registryListUser(req, res) {
-   try {
-      const groupMemberships = req.user.usergroups.map(x=>x.groupName)
-      const registryList = await Registry.query()
-          .select('registries.*', Registry.relatedQuery('patients').count().as('registrySize'))
-            .whereIn('registries.registryName', groupMemberships)
-            .andWhere('active', true)
-            
-      return res.send(registryList)
-   } catch (err) {
-       console.log(err)
-       res.status(500).send({
-          error: 'An error has occured while trying to fetch the registry list.'
-       })
-   }
-}
+      try {
+         const groupMemberships = req.user.usergroups.map(x=>x.groupName)
+         const registryList = await Registry.query()
+            .select('registries.*', Registry.relatedQuery('patients').count().as('registrySize'))
+               .whereIn('registries.registryName', groupMemberships)
+               .andWhere('active', true)
+               
+         return res.send(registryList)
+      } catch (err) {
+         console.log(err)
+         res.status(500).send({
+            error: 'An error has occured while trying to fetch the registry list.'
+         })
+      }
+   },
+
+   async registryDownloadAll(req, res) {
+      try {
+         const registryId = parseInt(req.params.registryId)
+         console.log("getting registry", registryId)
+         if (isNaN(registryId)) {
+            return res.status(400).send({error: 'registryId is not valid'})
+         }
+         console.log("getting all data")
+         const patients = await Patient.query().where('registryId', registryId)
+            .eager('[diagnosis, imaging, event, medication, device]')
+         
+         return res.send(patients)
+      } catch (err) {
+         console.log(err)
+         res.status(500).send({
+            error: 'An error occured while retrieving the patient'
+         })
+      }
+   },
+   
 }

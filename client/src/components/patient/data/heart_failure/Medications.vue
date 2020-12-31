@@ -60,7 +60,6 @@
                     required
                     return-masked-value
                     v-mask="'####-##-##'"
-                    :rules="[() => !!editedItem.startDate || 'This field is required']"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6>

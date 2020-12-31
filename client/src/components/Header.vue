@@ -14,7 +14,7 @@
         ></v-img>
     </template>
 
-    <v-app-bar-nav-icon></v-app-bar-nav-icon>
+    <v-app-bar-nav-icon @click="$router.push({name: 'registry', params: {registryId: $store.state.activeRegistry.id}})"></v-app-bar-nav-icon>
 
     <v-toolbar-title>
       <span class="home" @click="navigateTo('root')">
@@ -72,7 +72,7 @@
     <v-tooltip bottom v-if="isAuthenticated">
       <template v-slot:activator="{ on }">
         <v-btn v-on="on" icon dark @click="navigateTo('useroptions')">
-          <v-icon>mdi-settings</v-icon>
+          <v-icon>mdi-cog</v-icon>
         </v-btn>
       </template>
       <span>User Options</span>

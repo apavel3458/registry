@@ -44,7 +44,6 @@
                   label="Start Date (YYYY-MM-DD)"
                   prepend-inner-icon="mdi-calendar"
                   v-mask="'####-##-##'"
-                  :rules="[() => !!editedItem.dateStart || 'This field is required']"
                   hide-details
                ></v-text-field>
             </v-flex>

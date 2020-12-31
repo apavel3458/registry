@@ -22,6 +22,14 @@
               </template>
               <span>Upload Data</span>
           </v-tooltip>
+          <v-tooltip bottom v-if="$store.getters.isAdmin">
+              <template v-slot:activator="{ on }">
+                <v-btn icon v-on="on" @click="navigation='download'">
+                  <v-icon>mdi-download</v-icon>
+                </v-btn>
+              </template>
+              <span>Download Data</span>
+          </v-tooltip>
           <v-menu>
             <template v-slot:activator="{ on }">
               <v-btn icon v-on="on">
@@ -43,6 +51,9 @@
       <v-flex xs12 mt-0>
         <template v-if="navigation=='upload'">
           <upload-data></upload-data>
+        </template>
+        <template v-if="navigation=='download'">
+          <download-data></download-data>
         </template>
         <template v-else>
           <v-data-table 
@@ -88,10 +99,11 @@ import RegistryService from '@/services/RegistryService'
 import PatientMixin from '@/util/PatientMixin'
 import PatientBarEdit from '@/components/patient/PatientBarEdit'
 const UploadData = () => import('./import/UploadData')
+const DownloadData = () => import('./import/DownloadData')
 
 export default {
    mixins: [PatientMixin],
-   components: {PatientBarEdit, UploadData},
+   components: {PatientBarEdit, UploadData, DownloadData},
    data () {
       return {
         totalpatients: 0,

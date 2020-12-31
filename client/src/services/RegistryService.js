@@ -46,6 +46,9 @@ export default {
         descending: descending
       }
     })).data
+  },
+  async downloadAllData (registryId) {
+    return (await Api().get(`/registry/${registryId}/download/all`)).data
   }
 }
 
