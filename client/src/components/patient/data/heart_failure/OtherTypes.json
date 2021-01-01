@@ -13,7 +13,7 @@
             "name": "morphology",
             "text": "Morphology",
             "required": false,
-            "options": ["Strauss LBBB", "Classic LBBB", "Non-LBBB"],
+            "options": ["Paced", "Strauss LBBB", "Classic LBBB", "Non-LBBB"],
             "type": "combobox string"
          }
       ]
