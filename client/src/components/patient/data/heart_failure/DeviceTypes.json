@@ -15,7 +15,7 @@
             "text": "Indication",
             "required": false,
             "options": ["Bradycardia", "Syncope", "Long QT"],
-            "type": "autocomplete string"
+            "type": "combobox string"
          }
       ]
    },
@@ -34,7 +34,7 @@
             "text": "Indication",
             "required": false,
             "options": ["Primary", "Secondary"],
-            "type": "autocomplete string"
+            "type": "combobox string"
          }
       ]
    },
@@ -54,7 +54,7 @@
             "text": "Indication",
             "required": false,
             "options": ["Primary", "Pacing", "Secondary"],
-            "type": "autocomplete string"
+            "type": "combobox string"
          }
       ]
    }
