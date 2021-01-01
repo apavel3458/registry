@@ -15,5 +15,17 @@
             "options": ["Ischemic", "Non-Ischemic", "Mixed"]
          }
       ]
+   },
+   {
+      "diagnosisName": "Atrial Fibrillation",
+      "primary": false,
+      "details": [
+         {
+            "name": "type",
+            "text": "Type",
+            "type": "autocomplete string",
+            "options": ["Paroxysmal", "Persistent", "Rhythm Controlled"]
+         }
+      ]
    }
 ]
