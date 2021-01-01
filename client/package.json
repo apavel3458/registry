@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "vue-cli-service build && rm -rf /var/www/registry/* && cp -rf dist/* /var/www/registry/."
   },
   "dependencies": {
     "@babel/preset-env": "^7.5.5",
