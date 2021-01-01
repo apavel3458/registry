@@ -3,7 +3,7 @@
 
 const Patient = require('../models/patient')
 
-const components = ['diagnosis', 'imaging', 'event', 'medication', 'device']
+const components = ['diagnosis', 'imaging', 'event', 'medication', 'device', 'other']
 
 function findComponent(query) {
    const componentFind = components.filter(x => x.toUpperCase() === query.toUpperCase()) //security
@@ -24,7 +24,7 @@ module.exports = {
       try {
          const id = req.params.id
          const patient = await Patient.query().findById(id)
-            .eager('[registry, diagnosis, imaging, event, medication, device]').first()
+            .eager('[registry, diagnosis, imaging, event, medication, device, other]').first()
          return res.send(patient)
       } catch (err) {
          console.log(err)
@@ -45,7 +45,7 @@ module.exports = {
          //console.log(pt)
 
          const patient = await Patient.query()
-            .allowUpsert('[diagnosis, imaging, event, medication, device]')
+            .allowUpsert('[diagnosis, imaging, event, medication, device, other]')
             .upsertGraph(pt)
          return res.send(patient)
       } catch (err) {

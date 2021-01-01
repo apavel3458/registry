@@ -1,4 +1,3 @@
-/* eslint-disable vue/valid-template-root */
 <template>
    <item-block
       :typesJson="typesJson"

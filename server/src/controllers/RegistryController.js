@@ -24,7 +24,7 @@ module.exports = {
          if (!registryId) return res.status(400).send({error: 'Need registryId'})
          console.log("Study Id: " + req.query.studyId)
          const patient = await Patient.query().where('studyId', req.query.studyId).andWhere('registryId', registryId)
-            .eager('[registry, diagnosis, imaging, event, device, medication]').first()
+            .eager('[registry, diagnosis, imaging, event, device, medication, other]').first()
          console.log(patient)
          return res.send(patient)
       } catch (err) {
@@ -216,7 +216,7 @@ async patientDelete(req, res) {
          }
          console.log("getting all data")
          const patients = await Patient.query().where('registryId', registryId)
-            .eager('[diagnosis, imaging, event, medication, device]')
+            .eager('[diagnosis, imaging, event, medication, device, other]')
          
          return res.send(patients)
       } catch (err) {

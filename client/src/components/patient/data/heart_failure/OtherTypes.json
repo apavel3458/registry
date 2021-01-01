@@ -1,0 +1,21 @@
+[
+   {
+      "otherName": "ECG",
+      "visibleDetail": "QRS",
+      "details": [
+         {
+            "name": "QRS",
+            "text": "QRS Duration (ms)",
+            "required": true,
+            "type": "number"
+         },
+         {
+            "name": "morphology",
+            "text": "Morphology",
+            "required": false,
+            "options": ["Strauss LBBB", "Classic LBBB", "Non-LBBB"],
+            "type": "combobox string"
+         }
+      ]
+   }
+]

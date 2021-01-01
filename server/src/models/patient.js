@@ -105,7 +105,15 @@ class Patient extends Model {
                from: 'patients.id',
                to: 'devices.patientId'
             }
-      }
+         },
+         other: {
+            relation: Model.HasManyRelation,
+            modelClass: __dirname + '/other',
+            join: {
+               from: 'patients.id',
+               to: 'other.patientId'
+            }
+         }
       }
    }
 }

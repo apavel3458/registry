@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <page-header />
-    <v-content>
-      <router-view/>
-    </v-content>
+    <v-main>
+      <router-view />
+    </v-main>
   </v-app>
 </template>
 
@@ -13,13 +13,13 @@ import PageHeader from '@/components/Header.vue'
 export default {
   name: 'App',
   components: {
-    PageHeader
+    PageHeader,
   },
-  data () {
+  data() {
     return {
       //
     }
-  }
+  },
 }
 </script>
 <style>
@@ -31,16 +31,19 @@ export default {
   /*margin-top: 60px;*/
 }
 .overflow-cell-wrapper {
-    display: table;
-    table-layout: fixed;
-    width: 100%;
+  display: table;
+  table-layout: fixed;
+  width: 100%;
 }
 
 .overflow-cell {
-    display: table-cell;
-    vertical-align: middle;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  display: table-cell;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+div.v-window {
+  overflow: visible;
 }
 </style>
