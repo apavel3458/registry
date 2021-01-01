@@ -33,19 +33,19 @@
             "name": "RVFunction",
             "text": "RV Function",
             "type": "autocomplete string",
-            "options": ["Normal", "Mild", "Moderate", "Severe"]
+            "options": ["Normal", "Mild", "Mild-Moderate", "Moderate", "Moderate-Severe", "Severe"]
          },
          {
             "name": "TR",
             "text": "TR",
             "type": "autocomplete string",
-            "options": ["Normal", "Mild", "Moderate", "Severe"]
+            "options": ["Normal", "Mild", "Mild-Moderate", "Moderate", "Moderate-Severe", "Severe"]
          },
          {
             "name": "MR",
             "text": "MR",
             "type": "autocomplete string",
-            "options": ["Normal", "Mild", "Moderate", "Severe"]
+            "options": ["Normal", "Mild", "Mild-Moderate", "Moderate", "Moderate-Severe", "Severe"]
          },
          {
             "name": "LVEDD",
