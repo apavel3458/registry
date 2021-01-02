@@ -53,6 +53,11 @@
             "type": "number"
          },
          {
+            "name": "LVEDV",
+            "text": "LV End Diastolic Volume",
+            "type": "number"
+         },
+         {
             "name": "LAVolumeIndex",
             "text": "LA Volume Index",
             "type": "number"
