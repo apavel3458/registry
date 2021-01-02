@@ -1,20 +1,16 @@
-import {dateFns, differenceInCalendarYears} from 'date-fns'
+import { dateFns, differenceInCalendarYears } from 'date-fns'
 
 var mixin = {
-   methods: {
-      age(dob, nowD) {
-         if (!nowD) nowD = new Date()
-         return differenceInCalendarYears(nowD, dob)
-      },
-      formatDate (d) {
-         if (dateFns.isValid(d))
-            return dateFns.format(d, 'YYYY-MM-DD')
-         else
-             return '---'
-     }
-   }
-
+  methods: {
+    age(dob, nowD) {
+      if (!nowD) nowD = new Date()
+      return differenceInCalendarYears(nowD, dob) - 1
+    },
+    formatDate(d) {
+      if (dateFns.isValid(d)) return dateFns.format(d, 'YYYY-MM-DD')
+      else return '---'
+    },
+  },
 }
 
 export default mixin
-

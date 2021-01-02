@@ -17,8 +17,7 @@
                 name="username"
                 prepend-icon="mdi-account-circle"
                 @keyup.enter="login"
-              >
-              </v-text-field>
+              ></v-text-field>
               <v-text-field
                 ref="password"
                 v-model="password"
@@ -28,30 +27,29 @@
                 prepend-icon="mdi-lock"
                 append-icon="mdi-eye-off"
                 @keyup.enter="login"
-              >
-              </v-text-field>
-              <v-alert v-if="error" dense type="error" class="text-center"
-                >{{ error }}
+              ></v-text-field>
+              <v-alert v-if="error" dense type="error" class="text-center">
+                {{ error }}
               </v-alert>
               <div class="text-center">
-                <v-btn :loading="loading" color="info" @click.prevent="login()"
-                  >Login</v-btn
-                >
+                <v-btn :loading="loading" color="info" @click.prevent="login()">
+                  Login
+                </v-btn>
               </div>
             </div>
           </v-form>
         </panel>
       </v-flex>
     </v-layout>
-    <v-btn :to="{ name: 'register' }" text class="hiddenRegister white--text"
-      >Register</v-btn
-    >
+    <v-btn :to="{ name: 'register' }" text class="hiddenRegister white--text">
+      Register
+    </v-btn>
   </v-container>
 </template>
 
 <script>
-import AuthenticationService from '@/services/AuthenticationService';
-import GeneralMixin from '@/util/GeneralMixin';
+import AuthenticationService from '@/services/AuthenticationService'
+import GeneralMixin from '@/util/GeneralMixin'
 
 export default {
   name: 'HelloWorld',
@@ -64,41 +62,41 @@ export default {
       error: '',
       url: '',
       loading: false,
-    };
+    }
   },
   mounted() {
-    this.error = this.$route.params.error || '';
-    this.url = this.$route.params.url || '';
-    this.$store.dispatch('logout');
-    this.$refs.username.focus();
+    this.error = this.$route.params.error || ''
+    this.url = this.$route.params.url || ''
+    this.$store.dispatch('logout')
+    this.$refs.username.focus()
   },
   methods: {
     async login() {
-      this.loading = true;
+      this.loading = true
       await AuthenticationService.login({
         username: this.username,
         password: this.password,
       })
         .then(async (response) => {
-          await this.loginSuccess(response);
-          this.loading = false;
+          await this.loginSuccess(response)
+          this.loading = false
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
-          console.log(JSON.stringify(err));
-          this.error = this.getErrorMessage(err);
-          this.loading = false;
-        });
+          console.log(JSON.stringify(err))
+          this.error = this.getErrorMessage(err)
+          this.loading = false
+        })
     },
     async loginSuccess({ token, user }) {
-      this.$store.commit('login', { token, user });
-      await this.$store.dispatch('init');
+      this.$store.commit('login', { token, user })
+      await this.$store.dispatch('init')
       this.$router.push({
         name: 'registryselect',
-      });
+      })
     },
   },
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
