@@ -57,5 +57,10 @@
             "type": "combobox string"
          }
       ]
+   },
+   {
+      "deviceName": "AVN Ablation",
+      "details": [
+      ]
    }
 ]

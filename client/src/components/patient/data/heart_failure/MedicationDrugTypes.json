@@ -127,5 +127,23 @@
       "drugClass": "ARNI",
       "dose": 49,
       "unit": "mg"
+   },
+   {
+      "drugName": "Empagliflozin",
+      "drugClass": "SGLT2i",
+      "dose": 10,
+      "unit": "mg"
+   },
+   {
+      "drugName": "Dapagliflozin",
+      "drugClass": "SGLT2i",
+      "dose": 10,
+      "unit": "mg"
+   },
+   {
+      "drugName": "Canagliflozin",
+      "drugClass": "SGLT2i",
+      "dose": 100,
+      "unit": "mg"
    }
 ]

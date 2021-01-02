@@ -24,7 +24,7 @@
             "name": "type",
             "text": "Type",
             "type": "autocomplete string",
-            "options": ["Paroxysmal", "Persistent", "Rhythm Controlled"]
+            "options": ["Permanent","Persistent","Paroxysmal"]
          }
       ]
    }
